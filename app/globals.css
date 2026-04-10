@@ -1,26 +1,154 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+@theme {
+
+  --color-primary: #d4960b ;
+  --color-primary2: #966e14 ;
+  --color-mybg :  #0F0F0F;
+  --color-text :#D4AF37;
+  /* --color-primary-foreground: #ffffff;
+  
+  --color-secondary: #0ea5e9;     
+  --color-secondary-foreground: #0f172a;
+
+
+  --color-brand-500: #f43f5e;
+  --color-brand-600: #e11d48; */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.header{
+  position: relative;
+}
+.header::before{
+content: "";
+position: absolute;
+top: 0;
+right:0;
+width: 120px;   
+height: 80px;
+background-image: url("/Images/hd1-decor-2.png");
+
+  background-repeat: no-repeat;
+  
+
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+@media (min:767) {
+  .header::before{
+    content: "";
+position: absolute;
+top: 0;
+right:0;
+width: 0px;   
+height: 0px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+
+
+/* .banner {
+  
+  animation: bann 6s ease-in-out infinite;
+  will-change: transform; 
+}
+
+@keyframes bann {    
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+   
+    transform: translateX(22vw) translateY(-10px); 
+  }
+} */
+
+/* Slides the label inside the bottle */
+.labelimg {
+  animation: lab 6s ease-in-out infinite ;
+  will-change: transform;
+}
+
+
+
+
+@keyframes lab {
+  0%{
+    /* Using transform instead of 'left' for 60fps smoothness */
+    transform: translateX(0%); 
+  }
+  100% {
+    transform: translateX(58%); 
+  }
+}
+
+/* Beautiful fade-up animation for slide transitions */
+.fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+@media (max-width: 450px) {
+  @keyframes bann {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+   
+    transform: translateX(44vw) translateY(-10px); 
+  }
+}
+}
+
+
+.reveal-text {
+  animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.reveal-delay-1 { animation-delay: 0.1s; }
+.reveal-delay-2 { animation-delay: 0.2s; }
+.reveal-delay-3 { animation-delay: 0.3s; }
+
+@keyframes revealUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.blob-shape {
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  animation: morph 8s ease-in-out infinite alternate;
+}
+
+@keyframes morph {
+  0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+.b-font {
+  font-family: "Bpmf Zihi Kai Std", sans-serif;
+
+}
+
+.c-font {
+  font-family: "UnifrakturMaguntia";
+
 }
