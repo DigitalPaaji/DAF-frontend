@@ -2,6 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { img_url } from "./Store/utils";
+import Link from "next/link";
 
 // Category data
 const categories = [
@@ -43,7 +46,7 @@ const categories = [
   },
 ];
 
-// Animation variants for grid items
+
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
@@ -58,6 +61,8 @@ const itemVariants = {
 };
 
 const CategoryCarousel = () => {
+
+  const { info:category} = useSelector(status=>status.category)
   return (
     <section className="py-20 bg-[#F5F2EB] font-sans">
       <div className="container mx-auto px-6 max-w-7xl">
@@ -107,14 +112,15 @@ const CategoryCarousel = () => {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-4 gap-y-10"
         >
-          {categories.map((category) => (
-            <motion.a
-              key={category.id}
-              href={`/category/${category.slug}`}
+          { category.length >0 && category.map((category) => (
+            <motion.div
+              key={category._id}
+            
               variants={itemVariants}
-              className="group flex flex-col items-center text-center cursor-pointer"
+             
             >
               
+              <Link   href={`/products?category=${category._id}`}  className="group flex flex-col items-center text-center cursor-pointer">
               <div className="p-1.5 rounded-full border-2 border-transparent group-hover:border-[#9C6B44] transition-colors duration-500 mb-4">
                 
               
@@ -124,7 +130,7 @@ const CategoryCarousel = () => {
                   <div className="absolute inset-0 rounded-full shadow-inner z-10 pointer-events-none" />
                   
                                   <img
-                    src={category.image}
+                    src={`${img_url}${category.image}`}
                     alt={category.name}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   />
@@ -139,7 +145,8 @@ const CategoryCarousel = () => {
               >
                 {category.name}
               </h3>
-            </motion.a>
+              </Link>
+            </motion.div>
           ))}
         </motion.div>
 
