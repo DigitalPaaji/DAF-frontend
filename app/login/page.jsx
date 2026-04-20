@@ -12,7 +12,7 @@ const Page = () => {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const inputRef = useRef([]);
 
-  // --- GOOGLE LOGIN ---
+  // ----- GOOGLE LOGIN -----
   const handleGoogleLogin = async (credentialResponse) => {
     const token = credentialResponse.credential;
     setIsLoading(true);
