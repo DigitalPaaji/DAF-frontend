@@ -2,11 +2,9 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
-import { img_url } from "./Store/utils";
 import Link from "next/link";
 
-// Category data
+// Local Category data
 const categories = [
   {
     id: 1,
@@ -46,7 +44,6 @@ const categories = [
   },
 ];
 
-
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
@@ -61,8 +58,6 @@ const itemVariants = {
 };
 
 const CategoryCarousel = () => {
-
-  const { info:category} = useSelector(status=>status.category)
   return (
     <section className="py-20 bg-[#F5F2EB] font-sans">
       <div className="container mx-auto px-6 max-w-7xl">
@@ -104,7 +99,7 @@ const CategoryCarousel = () => {
           </motion.p>
         </div>
 
-      
+        {/* Grid Display */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -112,44 +107,37 @@ const CategoryCarousel = () => {
           viewport={{ once: true, margin: "-50px" }}
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-4 gap-y-10"
         >
-          { category.length >0 && category.map((category) => (
+          {categories.map((item) => (
             <motion.div
-              key={category._id}
-            
+              key={item.id}
               variants={itemVariants}
-             
             >
-              
-              <Link   href={`/products?category=${category._id}`}  className="group flex flex-col items-center text-center cursor-pointer">
-              <div className="p-1.5 rounded-full border-2 border-transparent group-hover:border-[#9C6B44] transition-colors duration-500 mb-4">
-                
-              
-                <div className="relative w-32 h-32 md:w-40 md:h-40 overflow-hidden rounded-full bg-white shadow-sm">
+              <Link href={`/products?category=${item.slug}`} className="group flex flex-col items-center text-center cursor-pointer">
+                <div className="p-1.5 rounded-full border-2 border-transparent group-hover:border-[#9C6B44] transition-colors duration-500 mb-4">
                   
-                  
-                  <div className="absolute inset-0 rounded-full shadow-inner z-10 pointer-events-none" />
-                  
-                                  <img
-                    src={`${img_url}${category.image}`}
-                    alt={category.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  />
-                  
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500 z-0" />
+                  <div className="relative w-32 h-32 md:w-40 md:h-40 overflow-hidden rounded-full bg-white shadow-sm">
+                    <div className="absolute inset-0 rounded-full shadow-inner z-10 pointer-events-none" />
+                    
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    />
+                    
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500 z-0" />
+                  </div>
                 </div>
-              </div>
-              
-              <h3 
-                className="text-sm md:text-base font-bold uppercase tracking-wider text-[#3A2A21] group-hover:text-[#9C6B44] transition-colors duration-300 px-2"
-                style={{ fontFamily: "'Oswald', sans-serif" }}
-              >
-                {category.name}
-              </h3>
+                
+                <h3 
+                  className="text-sm md:text-base font-bold uppercase tracking-wider text-[#3A2A21] group-hover:text-[#9C6B44] transition-colors duration-300 px-2"
+                  style={{ fontFamily: "'Oswald', sans-serif" }}
+                >
+                  {item.name}
+                </h3>
               </Link>
             </motion.div>
           ))}
         </motion.div>
-
       </div>
     </section>
   );

@@ -47,7 +47,7 @@ const FaqSection = () => {
         {faqs.map((faq, index) => (
           <div 
             key={index} 
-            className="border border-amber-200 bg-amber-50 rounded-lg overflow-hidden transition-all duration-200"
+            className="border border-amber-50 rounded-lg overflow-hidden transition-all duration-200"
           >
             <button
               onClick={() => toggleFAQ(index)}
@@ -56,7 +56,7 @@ const FaqSection = () => {
               <span className="font-semibold text-amber-950 text-lg">
                 {faq.question}
               </span>
-              <span className="ml-6 flex-shrink-0 text-amber-700">
+              <span className="ml-6 shrink-0 text-amber-700">
                 {openIndex === index ? (
                   <FiChevronUp className="w-6 h-6" />
                 ) : (
