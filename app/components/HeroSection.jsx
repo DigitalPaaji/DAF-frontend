@@ -83,7 +83,7 @@ const HeroSlider = () => {
                 <span className="inline-block px-3 py-1   text-sm mb-4 uppercase tracking-widest opacity-70">
                   {slide.subtitle}
                 </span>
-                <h2 className={`text-5xl md:text-6xl font-serif mb-6 ${slide.textColor}`}>
+                <h2 className={`text-4xl md:text-6xl font-serif mb-6 ${slide.textColor}`}>
                   {slide.title}
                 </h2>
                 <p className=" text-gray-700 leading-relaxed mb-8">

@@ -43,9 +43,9 @@ const cart = useSelector(status=>status.cart.items)
 
   return (
     <header 
-      className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out text-gray-200 
+      className={`fixed left-0 right-0 z-50  transition-all duration-500 ease-in-out text-gray-200 
         ${isScrolled 
-          ? " top-7 px-4 md:px-12 lg:px-24 xl:px-32 " 
+          ? " top-7 px-4 md:px-12 lg:px-24 xl:px-32  " 
           : "top-0 px-0"
         }`}
     >
@@ -53,7 +53,7 @@ const cart = useSelector(status=>status.cart.items)
         className={` mx-auto backdrop-blur-2xl flex justify-between items-center transition-all duration-500 ease-in-out 
           ${isScrolled 
             ? "rounded-xl  backdrop-blur-3xl text-black/80 xl:rounded-4xl px-4 md:px-12 lg:px-24 h-16 shadow-2xl  " 
-            : "max-w-full  bg-transparent text-black/80  backdrop-blur-3xl   px-4 md:px-12 lg:px-24 xl:px-40  h-20"
+            : "max-w-full drop-shadow-md  lg:shadow-b-0 shadow-rose-950/30 bg-transparent text-black/80  backdrop-blur-3xl   px-4 md:px-12 lg:px-24 xl:px-40  h-20"
           }`}
       >
         
@@ -136,8 +136,8 @@ const cart = useSelector(status=>status.cart.items)
         {/* === MOBILE ICONS (Right) === */}
         <div className="lg:hidden flex justify-end items-center gap-3 md:gap-5 w-1/4 text-[black]">
                     <Link href="/profile" className="hover:text-[#B9832B] transition-colors duration-300"><FaRegUserCircle size={20} /></Link>
-
-          <button><LuSearch size={20} /></button>
+  <Link href="/wishlist" className="hover:text-[#B9832B] transition-colors duration-300 relative"><FaRegHeart size={20} />{wishlist?.length > 0 && <span className="absolute -top-4 px-1.5 py-0.5 text-[10px] bg-black text-white rounded-full left-1/2">{wishlist?.length}</span>}</Link>
+          {/* <button><LuSearch size={20} /></button> */}
           <Link href="/cart">
         
           <MdOutlineShoppingCart size={22} /></Link>

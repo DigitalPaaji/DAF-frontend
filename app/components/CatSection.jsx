@@ -8,56 +8,56 @@ const ingredientItems = [
   {
     id: 1,
     name: 'Assam CTC Tea Leaves',
-    price: '$12 / 200g',
+    price: '₹12 / 200g',
     description: 'A bold, malty black tea base that provides a strong, robust liquor.',
     color: 'bg-[#4A2E1B]', // Dark tea brown
   },
   {
     id: 2,
     name: 'Green Cardamom (Elaichi)',
-    price: '$18 / 50g',
+    price: '₹18 / 50g',
     description: 'Sweet, highly aromatic pods that provide a floral, uplifting note.',
     color: 'bg-[#8A9A5B]', // Muted green
   },
   {
     id: 3,
     name: 'Cinnamon Bark (Dalchini)',
-    price: '$9 / 100g',
+    price: '₹9 / 100g',
     description: 'Sweet and woody inner bark that adds a warming depth to the brew.',
     color: 'bg-[#8B5A2B]', // Cinnamon brown
   },
   {
     id: 4,
     name: 'Dry Ginger (Saunth)',
-    price: '$7 / 100g',
+    price: '₹7 / 100g',
     description: 'Earthy, spicy, and warming powder essential for the perfect kick.',
     color: 'bg-[#D2B48C]', // Pale tan/yellow
   },
   {
     id: 5,
     name: 'Whole Cloves (Laung)',
-    price: '$11 / 50g',
+    price: '₹11 / 50g',
     description: 'Intensely aromatic flower buds adding a sharp, spicy sweetness.',
     color: 'bg-[#3E2723]', // Very dark brown/black
   },
   {
     id: 6,
     name: 'Star Anise (Chakra Phool)',
-    price: '$14 / 50g',
+    price: '₹14 / 50g',
     description: 'Beautiful star-shaped spice imparting a delicate, sweet licorice flavor.',
     color: 'bg-[#6D4C41]', // Reddish brown
   },
   {
     id: 7,
     name: 'Kashmiri Saffron (Kesar)',
-    price: '$35 / 2g',
+    price: '₹35 / 2g',
     description: 'The world\'s most precious spice, adding a golden hue and rich aroma.',
     color: 'bg-[#D32F2F]', // Deep red/orange
   },
   {
     id: 8,
     name: 'Organic Jaggery (Gur)',
-    price: '$6 / 250g',
+    price: '₹6 / 250g',
     description: 'Unrefined cane sugar that provides a deep, caramel-like sweetness.',
     color: 'bg-[#B87333]', // Copper/Amber
   },
@@ -79,11 +79,11 @@ const itemVariants = {
 
 // Custom CSS top-down Spice Bowl component (removed the mug handle)
 const BowlIcon = ({ color }) => (
-  <div className="relative w-12 h-12 shrink-0">
+  <div className="relative w-10 h-10 shrink-0">
     {/* Bowl Body */}
-    <div className="relative w-full h-full rounded-full border-[3px] border-[#312A26] bg-[#EFECE5] shadow-[inset_0_2px_4px_rgba(0,0,0,0.15)] flex items-center justify-center z-10 p-1">
+    <div className="relative w-full h-full rounded-full border-[0.5px] border-[#f5f0edc2] bg-[#EFECE5] shadow-[inset_0_2px_4px_rgba(0,0,0,0.15)] flex items-center justify-center z-10 p-1">
       {/* Spice inside */}
-      <div className={`w-full h-full rounded-full ${color} opacity-90`} />
+      <div className={`w-full h-full rounded-full ${color} opacity-80`} />
     </div>
   </div>
 );
@@ -112,13 +112,13 @@ const CatSection = () => {
         
         {/* Header  Section */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-light uppercase tracking-widest mb-4 flex items-center justify-center gap-4">
-            <span className="w-12 h-[2px] bg-[#312A26] hidden md:block opacity-30"></span>
+          <h2 className="text-xl sm:text-2xl md:text-4xl font-light uppercase tracking-widest mb-4 flex items-center justify-center gap-4">
+            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30"></span>
             The Spice Cabinet
-            <span className="w-12 h-[2px] bg-[#312A26] hidden md:block opacity-30"></span>
+            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30"></span>
           </h2>
           <div className="w-2 h-2 bg-[#8B5A2B] rotate-45 mx-auto mb-4" /> 
-          <p className="max-w-xl mx-auto text-sm text-gray-600 uppercase tracking-wider leading-relaxed">
+          <p className="max-w-xl mx-auto text-sm text-gray-600 lg:uppercase tracking-wider leading-relaxed">
             Explore the raw, unblended components that make our signature chai. We source only the finest whole spices and premium tea leaves for your pantry.
           </p>
         </div>
@@ -139,12 +139,12 @@ const CatSection = () => {
               <div className="flex-1 pt-1">
               
                 <div className="flex items-baseline justify-between mb-1">
-                  <h3 className="text-lg font-bold tracking-wide group-hover:text-[#8B5A2B] transition-colors">
+                  <h3 className="text-lg font-semibold tracking-wide group-hover:text-[#8B5A2B] transition-colors">
                     {item.name}
                   </h3>
                 
-                  <div className="flex-grow mx-3 border-b-2 border-dotted border-gray-400 relative top-[-6px]" />
-                  <span className="text-lg font-bold text-[#8B5A2B] whitespace-nowrap">
+                  <div className="grow mx-3 border-b-2 border-dotted border-gray-400 relative top-[-6px]" />
+                  <span className="text-lg font-semibold text-[#8B5A2B] whitespace-nowrap">
                     {item.price}
                   </span>
                 </div>
