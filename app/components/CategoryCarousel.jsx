@@ -64,7 +64,14 @@ const CategoryCarousel = () => {
         
         {/* Section Header */}
         <div className="text-center mb-16">
-          <motion.h2 
+         <h2 className="text-xl sm:text-2xl md:text-4xl font-light uppercase tracking-widest mb-4 flex items-center justify-center gap-4">
+            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30"></span>
+          Shop by Category
+            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30"></span>
+          </h2>
+          
+          
+             {/* <motion.h2 
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -72,7 +79,7 @@ const CategoryCarousel = () => {
             style={{ fontFamily: "'Oswald', sans-serif" }}
           >
             Shop by Category
-          </motion.h2>
+          </motion.h2> */}
           
           {/* Star Anise Divider */}
           <motion.div 

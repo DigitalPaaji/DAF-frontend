@@ -79,7 +79,7 @@ const itemVariants = {
 
 // Custom CSS top-down Spice Bowl component (removed the mug handle)
 const BowlIcon = ({ color }) => (
-  <div className="relative w-10 h-10 shrink-0">
+  <div className="relative w-6 md:w-8 h-6 md:h-8 shrink-0 mt-3 md:mt-2">
     {/* Bowl Body */}
     <div className="relative w-full h-full rounded-full border-[0.5px] border-[#f5f0edc2] bg-[#EFECE5] shadow-[inset_0_2px_4px_rgba(0,0,0,0.15)] flex items-center justify-center z-10 p-1">
       {/* Spice inside */}
@@ -90,7 +90,7 @@ const BowlIcon = ({ color }) => (
 
 const CatSection = () => {
   return (
-    <section className="relative w-full py-20 bg-[#F4F1EA] text-[#312A26] overflow-hidden font-sans">
+    <section className="relative w-full py-20  text-[#312A26] overflow-hidden font-sans">
       
       {/* Decorative Left Image (Spices) */}
       <img 
@@ -129,7 +129,7 @@ const CatSection = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10"
+          className="grid grid-cols-1 md:grid-cols-2  gap-x-16 gap-y-10"
         >
           {ingredientItems.map((item) => (
             <motion.div variants={itemVariants} key={item.id} className="flex items-start gap-4 group">
@@ -139,12 +139,12 @@ const CatSection = () => {
               <div className="flex-1 pt-1">
               
                 <div className="flex items-baseline justify-between mb-1">
-                  <h3 className="text-lg font-semibold tracking-wide group-hover:text-[#8B5A2B] transition-colors">
+                  <h3 className="md:text-lg font-semibold tracking-wide group-hover:text-[#8B5A2B] transition-colors">
                     {item.name}
                   </h3>
                 
                   <div className="grow mx-3 border-b-2 border-dotted border-gray-400 relative top-[-6px]" />
-                  <span className="text-lg font-semibold text-[#8B5A2B] whitespace-nowrap">
+                  <span className="md:text-lg font-semibold text-[#8B5A2B] whitespace-nowrap">
                     {item.price}
                   </span>
                 </div>

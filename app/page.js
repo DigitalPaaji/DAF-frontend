@@ -8,7 +8,7 @@ import TeaHeroSection from "./components/TeaHeroSection";
 
 export default function Home() {
   return (
-    <div className=" b-font ">
+    <div className="">
       <Hero />
       <CatSection />
       <TeaBlendsSection/>
