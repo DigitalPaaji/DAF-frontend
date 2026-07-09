@@ -83,7 +83,7 @@ const HeroSlider = () => {
                 <span className="inline-block px-3 py-1   text-sm mb-4 uppercase tracking-widest opacity-70">
                   {slide.subtitle}
                 </span>
-                <h2 className={`text-4xl md:text-6xl font-serif mb-6 ${slide.textColor}`}>
+                <h2 className={`text-4xl xl:text-6xl font-serif mb-6 ${slide.textColor}`}>
                   {slide.title}
                 </h2>
                 <p className=" text-gray-700 leading-relaxed mb-8">
@@ -105,14 +105,16 @@ const HeroSlider = () => {
                 transition={{ duration: 0.8, type: "spring", damping: 15 }}
                 className="relative cursor-pointer"
               >
-                <BottleCompo bottleImg={slide.jarImg} lableImg={slide.labelImg} />
+                <BottleCompo bottleImg={slide.jarImg} lableImg={slide.labelImg} /> 
 
 <motion.div  initial={{ opacity: 0, x: 100, rotate: -5 }}
                 animate={{ opacity: 1, x: 0, rotate: 0 }}
                 exit={{ opacity: 0, x: -100, rotate: 5 }} 
-                   transition={{ duration: 0.8, type: "keyframes", damping: 15 }} className= ' hidden md:block absolute -z-10 -top-4    md:left-[110%]' >
-  <img src="/Banner/arrow2.png" alt="" className=' min-w-10 h-10' />
+                   transition={{ duration: 0.8, type: "keyframes", damping: 15 }} className= ' hidden md:block absolute -z-10 -top-[5          0%] xl:-top-4    md:left-[110%]' >
+  <img src="/Banner/arrow2.png" alt="" className=' min-w-10 h-10  rotate-125 sm:rotate-0 xl:rotate-12' />
   <p className=' w-[16rem]  lg:w-[24rem] xl:w-lg ps-5 md:ps-15'>{slide.description}</p>
+  {/* <img src="/Banner/ arrow2.png" alt="" className='rotate-45 min-w-10 h-10 block xl:hidden' /> */}
+
 </motion.div >
                 <motion.div 
                   animate={{ y: [0, -15, 0] }} 

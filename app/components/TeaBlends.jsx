@@ -24,35 +24,21 @@ const teaData = [
 const TeaBlendsSection = () => {
   return (
     <section className="relative py-20  overflow-hidden">
-      <div className="container mx-auto px-6">
+      <div className="max-w-5xl mx-auto px-6">
         
-        {/* Header */}
-        <div className="flex items-center justify-between text-center w-full mb-12">
-          <div>
-         <h2 className="text-xl md:text-4xl font-light uppercase tracking-wide                                               mb-4 flex items-center justify-center gap-4">
-         Our Unique Tea Blends
-          </h2>
-          {/* <h2 className="text-xl sm:text-2xl md:text-4xl uppercase font-normal">
-             
+   
+
+         <div className="text-center mb-16">
+          <h2 className="text-2xl sm:text-2xl xl:text-3xl font-light uppercase tracking-widest mb-4 flex items-center justify-center gap-4">
+            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30"></span>
               Our Unique Tea Blends
-            </h2> */}
-
-            <p className="text-sm text-gray-500 mt-4 max-w-xl">
-              Crafted with premium tea leaves and authentic Indian spices for
+            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30"></span>
+          </h2>
+          <div className="w-2 h-2 bg-[#8B5A2B] rotate-45 mx-auto mb-4" /> 
+          <p className="max-w-xl mx-auto text-sm text-gray-600 lg:uppercase tracking-wider leading-relaxed">
+                         Crafted with premium tea leaves and authentic Indian spices for
               a rich and soulful chai experience.
-            </p>
-          </div>
-
-          {/* Custom Arrows */}
-          <div className="hidden md:flex items-center gap-3">
-            <button className="tea-prev w-11 h-11 rounded-full border border-[#8B5A2B]/30 flex items-center justify-center hover:bg-[#8B5A2B] hover:text-white transition-all duration-300 text-[#312A26]">
-              <ChevronLeft size={20} />
-            </button>
-
-            <button className="tea-next w-11 h-11 rounded-full border border-[#8B5A2B]/30 flex items-center justify-center hover:bg-[#8B5A2B] hover:text-white transition-all duration-300 text-[#312A26]">
-              <ChevronRight size={20} />
-            </button>
-          </div>
+          </p>
         </div>
 
         {/* Swiper */}
@@ -96,13 +82,11 @@ const TeaBlendsSection = () => {
                 </div>
 
                 {/* Text */}
-                <div className="flex items-center gap-3">
-                  <span className="w-3 h-3 bg-[#8B5A2B] rotate-45 shrink-0"></span>
-
-                  <p className="text-[#312A26] text-base font-semibold tracking-wide group-hover:text-[#8B5A2B] transition-colors duration-300">
+               
+                  <p className="text-[#312A26] text-base font-semibold tracking-wide group-hover:text-[#8B5A2B] transition-colors duration-300 mx-auto uppercase">
                     {tea.name}
                   </p>
-                </div>
+          
               </div>
             </SwiperSlide>
           ))}

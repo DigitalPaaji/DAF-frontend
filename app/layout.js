@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
          like "cz-shortcut-listen", you can suppress the warning by adding 
          suppressHydrationWarning to the body tag.
       */}
-      <body className="b-font" suppressHydrationWarning={true}>
+      <body className="" suppressHydrationWarning={true}>
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
           <LayoutCompo>
             <Header />
