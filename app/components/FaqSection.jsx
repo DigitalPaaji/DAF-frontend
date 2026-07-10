@@ -33,9 +33,9 @@ const FaqSection = () => {
   };
 
   return (
-    <div className="container bg-white mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div className=" px-4 md:px-12  xl:px-72 py-24 ">
       <div className="text-center mb-10">
-        <h2 className="text-3xl font-extrabold text-amber-900 sm:text-4xl">
+        <h2 className="font-serif text-3xl font-medium text-amber-900 sm:text-4xl">
           Frequently Asked Questions
         </h2>
         <p className="mt-4 text-lg text-gray-600">
@@ -67,7 +67,7 @@ const FaqSection = () => {
 
             <div 
               className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-                openIndex === index ? 'max-h-40 py-4 border-t border-amber-200' : 'max-h-0'
+                openIndex === index ? ' py-4 border-t border-amber-200' : 'max-h-0'
               }`}
             >
               <p className="text-gray-700">
