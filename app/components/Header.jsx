@@ -552,13 +552,13 @@ const Header = () => {
   return (
     <header
       className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out text-gray-200 
-        ${isScrolled ? "top-7 px-4 md:px-12 lg:px-24 xl:px-32" : "top-0 px-0"}`}
+        ${isScrolled ? "top-7 px-4 md:px-12  xl:px-32" : "top-0  px-4 md:px-12 lg:px-0 xl:px-0"}`}
     >
       <div
         className={`mx-auto backdrop-blur-2xl flex justify-between items-center transition-all duration-500 ease-in-out 
           ${
             isScrolled
-              ? "rounded-xl backdrop-blur-3xl text-black/80 xl:rounded-4xl px-4 md:px-12 lg:px-24 h-16 shadow-2xl bg-white/80"
+              ? "rounded-xl backdrop-blur-3xl text-black/80 xl:rounded-4xl px-4 md:px-12 lg:px-0 h-16 shadow-2xl bg-white/80"
               : "max-w-full drop-shadow-md lg:shadow-b-0 shadow-rose-950/30 bg-transparent text-black/80 backdrop-blur-3xl px-4 md:px-0 h-20"
           }`}
       >

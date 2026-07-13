@@ -3,28 +3,63 @@
 import React from 'react';
 import { FaLeaf, FaMountain, FaHandsWash } from "react-icons/fa";
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const ingredients = [
-  { id: 1, name: 'Assam CTC', type: 'Tea Base', desc: 'Malty, robust, and bold.', color: 'border-[#4A2E1B]' },
-  { id: 2, name: 'Green Cardamom', type: 'Aromatic', desc: 'Floral, sweet, and uplifting.', color: 'border-[#8A9A5B]' },
-  { id: 3, name: 'Cinnamon', type: 'Spice', desc: 'Warming, woody, and sweet.', color: 'border-[#8B5A2B]' },
-  { id: 4, name: 'Dry Ginger', type: 'Spice', desc: 'Sharp, fiery, and earthy.', color: 'border-[#D2B48C]' },
-  { id: 5, name: 'Whole Cloves', type: 'Spice', desc: 'Intense and sweet heat.', color: 'border-[#3E2723]' },
-  { id: 6, name: 'Star Anise', type: 'Flavor', desc: 'Licorice-like and delicate.', color: 'border-[#6D4C41]' },
-  { id: 7, name: 'Saffron', type: 'Rare', desc: 'Golden, rich, and precious.', color: 'border-[#D32F2F]' },
-  { id: 8, name: 'Jaggery', type: 'Sweetener', desc: 'Deep, caramel-like finish.', color: 'border-[#B87333]' },
+  { id: 1, name: "Tea Masala / Spice Blends", type: "3 Products", desc: "Cardamom, ginger and lemon tea flavors crafted for refreshing everyday chai experiences.", color: "border-[#8B5A2B]" },
+  { id: 2, name: "Kitchen Masalas", type: "18 Products", desc: "Complete spice blends for daily cooking including sabzi, biryani, chaat, chole, rajma, sambar and more.", color: "border-[#C65A2E]" },
+  { id: 3, name: "Pickle Masala", type: "10 Products", desc: "Traditional masala blends for mango, lemon, chilli, mixed vegetable, mushroom and other pickle varieties.", color: "border-[#B73E2D]" },
+  { id: 4, name: "Flours", type: "12 Products", desc: "Healthy flour range including basic wheat flour, diabetic-friendly atta, multigrain atta and single millet flours.", color: "border-[#D2A85A]" },
+  { id: 5, name: "Pure Spices", type: "40+ Products", desc: "Whole, powdered and specialty spices including cumin, coriander, turmeric, cardamom, clove, saffron, hing and more.", color: "border-[#6D4C41]" },
+  { id: 6, name: "Pickles", type: "9 Products", desc: "Classic Indian pickle range including mango, lemon, mixed vegetable, green chilli, garlic, amla and tomato pickles.", color: "border-[#7A8B2E]" },
+  { id: 7, name: "Ready To Use Tadka Gravy", type: "8 Products", desc: "Convenient gravy bases for mother gravy, brown onion, makhani, white gravy, Punjabi tadka, chana masala and more.", color: "border-[#A44A2A]" },
 ];
 
 const AboutSection = () => {
   return (
-    <section className="bg-white py-28 font-sans">
-      <div className="container mx-auto px-4 ">
+    <section className="">
+            
+                   {/* Hero Section */}
+              <section className="animate-section relative overflow-hidden py-50  px-4 md:px-12 xl:px-72  ">
+                <div className="absolute inset-0 z-0">
+                  <Image
+                    width={1920}
+                    height={700}
+                    src="/Images/banner.webp"
+                    alt="Spareon India Privacy Policy"
+                    className="w-full h-full object-cover "
+                    priority
+                  />
+                </div>
+        
+                <div className=" relative z-10">
+                  <h1 className=" text-3xl md:text-5xl lg:text-5xl font-bold leading-tight mb-6 text-[#4D341E] uppercase tracking-wide">
+                    About Us
+                  </h1>
+        
+                  <div className=" w-24 h-1 bg-linear-to-r from-[#4D341E] to-[#4d341e94] rounded-full mb-8"></div>
+        
+                  <div className=" flex items-center gap-2 text-sm text-gray-600 font-medium tracking-wider uppercase">
+                    <Link href="/" className="">
+                      Home
+                    </Link>
+                    <span>/</span>
+                    <span className="text-[#4D341E]">About Us</span>
+                  </div>
+                </div>
+              </section>
+
+
+      <div className=" px-4 md:px-12 xl:px-72 py-28 font-sans">
     
+
+        
         <div className="text-center max-w-3xl mx-auto mb-20 lg:mb-28">
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-amber-700 mb-4">
             Our Heritage
           </p>
-          <h2 className="text-4xl md:text-5xl font-serif font-light text-neutral-900 leading-tight">
+          <h2 className="text-3xl md:text-4xl font-serif font-light text-neutral-900 leading-tight">
             Rooted in the valleys of Kashmir, crafted for the world.
           </h2>
         </div>
@@ -53,6 +88,9 @@ const AboutSection = () => {
             <p className="text-neutral-600 leading-relaxed font-light text-lg mb-10">
               Every blend we create is a tribute to the timeless traditions of Kashmiri wellness. No artificial flavors, no shortcuts—just pure, unadulterated nature in every cup, designed to bring a moment of tranquility to your daily ritual.
             </p>
+                 <p className="text-neutral-600 leading-relaxed font-light text-lg mb-10">
+              Every blend we create is a tribute to the timeless traditions of Kashmiri wellness. No artificial flavors, no shortcuts—just pure, unadulterated nature in every cup, designed to bring a moment of tranquility to your daily ritual.
+            </p>
 
             {/* Elegant Sign-off */}
             <div className="pt-6 border-t border-neutral-100">
@@ -62,53 +100,146 @@ const AboutSection = () => {
           </div>
         </div>
 
-        {/* Bento/Editorial Grid */}
-        <div className="py-24 bg-[#FDFBF7] text-[#2D2926] font-serif rounded-3xl mb-24">
-          <div className="container mx-auto px-6 max-w-7xl">
-            <div className="mb-20 flex flex-col items-center text-center">
-              <span className="text-[#8B5A2B] tracking-[0.3em] uppercase text-xs font-semibold mb-4">
-                The Alchemist’s Pantry
-              </span>
-              <h2 className="text-5xl md:text-6xl font-medium leading-tight max-w-2xl">
-                Raw ingredients, <br/><span className="italic opacity-70">masterfully curated.</span>
-              </h2>
-            </div>
+    <section className="relative py-24 overflow-hidden">
+      {/* Decorative glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#B9832B]/20 blur-[120px] rounded-full pointer-events-none" />
+      {/* <div className="absolute -bottom-40 -left-40 w-[420px] h-[420px] bg-[#8B0008]/30 blur-[100px] rounded-full pointer-events-none" /> */}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {ingredients.map((item, index) => (
-                <motion.div 
-                  key={item.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className={`group relative overflow-hidden bg-white p-8 border-t-2 ${item.color} hover:bg-[#F9F7F2] transition-colors duration-500`}
-                >
-                  {/* Index Number */}
-                  <span className="absolute top-4 right-4 text-xs font-bold text-gray-300">
-                    0{item.id}
-                  </span>
+      <div className="relative z-10 w-full">
+        {/* Heading */}
+        <div className="text-center mb-12 md:mb-16">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[#8B0008] text-xs md:text-sm uppercase tracking-[0.35em] mb-4"
+          >
+            Authentic Indian Taste
+          </motion.p>
 
-                  {/* Content */}
-                  <div className="flex flex-col h-full justify-between">
-                    <div>
-                      <h3 className="text-xl font-medium mb-2">{item.name}</h3>
-                      <p className="text-[#8B5A2B] text-sm uppercase tracking-widest font-semibold mb-4 opacity-80">
-                        {item.type}
-                      </p>
-                    </div>
-                    
-                    <p className="text-gray-500 text-sm leading-relaxed max-w-[80%]">
-                      {item.desc}
-                    </p>
-                    
-                    {/* Decorative Hover Line */}
-                    <div className="w-8 h-[2px] bg-[#8B5A2B] mt-6 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-serif font-light text-[#4D341E] leading-tight mb-6"
+          >
+            Crafted For Every Indian Kitchen
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="max-w-4xl mx-auto text-black/85 text-sm sm:text-base md:text-lg leading-8"
+          >
+            From aromatic tea masalas and everyday kitchen spice blends to
+            traditional pickle masalas, pure spices, healthy flours, pickles and
+            ready-to-use tadka gravies — every product is prepared to bring
+            freshness, convenience and authentic Indian flavor to your home.
+          </motion.p>
+
         </div>
+
+        {/* Video */}
+        <motion.div
+          initial={{ opacity: 0, y: 26 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.7 }}
+          className="relative w-full rounded-2xl md:rounded-[28px] overflow-hidden shadow-2xl border border-[#fff3c7]/15 group"
+        >
+          <div className="relative w-full aspect-[16/9] bg-black">
+            <video
+              className="w-full h-full object-cover"
+            //   poster="/Images/video-poster.webp"
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              <source src="/Images/about.mp4" type="video/mp4" />
+            </video>
+
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-black/20 pointer-events-none" />
+
+            {/* Bottom Content */}
+            {/* <div className="absolute left-0 right-0 bottom-0 p-5 md:p-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <div>
+                <p className="text-[#fff3c7] text-lg md:text-2xl font-serif mb-1">
+                  Freshness Packed With Tradition
+                </p>
+                <p className="text-white/80 text-xs md:text-sm max-w-2xl leading-6">
+                  A complete pantry range made for daily cooking, festive meals,
+                  quick gravies and authentic Indian taste.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 text-[#fff3c7] text-xs uppercase tracking-widest">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#fff3c7] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#fff3c7]"></span>
+                </span>
+                Playing
+              </div>
+            </div> */}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+
+        {/* Bento/Editorial Grid */}
+<div className="py-24 bg-[#FDFBF7] text-[#2D2926] font-serif rounded-3xl mb-24 px-6">
+      <div className="container mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="mb-20 flex flex-col items-center text-center">
+          <span className="text-[#8B5A2B] tracking-[0.3em] uppercase text-xs font-semibold mb-4">
+            The Alchemist’s Pantry
+          </span>
+          <h2 className="text-5xl md:text-6xl font-medium leading-tight max-w-2xl">
+            Raw ingredients, <br/><span className="italic opacity-70">masterfully curated.</span>
+          </h2>
+        </div>
+
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {ingredients.map((item, index) => (
+            <motion.div 
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              className={`group relative overflow-hidden bg-white p-8 border-t-4 ${item.color} hover:bg-[#F9F7F2] transition-colors duration-500 shadow-sm`}
+            >
+              {/* Index Number */}
+              <span className="absolute top-4 right-4 text-xs font-bold text-gray-300">
+                0{item.id}
+              </span>
+
+              {/* Content */}
+              <div className="flex flex-col h-full justify-between">
+                <div>
+                  <h3 className="text-xl font-medium mb-2">{item.name}</h3>
+                  <p className="text-[#8B5A2B] text-xs uppercase tracking-widest font-semibold mb-4 opacity-80">
+                    {item.type}
+                  </p>
+                </div>
+                
+                <p className="text-gray-500 text-sm leading-relaxed max-w-[90%]">
+                  {item.desc}
+                </p>
+                
+                {/* Decorative Hover Line */}
+                <div className="w-8 h-[2px] bg-[#8B5A2B] mt-6 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-8 text-center bg-neutral-50 rounded-3xl p-10 lg:p-16">
           <div className="flex flex-col items-center">

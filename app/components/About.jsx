@@ -3,16 +3,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const highlights = [
-  "Tea Blends",
-  "Kitchen Masalas",
-  "Pure Spices",
-  "Pickles",
-];
-
 const LegacyVideoSection = () => {
   return (
-    <section className="relative px-4 md:px-12 xl:px-72 py-24 bg-gradient-to-br from-[#1b0203] via-[#3A2A21] to-[#1b0203] overflow-hidden">
+    <section className="relative  px-4 md:px-12 xl:px-72  py-24 bg-gradient-to-br from-[#1b0203] via-[#3A2A21] to-[#1b0203] overflow-hidden">
       {/* Decorative glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#B9832B]/20 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute -bottom-40 -left-40 w-[420px] h-[420px] bg-[#8B0008]/30 blur-[100px] rounded-full pointer-events-none" />

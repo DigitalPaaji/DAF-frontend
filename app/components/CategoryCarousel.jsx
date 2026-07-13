@@ -25,7 +25,7 @@ const categories = [
     id: 3,
     name: "Pickle Masala",
     image:
-      "https://images.unsplash.com/photo-1609510990459-c7e62978c76b?w=600&auto=format&fit=crop&q=80",
+      "https://img.freepik.com/premium-psd/psd-tea-pouch-bag-mockup_950992-1293.jpg",
     slug: "pickle-masala",
     count: "10 Products",
   },
@@ -86,45 +86,20 @@ const CategoryCarousel = () => {
     <section className="relative py-20 bg-[#F5F2EB] font-sans overflow-hidden">
       <div className="px-4 md:px-12 lg:px-24 xl:px-40 mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-xl sm:text-2xl md:text-4xl font-light uppercase tracking-widest mb-4 flex items-center justify-center gap-4">
-            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30"></span>
-            Shop by Category
-            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30"></span>
+          <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-xl sm:text-2xl xl:text-3xl font-light uppercase md:tracking-widest mb-4 flex items-center justify-center gap-3 md:gap-4">
+            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30" />
+            <span>Explore Our Categories</span>
+            <span className="w-8 lg:w-12 h-0.5 bg-[#312A26] opacity-30" />
           </h2>
 
-          <motion.div
-            initial={{ scale: 0, rotate: -90 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex justify-center mb-6"
-          >
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#9C6B44"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93" />
-              <circle cx="12" cy="12" r="3" fill="#9C6B44" />
-            </svg>
-          </motion.div>
+          <div className="w-2 h-2 bg-[#8B5A2B] rotate-45 mx-auto mb-4" />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed"
-          >
-            Explore our complete range of tea blends, kitchen masalas, pickle
-            masalas, flours, pure spices, pickles and ready-to-use tadka gravies.
-          </motion.p>
+          <p className="max-w-2xl mx-auto text-sm text-gray-600 md:uppercase tracking-wide md:tracking-wider leading-6 md:leading-relaxed">
+            Discover our complete range of tea blends, kitchen masalas, pickle
+            masalas, flours, pure spices, pickles and ready-to-use tadka gravies
+            crafted for authentic Indian taste.
+          </p>
         </div>
 
         {/* Category Grid */}

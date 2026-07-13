@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Product data based on provided categories
@@ -254,11 +254,19 @@ const StarRating = ({ rating, reviews }) => {
 
 const ProductSection = () => {
   const [activeTab, setActiveTab] = useState("All");
+  const [visibleCount, setVisibleCount] = useState(8);
+
+  useEffect(() => {
+    setVisibleCount(8);
+  }, [activeTab]);
 
   const filteredProducts = products.filter((product) => {
     if (activeTab === "All") return true;
     return product.category === activeTab;
   });
+
+  const displayedProducts = filteredProducts.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredProducts.length;
 
   return (
     <section className="relative py-24 bg-[#F5F2EB] text-[#3A2A21] font-sans overflow-hidden">
@@ -277,7 +285,7 @@ const ProductSection = () => {
         style={{ clipPath: "polygon(100% 0, 100% 100%, 0 100%, 30% 0)" }}
       />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="px-4 md:px-12 xl:px-72   relative z-10">
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
@@ -320,10 +328,10 @@ const ProductSection = () => {
 
         <motion.div
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16"
+          className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProducts.map((product) => (
+          {displayedProducts.map((product) => (
               <motion.div
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -356,7 +364,7 @@ const ProductSection = () => {
                 </div>
 
                 <h3
-                  className="text-base font-bold uppercase tracking-wider text-[#3A2A21] mb-0.5 line-clamp-1"
+                  className="text-sm xl:text-base font-bold uppercase tracking-wider text-[#3A2A21] mb-0.5"
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
                   {product.name}
@@ -378,6 +386,19 @@ const ProductSection = () => {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {hasMore && (
+          <div className="mt-16 text-center">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 8)}
+              className="px-8 py-3 bg-[#9C6B44] text-white font-medium uppercase tracking-widest hover:bg-[#3A2A21] transition-colors duration-300 rounded-sm"
+            >
+              View More
+            </button>
+          </div>
+        )}
+
+
       </div>
     </section>
   );

@@ -26,7 +26,7 @@ const Footer = () => {
       {/* Subtle Background Glow/Texture */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-[#c9a05e]/5 to-transparent blur-3xl pointer-events-none" />
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className=" px-4 md:px-12 xl:px-72 relative z-10">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -39,7 +39,7 @@ const Footer = () => {
             <img 
               src="/Images/logo.webp" 
               alt="Doctor Aulakh's Food" 
-              className="h-16 w-16 mb-6 object-contain" 
+              className="h-auto w-24 mb-6 object-contain" 
             />
             <p className="text-[#e8d9c0]/70 text-sm leading-relaxed mb-8 max-w-sm font-light">
               Sourced directly from the finest estates. We bring you premium,

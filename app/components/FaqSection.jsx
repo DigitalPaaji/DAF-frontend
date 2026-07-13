@@ -35,10 +35,10 @@ const FaqSection = () => {
   return (
     <div className=" px-4 md:px-12  xl:px-72 py-24 ">
       <div className="text-center mb-10">
-        <h2 className="font-serif text-3xl font-medium text-amber-900 sm:text-4xl">
+        <h2 className="font-serif text-2xl lg:text-3xl font-medium text-amber-900 sm:text-4xl">
           Frequently Asked Questions
         </h2>
-        <p className="mt-4 text-lg text-gray-600">
+        <p className="mt-4 lg:text-lg text-gray-600">
           Everything you need to know about our signature Tea Masala blend.
         </p>
       </div>
@@ -53,7 +53,7 @@ const FaqSection = () => {
               onClick={() => toggleFAQ(index)}
               className="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none"
             >
-              <span className="font-semibold text-amber-950 text-lg">
+              <span className="font-semibold text-amber-950 md:text-lg">
                 {faq.question}
               </span>
               <span className="ml-6 shrink-0 text-amber-700">
@@ -67,7 +67,7 @@ const FaqSection = () => {
 
             <div 
               className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-                openIndex === index ? ' py-4 border-t border-amber-200' : 'max-h-0'
+                openIndex === index ? ' py-4' : 'max-h-0'
               }`}
             >
               <p className="text-gray-700">
