@@ -63,10 +63,12 @@ const BlogDetailPage = async ({ params }) => {
   return (
     <main className="min-h-screen bg-[#FDFBF7] text-[#2D2926]">
       {/* Article Header */}
-      <section className="relative overflow-hidden bg-[#E8E3DF] px-4 pb-20 pt-32 md:px-12 md:pb-28 md:pt-40 xl:px-72">
+      <section className="relative overflow-hidden bg-[#E8E3DF] px-4 pb-20 pt-32 md:px-12 md:py-24  xl:px-72">
         <div className="absolute -right-36 -top-40 h-[500px] w-[500px] rounded-full bg-[#B9832B]/15 blur-[120px]" />
 
         <div className="relative z-10 mx-auto px-4 md:px-12 xl:px-72  py-24 text-center">
+        <div className="flex items-center justify-between">
+
           <Link
             href="/blogs"
             className="mb-9 inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8B5A2B]"
@@ -75,9 +77,10 @@ const BlogDetailPage = async ({ params }) => {
             Back to Journal
           </Link>
 
-          <span className="mx-auto mb-6 block w-fit rounded-full border border-[#8B5A2B]/25 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8B0008]">
+          <div className=" mb-6 block w-fit rounded-full border border-[#8B5A2B]/25 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8B0008]">
             {blog.category}
-          </span>
+          </div>
+        </div>
 
           <h1 className="mx-auto mb-7 max-w-4xl font-serif text-4xl leading-tight text-[#2D2926] md:text-5xl xl:text-6xl">
             {blog.title}
@@ -125,8 +128,8 @@ const BlogDetailPage = async ({ params }) => {
       </section>
 
       {/* Article Content */}
-      <section className="px-4 py-20 md:px-12 md:py-28">
-        <article className="mx-auto max-w-3xl">
+      <section className="py-24 px-4 md:px-12 xl:px-72">
+        <article className="">
           <p className="mb-12 border-l-2 border-[#8B5A2B] pl-6 font-serif text-xl italic leading-9 text-[#4D341E] md:text-2xl">
             {blog.description}
           </p>
@@ -178,8 +181,8 @@ const BlogDetailPage = async ({ params }) => {
       </section>
 
       {/* Previous and Next */}
-      <section className="border-y border-[#DDD4C8]">
-        <div className="mx-auto grid px-4 md:px-12 xl:px-72  py-24 grid-cols-1 md:grid-cols-2">
+      <section className="border-y border-[#DDD4C8] px-4 md:px-12 xl:px-72">
+        <div className="mx-auto grid   py-24 grid-cols-1 md:grid-cols-2">
           <div className="border-b border-[#DDD4C8] p-7 md:border-b-0 md:border-r md:p-10">
             {previousBlog && (
               <Link
@@ -216,7 +219,7 @@ const BlogDetailPage = async ({ params }) => {
       </section>
 
       {/* Related Articles */}
-      <section className="bg-[#E8E3DF]/55 px-4 py-20 md:px-12 md:py-28 xl:px-72">
+      <section className="bg-[#E8E3DF]/55 py-24 px-4 md:px-12 xl:px-72">
         <div className="mb-12 text-center md:mb-16">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-[#8B0008]">
             Continue Reading
