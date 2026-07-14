@@ -6,15 +6,90 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const ingredients = [
-  { id: 1, name: "Tea Masala / Spice Blends", type: "3 Products", desc: "Cardamom, ginger and lemon tea flavors crafted for refreshing everyday chai experiences.", color: "border-[#8B5A2B]" },
-  { id: 2, name: "Kitchen Masalas", type: "18 Products", desc: "Complete spice blends for daily cooking including sabzi, biryani, chaat, chole, rajma, sambar and more.", color: "border-[#C65A2E]" },
-  { id: 3, name: "Pickle Masala", type: "10 Products", desc: "Traditional masala blends for mango, lemon, chilli, mixed vegetable, mushroom and other pickle varieties.", color: "border-[#B73E2D]" },
-  { id: 4, name: "Flours", type: "12 Products", desc: "Healthy flour range including basic wheat flour, diabetic-friendly atta, multigrain atta and single millet flours.", color: "border-[#D2A85A]" },
-  { id: 5, name: "Pure Spices", type: "40+ Products", desc: "Whole, powdered and specialty spices including cumin, coriander, turmeric, cardamom, clove, saffron, hing and more.", color: "border-[#6D4C41]" },
-  { id: 6, name: "Pickles", type: "9 Products", desc: "Classic Indian pickle range including mango, lemon, mixed vegetable, green chilli, garlic, amla and tomato pickles.", color: "border-[#7A8B2E]" },
-  { id: 7, name: "Ready To Use Tadka Gravy", type: "8 Products", desc: "Convenient gravy bases for mother gravy, brown onion, makhani, white gravy, Punjabi tadka, chana masala and more.", color: "border-[#A44A2A]" },
+const aboutValues = [
+  {
+    id: "01",
+    name: "Our Story",
+    type: "The Alchemist’s Pantry",
+    desc: "Inspired by the diversity of Indian kitchens, we curate authentic ingredients and flavours that fit effortlessly into modern everyday cooking.",
+  },
+  {
+    id: "02",
+    name: "Our Philosophy",
+    type: "Raw Ingredients, Masterfully Curated",
+    desc: "Every ingredient is selected with care, balancing quality, flavour and everyday usability to make each cooking experience more rewarding.",
+  },
+  {
+    id: "03",
+    name: "Our Promise",
+    type: "Quality You Can Taste",
+    desc: "We focus on carefully selected ingredients, authentic Indian flavours, thoughtfully balanced recipes and reliable quality in every pack.",
+  },
+  {
+    id: "04",
+    name: "Why Choose Us",
+    type: "Tradition Without the Complexity",
+    desc: "Our products simplify Indian cooking while preserving the depth, aroma and authentic flavours that make every dish feel special.",
+  },
+  {
+    id: "05",
+    name: "Our Vision",
+    type: "Authentic Flavours for Every Day",
+    desc: "We aim to build a trusted pantry that celebrates Indian culinary traditions while meeting the evolving needs of modern households.",
+  },
+  {
+    id: "06",
+    name: "Our Journey",
+    type: "Your Kitchen. Your Recipes. Our Ingredients.",
+    desc: "We are proud to be part of every cooking journey, helping transform simple ingredients and everyday recipes into memorable meals.",
+  },
 ];
+
+const productCategories = [
+  {
+    id: "01",
+    name: "Tea Masala & Spice Blends",
+    count: "3 Products",
+    desc: "Refreshing cardamom, ginger and lemon flavours crafted to elevate your everyday chai.",
+  },
+  {
+    id: "02",
+    name: "Kitchen Masalas",
+    count: "18 Products",
+    desc: "Versatile blends for sabzi, biryani, chaat, chole, rajma, sambar, paneer and more.",
+  },
+  {
+    id: "03",
+    name: "Pickle Masalas",
+    count: "10 Products",
+    desc: "Traditional spice combinations for mango, lemon, chilli, mixed vegetable and regional pickles.",
+  },
+  {
+    id: "04",
+    name: "Healthy Flours",
+    count: "12 Products",
+    desc: "Wheat flour, diabetic-friendly atta, multigrain blends and nutritious single-millet flours.",
+  },
+  {
+    id: "05",
+    name: "Pure Spices",
+    count: "40+ Products",
+    desc: "Whole, powdered and speciality spices selected for natural aroma, colour and depth.",
+  },
+  {
+    id: "06",
+    name: "Authentic Pickles",
+    count: "9 Products",
+    desc: "Bold and tangy Indian pickles created to complement everyday meals.",
+  },
+  {
+    id: "07",
+    name: "Tadka & Gravies",
+    count: "8 Products",
+    desc: "Ready-to-use cooking bases for preparing flavour-rich meals with less time and effort.",
+  },
+];
+
 
 const AboutSection = () => {
   return (
@@ -81,14 +156,14 @@ const AboutSection = () => {
               A legacy of purity.
             </h3>
             
-            <p className="text-neutral-600 leading-relaxed font-light text-lg mb-6">
+            <p className="text-neutral-600 leading-relaxed font-light  md:text-lg mb-6">
               Born from a desire to share the authentic flavors of the Himalayas, our journey began in the saffron fields of Pampore. We partner directly with generational farmers who harvest nature's finest ingredients with reverence and care.
             </p>
             
-            <p className="text-neutral-600 leading-relaxed font-light text-lg mb-10">
+            <p className="text-neutral-600 leading-relaxed font-light  md:text-lg mb-10">
               Every blend we create is a tribute to the timeless traditions of Kashmiri wellness. No artificial flavors, no shortcuts—just pure, unadulterated nature in every cup, designed to bring a moment of tranquility to your daily ritual.
             </p>
-                 <p className="text-neutral-600 leading-relaxed font-light text-lg mb-10">
+                 <p className="text-neutral-600 leading-relaxed font-light  md:text-lg mb-10">
               Every blend we create is a tribute to the timeless traditions of Kashmiri wellness. No artificial flavors, no shortcuts—just pure, unadulterated nature in every cup, designed to bring a moment of tranquility to your daily ritual.
             </p>
 
@@ -190,88 +265,173 @@ const AboutSection = () => {
       </div>
     </section>
 
-        {/* Bento/Editorial Grid */}
-<div className="py-24 bg-[#FDFBF7] text-[#2D2926] font-serif rounded-3xl mb-24 px-6">
-      <div className="container mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="mb-20 flex flex-col items-center text-center">
-          <span className="text-[#8B5A2B] tracking-[0.3em] uppercase text-xs font-semibold mb-4">
-            The Alchemist’s Pantry
+
+
+
+
+
+{/* About Values Section */}
+<section className="relative my-24 lg:my-32">
+  <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-20">
+    {/* Sticky Heading */}
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      className="lg:sticky lg:top-28 lg:self-start"
+    >
+      <p className="text-[#8B0008] text-xs font-semibold uppercase tracking-[0.3em] mb-5">
+        Who We Are
+      </p>
+
+      <h2 className="text-3xl md:text-4xl xl:text-5xl font-serif text-[#2D2926] leading-[1.1] mb-7">
+        Rooted in tradition,
+        <span className="block italic text-[#8B5A2B]">
+          created for today.
+        </span>
+      </h2>
+
+      <p className="text-neutral-600 leading-8 text-base md:text-lg max-w-xl">
+        At The Alchemist’s Pantry, we bring together authenticity,
+        convenience and carefully curated ingredients to make everyday
+        cooking richer and more rewarding.
+      </p>
+
+      <div className="mt-10 w-24 h-px bg-[#8B5A2B]" />
+    </motion.div>
+
+    {/* Values List */}
+    <div className="border-t border-[#DDD4C8]">
+      {aboutValues.map((item, index) => (
+        <motion.article
+          key={item.id}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.06 }}
+          className="group grid grid-cols-[45px_1fr] md:grid-cols-[70px_0.7fr_1.3fr] gap-4 md:gap-8 py-8 md:py-10 border-b border-[#DDD4C8]"
+        >
+          <span className="text-xs font-semibold tracking-widest text-[#A89A8B] pt-1">
+            {item.id}
           </span>
-          <h2 className="text-5xl md:text-6xl font-medium leading-tight max-w-2xl">
-            Raw ingredients, <br/><span className="italic opacity-70">masterfully curated.</span>
-          </h2>
-        </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {ingredients.map((item, index) => (
-            <motion.div 
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
-              className={`group relative overflow-hidden bg-white p-8 border-t-4 ${item.color} hover:bg-[#F9F7F2] transition-colors duration-500 shadow-sm`}
-            >
-              {/* Index Number */}
-              <span className="absolute top-4 right-4 text-xs font-bold text-gray-300">
-                0{item.id}
-              </span>
+          <div>
+            <h3 className="text-xl md:text-2xl font-serif text-[#2D2926] mb-2">
+              {item.name}
+            </h3>
 
-              {/* Content */}
-              <div className="flex flex-col h-full justify-between">
-                <div>
-                  <h3 className="text-xl font-medium mb-2">{item.name}</h3>
-                  <p className="text-[#8B5A2B] text-xs uppercase tracking-widest font-semibold mb-4 opacity-80">
-                    {item.type}
-                  </p>
-                </div>
-                
-                <p className="text-gray-500 text-sm leading-relaxed max-w-[90%]">
-                  {item.desc}
-                </p>
-                
-                {/* Decorative Hover Line */}
-                <div className="w-8 h-[2px] bg-[#8B5A2B] mt-6 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8B5A2B]">
+              {item.type}
+            </p>
+          </div>
+
+          <p className="col-start-2 md:col-start-auto text-neutral-600 leading-7 text-sm md:text-base max-w-2xl">
+            {item.desc}
+          </p>
+        </motion.article>
+      ))}
+    </div>
+  </div>
+</section>
+
+{/* Separate What We Offer Section */}
+<section className="relative overflow-hidden rounded-[28px] md:rounded-[40px] bg-[#2F2118] text-white">
+  {/* Decorative Background */}
+  <div className="absolute -top-32 -right-32 w-[420px] h-[420px] rounded-full bg-[#B9832B]/20 blur-[100px]" />
+  <div className="absolute -bottom-40 -left-20 w-[380px] h-[380px] rounded-full bg-[#8B0008]/25 blur-[100px]" />
+
+  <div className="relative z-10 px-6 py-16 md:px-12 md:py-20 lg:px-16 lg:py-24">
+    {/* Heading */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-end mb-14 md:mb-20">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <p className="text-[#E8C98D] text-xs font-semibold uppercase tracking-[0.32em] mb-5">
+          What We Offer
+        </p>
+
+        <h2 className="text-3xl md:text-4xl xl:text-5xl font-serif leading-tight">
+          A pantry for every
+          <span className="block italic text-[#E8C98D]">
+            Indian kitchen.
+          </span>
+        </h2>
+      </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1 }}
+        className="text-white/70 leading-8 text-sm md:text-lg max-w-2xl lg:ml-auto"
+      >
+        Our growing range brings together traditional favourites and modern
+        kitchen essentials, thoughtfully created for everyday meals,
+        celebrations and convenient cooking.
+      </motion.p>
     </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-8 text-center bg-neutral-50 rounded-3xl p-10 lg:p-16">
-          <div className="flex flex-col items-center">
-            <div className="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm text-amber-700 mb-6">
-              <FaMountain size={24} />
-            </div>
-            <h4 className="text-lg font-medium text-neutral-900 mb-3">High Altitude Terroir</h4>
-            <p className="text-neutral-500 font-light px-4 leading-relaxed">
-              Sourced directly from the pristine, high-altitude regions of the Himalayas for unmatched aroma and flavor.
-            </p>
+    {/* Product Category Grid */}
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-px bg-white/15 border border-white/15 rounded-2xl overflow-hidden">
+      {productCategories.map((item, index) => (
+        <motion.div
+          key={item.id}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.05 }}
+          className={`group relative min-h-[260px] bg-[#38271D] p-7 md:p-9 hover:bg-[#443025] transition-colors duration-500 ${
+            index === productCategories.length - 1
+              ? "md:col-span-2 xl:col-span-3"
+              : ""
+          }`}
+        >
+          <div className="flex items-start justify-between gap-5 mb-10">
+            <span className="text-[11px] tracking-[0.2em] text-white/40">
+              {item.id}
+            </span>
+
+            <span className="rounded-full border border-white/15 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#E8C98D]">
+              {item.count}
+            </span>
           </div>
 
-          <div className="flex flex-col items-center">
-            <div className="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm text-amber-700 mb-6">
-              <FaLeaf size={24} />
-            </div>
-            <h4 className="text-lg font-medium text-neutral-900 mb-3">100% Natural</h4>
-            <p className="text-neutral-500 font-light px-4 leading-relaxed">
-              Completely free from preservatives and artificial additives. We believe in the power of pure, raw ingredients.
-            </p>
-          </div>
+          <div className="mt-auto">
+            <h3 className="text-xl md:text-2xl font-serif mb-4">
+              {item.name}
+            </h3>
 
-          <div className="flex flex-col items-center">
-            <div className="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm text-amber-700 mb-6">
-              <FaHandsWash size={24} />
-            </div>
-            <h4 className="text-lg font-medium text-neutral-900 mb-3">Ethically Handcrafted</h4>
-            <p className="text-neutral-500 font-light px-4 leading-relaxed">
-              Blended by hand in small batches to ensure quality while supporting and sustaining local farming communities.
+            <p className="text-white/60 text-sm leading-7 max-w-md">
+              {item.desc}
             </p>
+
+            <div className="mt-7 h-px w-10 bg-[#E8C98D] transition-all duration-500 group-hover:w-20" />
           </div>
-        </div>
+        </motion.div>
+      ))}
+    </div>
+
+    {/* Bottom CTA */}
+    <div className="mt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <p className="text-white/60 text-sm md:text-base">
+        Carefully selected ingredients for flavourful everyday cooking.
+      </p>
+
+      <Link
+        href="/products"
+        className="inline-flex w-fit items-center justify-center rounded-full bg-[#E8C98D] px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-[#2F2118] transition-transform duration-300 hover:-translate-y-1"
+      >
+        Explore Our Pantry
+      </Link>
+    </div>
+  </div>
+</section>
+
+
+
+
 
       </div>
     </section>
