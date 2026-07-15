@@ -4,7 +4,16 @@ import React from "react";
 import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP } from "react-icons/fa";
 import { BsArrowRight } from "react-icons/bs";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import Link from "next/link"
+import { FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+;
+
+  const socialLinks = [
+    { icon: FiFacebook, href: '#', label: 'Facebook' },
+    { icon: FiInstagram, href: '#', label: 'Instagram' },
+    { icon: FiTwitter, href: '#', label: 'Twitter' },
+    { icon: FiYoutube, href: '#', label: 'YouTube' }
+  ];
 
 const Footer = () => {
   // Animation variants for staggered reveal
@@ -63,19 +72,27 @@ const Footer = () => {
             <h3 className="text-sm font-serif font-semibold uppercase tracking-[0.2em] text-[#c9a05e] mb-6">
               Explore
             </h3>
-            <ul className="flex flex-col gap-4">
-              {["Shop All", "Best Sellers", "New Arrivals", "Our Story"].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-[#e8d9c0]/70 text-sm hover:text-[#c9a05e] flex items-center gap-2 group transition-colors duration-300"
-                  >
-                    <span className="w-0 h-[1px] bg-[#c9a05e] transition-all duration-300 group-hover:w-4"></span>
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+<ul className="flex flex-col gap-4">
+  {[
+    { label: "Tea Blends", slug: "tea-masala-spice-blends" },
+    { label: "Kitchen Masalas", slug: "spice-blends-for-kitchen-kitchen-masalas" },
+    { label: "Pickle Masala", slug: "pickle-masala-spice-blends-for-pickles" },
+    { label: "Flours", slug: "flours" },
+    { label: "Pure Spices", slug: "pure-spices" },
+    { label: "Pickles", slug: "pickles" },
+    { label: "Tadka Gravy", slug: "ready-to-use-tadka-gravy" },
+  ].map((item) => (
+    <li key={item.slug}>
+      <Link
+        href={`/products?category=${item.slug}`}
+        className="group flex items-center gap-2 text-sm text-[#e8d9c0]/70 transition-colors duration-300 hover:text-[#c9a05e]"
+      >
+        <span className="h-px w-0 shrink-0 bg-[#c9a05e] transition-all duration-300 group-hover:w-4" />
+        {item.label}
+      </Link>
+    </li>
+  ))}
+</ul>
           </motion.div>
 
           {/* Support Links */}
@@ -83,57 +100,55 @@ const Footer = () => {
             <h3 className="text-sm font-serif font-semibold uppercase tracking-[0.2em] text-[#c9a05e] mb-6">
               Support
             </h3>
-            <ul className="flex flex-col gap-4">
-              {["Contact", "Shipping", "Returns", "FAQ"].map((item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="text-[#e8d9c0]/70 text-sm hover:text-[#c9a05e] flex items-center gap-2 group transition-colors duration-300"
-                  >
-                    <span className="w-0 h-[1px] bg-[#c9a05e] transition-all duration-300 group-hover:w-4"></span>
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <ul className="flex flex-col gap-4">
+  {[
+    { label: "Contact Us", href: "/contact" },
+    { label: "About Us", href: "/about" },
+    { label: "Shipping & Returns", href: "/shipping-returns" },
+    { label: "Blogs", href: "/blogs" },
+    { label: "Terms & Conditions", href: "/terms" },
+  ].map((item) => (
+    <li key={item.label}>
+      <a
+        href={item.href}
+        className="group flex items-center gap-2 text-sm text-[#e8d9c0]/70 transition-colors duration-300 hover:text-[#c9a05e]"
+      >
+        <span className="h-px w-0 bg-[#c9a05e] transition-all duration-300 group-hover:w-4" />
+        {item.label}
+      </a>
+    </li>
+  ))}
+</ul>
           </motion.div>
 
           {/* Newsletter */}
           <motion.div variants={itemVariants} className="lg:col-span-4">
-            <h3 className="text-sm font-serif font-semibold uppercase tracking-[0.2em] text-[#c9a05e] mb-6">
-              Newsletter
-            </h3>
-            <p className="text-[#e8d9c0]/70 text-sm leading-relaxed mb-6 font-light">
-              Subscribe for exclusive offers, brewing guides, and updates from the estates.
-            </p>
-            <form className="relative flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
-              <div className="relative">
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="w-full bg-[#e8d9c0]/5 border border-[#c9a05e]/30 rounded-md py-3 pl-4 pr-12 text-sm text-[#e8d9c0] placeholder-[#e8d9c0]/40 focus:outline-none focus:border-[#c9a05e] focus:bg-[#e8d9c0]/10 transition-all duration-300"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-[#c9a05e] text-[#14110f] rounded hover:bg-[#e8d9c0] transition-colors duration-300"
-                  aria-label="Subscribe"
+              <div className="">
+          <iframe
+             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4271.373247928821!2d76.42175519999999!3d30.373736199999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39102708e4b05f43%3A0x5cac00a43cd7b8f5!2sProdsol%20Biotech%20Pvt%20Ltd!5e1!3m2!1sen!2sin!4v1773475102579!5m2!1sen!2sin"
+             width="600"
+             height="450"
+             allowFullScreen=""
+             loading="lazy"
+             className="w-full h-full object-cover"
+             referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+
+             
+            <div className="flex space-x-4 mt-8">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center hover:text-white  hover:bg-gradient-to-r hover:from-[#8b611d] hover:via-[#c9a05e] hover:to-[#8b611d] transition-all duration-300 hover:scale-110 group"
+                  aria-label={social.label}
                 >
-                  <BsArrowRight size={18} />
-                </button>
-              </div>
-              <div className="flex items-start gap-2 mt-2">
-                <input
-                  type="checkbox"
-                  id="consent"
-                  className="mt-1 w-3.5 h-3.5 accent-[#c9a05e] cursor-pointer"
-                  required
-                />
-                <label htmlFor="consent" className="text-xs text-[#e8d9c0]/50 leading-snug cursor-pointer hover:text-[#e8d9c0]/70 transition-colors">
-                  I agree to the privacy policy and consent to receiving marketing emails.
-                </label>
-              </div>
-            </form>
+                  <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+                </a>
+              ))}
+            </div>
           </motion.div>
         </motion.div>
 
@@ -142,14 +157,14 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#e8d9c0]/50 font-light tracking-wide">
-          <p>© {new Date().getFullYear()} Doctor Aulakh's Food. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Doctor Aulakh's Food. Designed and Developed by <a className="text-[#ddad60]" href="digitalpaaji.com">Digital Paaji</a> All rights reserved.</p>
           <div className="flex gap-6">
             <a href="/policy" className="hover:text-[#c9a05e] transition-colors">
               Privacy Policy
             </a>
-            <Link href="/terms" className="hover:text-[#c9a05e] transition-colors">
+            {/* <Link href="/terms" className="hover:text-[#c9a05e] transition-colors">
               Terms of Service
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
