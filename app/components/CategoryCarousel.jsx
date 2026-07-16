@@ -10,7 +10,7 @@ const categories = [
     name: "Tea Masala / Spice Blends",
     image:
       "https://images.unsplash.com/photo-1563911892437-1feda0179e1b?w=600&auto=format&fit=crop&q=80",
-    slug: "tea-masala-spice-blends",
+    slug: "tea-masala",
     count: "3 Products",
   },
   {
@@ -58,7 +58,7 @@ const categories = [
     name: "Ready To Use Tadka Gravy",
     image:
       "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80",
-    slug: "ready-to-use-tadka-gravy",
+    slug: "tadka-gravy",
     count: "8 Products",
   },
 ];

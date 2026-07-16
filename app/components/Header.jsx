@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FiMenu, FiX, FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { FaRegHeart, FaRegUserCircle } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useSelector } from "react-redux";
+
+import { staticProducts } from "../data/products";
 
 /* =======================
    TEMP CATEGORY DATA
@@ -522,6 +524,212 @@ const MobileDropdown = ({ title, children }) => {
 
 
 
+const ProductSearch = ({ open, onClose }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) {
+      setSearchQuery("");
+      return;
+    }
+
+    const focusTimer = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 150);
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      clearTimeout(focusTimer);
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [open, onClose]);
+
+  const filteredProducts = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+      return staticProducts.slice(0, 6);
+    }
+
+    return staticProducts
+      .filter((product) => {
+        const searchableContent = [
+          product.name,
+          product.subtitle,
+          product.category,
+          product.badge,
+          product.description,
+          ...(product.highlights || []),
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return searchableContent.includes(normalizedQuery);
+      })
+      .slice(0, 8);
+  }, [searchQuery]);
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100]">
+      {/* Background */}
+      <button
+        type="button"
+        aria-label="Close product search"
+        onClick={onClose}
+        className="absolute inset-0 bg-black/55 backdrop-blur-sm"
+      />
+
+      {/* Search Panel */}
+      <div className="relative mx-auto mt-4 w-[calc(100%-1.5rem)] max-w-3xl overflow-hidden rounded-2xl border border-[#B9832B]/20 bg-white shadow-2xl sm:mt-8">
+        {/* Search Header */}
+        <div className="flex items-center gap-3 border-b border-gray-100 px-4 py-4 sm:px-6">
+          <LuSearch size={21} className="shrink-0 text-[#B9832B]" />
+
+          <input
+            ref={inputRef}
+            type="search"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search products..."
+            className="min-w-0 flex-1 bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 sm:text-base"
+          />
+
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="text-xs font-medium text-gray-400 transition-colors hover:text-[#B9832B]"
+            >
+              Clear
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close search"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-[#B9832B] hover:text-white"
+          >
+            <FiX size={19} />
+          </button>
+        </div>
+
+        {/* Search Results */}
+        <div className="max-h-[70vh] overflow-y-auto p-3 sm:p-5">
+          <div className="mb-3 flex items-center justify-between px-1">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B9832B]">
+              {searchQuery.trim() ? "Search Results" : "Popular Products"}
+            </p>
+
+            <span className="text-xs text-gray-400">
+              {filteredProducts.length}{" "}
+              {filteredProducts.length === 1 ? "product" : "products"}
+            </span>
+          </div>
+
+          {filteredProducts.length > 0 ? (
+            <div className="space-y-2">
+              {filteredProducts.map((product) => (
+                <Link
+                  key={product._id || product.id}
+                  href={product.href || `/product/${product.slug}`}
+                  onClick={onClose}
+                  className="group grid grid-cols-[72px_1fr_auto] items-center gap-3 rounded-xl border border-transparent p-2 transition-all duration-300 hover:border-[#B9832B]/20 hover:bg-[#FFF8ED] sm:grid-cols-[88px_1fr_auto] sm:gap-4 sm:p-3"
+                >
+                  <div className="relative aspect-square overflow-hidden rounded-lg bg-[#F5F2EB]">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="mb-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#B9832B]">
+                      {product.category}
+                    </p>
+
+                    <h3 className="truncate text-sm font-semibold text-gray-900 transition-colors group-hover:text-[#B9832B] sm:text-base">
+                      {product.name}
+                    </h3>
+
+                    {product.subtitle && (
+                      <p className="mt-1 line-clamp-1 text-xs text-gray-500">
+                        {product.subtitle}
+                      </p>
+                    )}
+
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-sm font-semibold text-[#9C6B44]">
+                        {product.price}
+                      </span>
+
+                      {product.oldPrice && (
+                        <span className="text-xs text-gray-400 line-through">
+                          {product.oldPrice}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <FiChevronRight
+                    size={18}
+                    className="text-gray-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#B9832B]"
+                  />
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="flex min-h-[220px] flex-col items-center justify-center px-6 text-center">
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#F5F2EB] text-[#B9832B]">
+                <LuSearch size={23} />
+              </div>
+
+              <h3 className="mb-2 text-base font-semibold text-gray-900">
+                No products found
+              </h3>
+
+              <p className="max-w-sm text-sm leading-6 text-gray-500">
+                We could not find a product matching “{searchQuery}”. Try
+                searching by product name, category or flavour.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Link */}
+        {searchQuery.trim() && filteredProducts.length > 0 && (
+          <div className="border-t border-gray-100 p-4 text-center">
+            <Link
+              href={`/products?search=${encodeURIComponent(
+                searchQuery.trim(),
+              )}`}
+              onClick={onClose}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#B9832B] transition-colors hover:text-black"
+            >
+              View all matching products
+              <FiChevronRight size={16} />
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 /* =======================
    HEADER
 ======================= */
@@ -529,7 +737,7 @@ const MobileDropdown = ({ title, children }) => {
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const cart = useSelector((state) => state.cart.items);
   const wishlist = useSelector((state) => state.wishlist.items);
 
@@ -625,9 +833,14 @@ const Header = () => {
           </Link>
 
           <div className="flex gap-3 xl:gap-5 items-center pl-4 xl:pl-6 border-l border-[#B9832B]/40">
-            <button className="hover:text-[#B9832B] transition-colors duration-300">
-              <LuSearch size={20} />
-            </button>
+           <button
+  type="button"
+  onClick={() => setIsSearchOpen(true)}
+  className="hover:text-[#B9832B] transition-colors duration-300"
+  aria-label="Search products"
+>
+  <LuSearch size={20} />
+</button>
 
             <Link
               href="/wishlist"
@@ -664,6 +877,15 @@ const Header = () => {
 
         {/* === MOBILE ICONS RIGHT === */}
         <div className="lg:hidden flex justify-end items-center gap-3 md:gap-5 w-1/4 text-[black]">
+        <button
+  type="button"
+  onClick={() => setIsSearchOpen(true)}
+  className="hover:text-[#B9832B] transition-colors duration-300"
+  aria-label="Search products"
+>
+  <LuSearch size={20} />
+</button>
+        
           <Link
             href="/profile"
             className="hover:text-[#B9832B] transition-colors duration-300"
@@ -754,166 +976,13 @@ const Header = () => {
           </div>
         </div>
       )}
+
+      <ProductSearch
+  open={isSearchOpen}
+  onClose={() => setIsSearchOpen(false)}
+/>
     </header>
   );
 };
 
 export default Header;
-
-// "use client";
-// import Link from "next/link";
-// import React, { useState, useEffect } from "react";
-// import { FiMenu, FiX } from "react-icons/fi";
-// import { IoMdCart } from "react-icons/io";
-// import { FaRegHeart, FaRegUserCircle } from "react-icons/fa";
-// import { LuSearch } from "react-icons/lu";
-// import { MdOutlineShoppingCart } from "react-icons/md";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getCategory } from "./Store/slices/categorySlice";
-
-// const Header = () => {
-//   const dispatch = useDispatch()
-//   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-//   const [isScrolled, setIsScrolled] = useState(false);
-// const { info:category} = useSelector(status=>status.category)
-// const cart = useSelector(status=>status.cart.items)
-//   const wishlist= useSelector(state=>state.wishlist.items)
-
-//   const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen)
-
-//   useEffect(() => {
-
-//     dispatch(getCategory())
-//     const handleScroll = () => {
-//       if (window.scrollY > 20) {
-//         setIsScrolled(true);
-//       } else {
-//         setIsScrolled(false);
-//       }
-//     };
-
-//     window.addEventListener("scroll", handleScroll);
-//     return () => window.removeEventListener("scroll", handleScroll);
-//   }, []);
-
-//   return (
-//     <header
-//       className={`fixed left-0 right-0 z-50  transition-all duration-500 ease-in-out text-gray-200
-//         ${isScrolled
-//           ? " top-7 px-4 md:px-12 lg:px-24 xl:px-32"
-//           : "top-0 px-0"
-//         }`}
-//     >
-//       <div
-//         className={` mx-auto backdrop-blur-2xl flex justify-between items-center transition-all duration-500 ease-in-out
-//           ${isScrolled
-//             ? "rounded-xl  backdrop-blur-3xl text-black/80 xl:rounded-4xl px-4 md:px-12 lg:px-24 h-16 shadow-2xl  bg-white/80"
-//             : "max-w-full drop-shadow-md  lg:shadow-b-0 shadow-rose-950/30 bg-transparent text-black/80  backdrop-blur-3xl   px-4 md:px-12 lg:px-24 xl:px-40  h-20"
-//           }`}
-//       >
-
-//         <div className="lg:hidden flex items-center w-1/4">
-//           <button
-//             onClick={toggleMenu}
-//             className="text-black/80 focus:outline-none transition-transform hover:scale-110 "
-//             aria-label="Toggle Menu"
-//           >
-//             {isMobileMenuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
-//           </button>
-//         </div>
-
-//         {/* === DESKTOP NAV - LEFT === */}
-//         <nav className="hidden lg:flex justify-end items-center w-1/3 space-x-4 xl:space-x-8 text-[11px] xl:text-sm uppercase tracking-wider font-semibold">
-//           <Link href="/" className="hover:text-[#B9832B] transition-colors duration-300">Home</Link>
-//           <Link href="/about" className="hover:text-[#B9832B] transition-colors duration-300">About</Link>
-
-//        <div className="relative group">
-//   {/* Trigger Link */}
-//   <Link
-//     href="/category"
-//     className="hover:text-[#B9832B] transition-colors duration-300 py-2"
-//   >
-//     Category
-//   </Link>
-
-//   {/* Dropdown Menu */}
-//   <div className="absolute left-0 pt-7 top-full  opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-//     <div className="flex flex-col bg-white border border-gray-100 rounded-md shadow-lg py-2 min-w-[160px]">
-//       {category?.length > 0 ? (
-//         category.map((item) => (
-//           <Link
-//             key={item._id}
-//             href={`/products?category=${item._id}`}
-//             className="px-4 py-2 border-b border-dotted border-gray-500/70 text-gray-700 hover:text-[#B9832B] hover:bg-gray-50 transition-colors duration-200 text-nowrap text-sm"
-//           >
-//             {item.name}
-//           </Link>
-//         ))
-//       ) : (
-//         <span className="px-4 py-2 text-gray-400 text-sm">
-//           No categories found
-//         </span>
-//       )}
-//     </div>
-//   </div>
-// </div>
-
-//           <Link href="/products" className="hover:text-[#B9832B] transition-colors duration-300">Products</Link>
-//         </nav>
-
-//         <div className="flex justify-center w-2/4 lg:w-1/3">
-//           <Link href="/" className="relative">
-//             <img
-//               src="/Images/logo.webp"
-//               alt="Logo"
-//               className={`object-contain transition-all duration-500 p-2 rounded-full
-//                 ${isScrolled ? "h-18 md:h-14 xl:h-20 bg-gray-50/30 backdrop-blur-3xl" : " h-18 md:h-16 xl:h-24 "}`}
-//             />
-//           </Link>
-//         </div>
-
-//         {/* === DESKTOP NAV - RIGHT === */}
-//         <nav className="hidden lg:flex justify-start items-center w-1/3 space-x-4 xl:space-x-8 text-[11px] xl:text-sm uppercase tracking-wider font-semibold">
-//           <Link href="/blogs" className="hover:text-[#B9832B] transition-colors duration-300">Blogs</Link>
-//           <Link href="/contact" className="hover:text-[#B9832B] transition-colors duration-300">Contact</Link>
-
-//           <div className="flex gap-3 xl:gap-5 items-center pl-4 xl:pl-6 border-l border-[#B9832B]/40">
-//             <button className="hover:text-[#B9832B] transition-colors duration-300"><LuSearch size={20} /></button>
-//             <Link href="/wishlist" className="hover:text-[#B9832B] transition-colors duration-300 relative"><FaRegHeart size={20} />{wishlist?.length > 0 && <span className="absolute -top-4 px-1.5 py-0.5 text-[10px] bg-black text-white rounded-full left-1/2">{wishlist?.length}</span>}</Link>
-//             <Link href="/cart" className="hover:text-[#B9832B] transition-colors duration-300 relative"><MdOutlineShoppingCart size={22} /> {cart?.length > 0 && <span className="absolute -top-4 px-1.5 py-0.5 text-[10px] bg-black text-white rounded-full left-1/2">{cart?.length}</span>}</Link>
-//             <Link href="/profile" className="hover:text-[#B9832B] transition-colors duration-300"><FaRegUserCircle size={20} /></Link>
-//           </div>
-//         </nav>
-
-//         {/* === MOBILE ICONS (Right) === */}
-//         <div className="lg:hidden flex justify-end items-center gap-3 md:gap-5 w-1/4 text-[black]">
-//                     <Link href="/profile" className="hover:text-[#B9832B] transition-colors duration-300"><FaRegUserCircle size={20} /></Link>
-//   <Link href="/wishlist" className="hover:text-[#B9832B] transition-colors duration-300 relative"><FaRegHeart size={20} />{wishlist?.length > 0 && <span className="absolute -top-4 px-1.5 py-0.5 text-[10px] bg-black text-white rounded-full left-1/2">{wishlist?.length}</span>}</Link>
-//           {/* <button><LuSearch size={20} /></button> */}
-//           <Link href="/cart">
-
-//           <MdOutlineShoppingCart size={22} /></Link>
-//         </div>
-//       </div>
-
-//       {isMobileMenuOpen && (
-//         <div className="lg:hidden bg-black fixed inset-0 z-[60] flex flex-col items-center justify-center space-y-8 text-xl uppercase tracking-widest">
-//             <button onClick={toggleMenu} className="absolute top-6 right-6 text-[#B9832B]"><FiX size={32}/></button>
-//             <Link href="/" onClick={toggleMenu} className="hover:text-[#B9832B]">Home</Link>
-//             <Link href="/about" onClick={toggleMenu} className="hover:text-[#B9832B]">About</Link>
-//             <Link href="/category" onClick={toggleMenu} className="hover:text-[#B9832B]">Category</Link>
-//             <Link href="/products" onClick={toggleMenu} className="hover:text-[#B9832B]">Products</Link>
-//             <Link href="/blogs" onClick={toggleMenu} className="hover:text-[#B9832B]">Blogs</Link>
-//             <Link href="/contact" onClick={toggleMenu} className="hover:text-[#B9832B]">Contact</Link>
-
-//             <div className="flex gap-10 pt-10 border-t border-[#B9832B]/30 w-1/2 justify-center">
-//                 <Link href="/wishlist" onClick={toggleMenu}><FaRegHeart size={28} /></Link>
-//                 <Link href="/profile" onClick={toggleMenu}><FaRegUserCircle size={28} /></Link>
-//             </div>
-//         </div>
-//       )}
-//     </header>
-//   );
-// };
-
-// export default Header;

@@ -6,13 +6,12 @@ import { BsArrowRight } from "react-icons/bs";
 import { motion } from "framer-motion";
 import Link from "next/link"
 import { FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
-;
 
   const socialLinks = [
-    { icon: FiFacebook, href: '#', label: 'Facebook' },
-    { icon: FiInstagram, href: '#', label: 'Instagram' },
-    { icon: FiTwitter, href: '#', label: 'Twitter' },
-    { icon: FiYoutube, href: '#', label: 'YouTube' }
+    { icon: FiFacebook, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Facebook' },
+    { icon: FiInstagram, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Instagram' },
+    { icon: FiTwitter, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Twitter' },
+    { icon: FiYoutube, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'YouTube' }
   ];
 
 const Footer = () => {
@@ -54,7 +53,20 @@ const Footer = () => {
               Sourced directly from the finest estates. We bring you premium,
               authentic teas and freshly ground spices to elevate your everyday rituals.
             </p>
-            <div className="flex items-center gap-4">
+           
+        <div className="flex items-center gap-4">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center hover:text-white  hover:bg-gradient-to-r hover:from-[#8b611d] hover:via-[#c9a05e] hover:to-[#8b611d] transition-all duration-300 hover:scale-110 group"
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+                </a>
+              ))}
+            </div>
+            {/* <div className="flex items-center gap-4">
               {[FaInstagram, FaFacebookF, FaTwitter, FaPinterestP].map((Icon, idx) => (
                 <a
                   key={idx}
@@ -64,7 +76,7 @@ const Footer = () => {
                   <Icon size={16} />
                 </a>
               ))}
-            </div>
+            </div> */}
           </motion.div>
 
           {/* Explore Links */}
@@ -125,7 +137,7 @@ const Footer = () => {
           <motion.div variants={itemVariants} className="lg:col-span-4">
               <div className="">
           <iframe
-             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4271.373247928821!2d76.42175519999999!3d30.373736199999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39102708e4b05f43%3A0x5cac00a43cd7b8f5!2sProdsol%20Biotech%20Pvt%20Ltd!5e1!3m2!1sen!2sin!4v1773475102579!5m2!1sen!2sin"
+             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d136721.62102100786!2d76.32665317093904!3d30.346777462098082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391028935a3313df%3A0xd5bc56ad3b90bc7f!2sPatiala%2C%20Punjab!5e1!3m2!1sen!2sin!4v1784182390519!5m2!1sen!2sin"
              width="600"
              height="450"
              allowFullScreen=""
@@ -137,18 +149,7 @@ const Footer = () => {
 
 
              
-            <div className="flex space-x-4 mt-8">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center hover:text-white  hover:bg-gradient-to-r hover:from-[#8b611d] hover:via-[#c9a05e] hover:to-[#8b611d] transition-all duration-300 hover:scale-110 group"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
-                </a>
-              ))}
-            </div>
+           
           </motion.div>
         </motion.div>
 

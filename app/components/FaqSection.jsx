@@ -1,29 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-
-const faqs = [
-  {
-    question: "What ingredients are in your authentic tea masala?",
-    answer: "Our tea masala is a carefully balanced blend of premium spices, including green cardamom, cinnamon, cloves, dried ginger powder (saunth), black pepper, and a hint of nutmeg. It contains no artificial flavors or preservatives."
-  },
-  {
-    question: "How much tea masala should I use per cup?",
-    answer: "For a perfect cup of chai, we recommend using about 1/4 teaspoon (or a generous pinch) of the masala per cup. You can adjust this amount based on how strong and spicy you like your tea."
-  },
-  {
-    question: "Is this tea masala caffeine-free?",
-    answer: "Yes! The spice blend itself is 100% caffeine-free. However, if you are brewing it with traditional black tea leaves (CTC), your finished cup of chai will contain caffeine."
-  },
-  {
-    question: "What is the shelf life, and how should I store it?",
-    answer: "Our tea masala stays fresh for up to 12 months. To maintain its strong aroma and flavor, keep it tightly sealed in its original container or an airtight glass jar, stored in a cool, dark, and dry place."
-  },
-  {
-    question: "Can I use this masala in recipes other than chai?",
-    answer: "Absolutely! While it's perfect for traditional Indian chai, our customers love adding a pinch to oatmeal, pancakes, cookies, cakes, and even warm milk (haldi doodh) for a comforting spiced kick."
-  }
-];
+const faqs = [ { question: "Are Dr. Aulakh Foods Tea Masalas made with natural ingredients?", answer: "Ye s. Our Tea Masalas are prepared using carefully selected natural spices chosen for their freshness, aroma and flavour. We focus on maintaining the natural character of every ingredient so that each blend delivers an authentic and refreshing tea experience.", }, { question: "Do your Tea Masalas contain any artificial preservatives?", answer: "No artificial preservatives are added to our Tea Masala blends. Our products are prepared under hygienic conditions using carefully controlled processing and packaging methods to help maintain their quality, aroma and freshness.", }, { question: "Is Dr. Aulakh Foods Tea Masala suitable for everyday consumption?", answer: "Yes. Our Tea Masalas are suitable for regular household use and can be enjoyed as part of your daily tea routine. You may adjust the quantity according to your preferred level of aroma, flavour and spice.", }, { question: "What quantity of Tea Masala should be added to one cup of tea?", answer: "For a well-balanced cup of tea, we recommend adding approximately half a teaspoon of Tea Masala per cup. The quantity can be slightly increased or reduced depending on how mild, aromatic or strongly spiced you prefer your tea.", }, { question: "What is the expected shelf life of your Tea Masala products?", answer: "Our Tea Masala products typically have a shelf life of up to 12 months when stored correctly. For the exact best-before date, always refer to the information printed on the product packaging.", }, { question: "Does Dr. Aulakh Foods accept bulk or commercial orders?", answer: "Yes. We cater to bulk and commercial requirements for retailers, distributors, cafés, restaurants and institutional buyers. You can contact our customer support team to discuss product quantities, availability and other business-related requirements.", }, { question: "Is Cash on Delivery available for all orders?", answer: "Cash on Delivery availability depends on the delivery location and the courier service available for your postal code. The applicable payment options will be displayed during checkout based on your shipping address.", }, { question: "What is the best way to store Tea Masala after opening?", answer: "Keep the container tightly closed after every use and store it in a cool, dry place. Avoid exposure to moisture, heat and direct sunlight, as these conditions may affect the freshness, aroma and overall quality of the spices.", }, ];
 
 const FaqSection = () => {
   const [openIndex, setOpenIndex] = useState(null);
