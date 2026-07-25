@@ -1,104 +1,189 @@
 "use client";
-import React, { useRef } from "react";
+
+import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+
 import "swiper/css";
 
-// 1. Added poster paths to your data
-const VIDEO_DATA = [
-  { id: 1, src: "/Images/about.mp4", poster: "/Images/r1.webp", label: "Shalom Laptop Bag", price: "₹ 5,249" },
-  { id: 2, src: "/Images/about.mp4", poster: "/Images/r2.webp", label: "Cruise Canvas Tote", price: "₹ 4,189" },
-  { id: 3, src: "/Images/about.mp4",  poster: "/Images/r3.webp", label: "Scarlet Crossbody", price: "₹ 2,925" },
-  { id: 4, src: "/Images/about.mp4",  poster: "/Images/r4.webp", label: "Sloane Backpack", price: "₹ 3,499" },
-  { id: 5, src: "/Images/about.mp4",  poster: "/Images/r5.webp", label: "Jeff Crossbody", price: "₹ 2,099" },
-  { id: 6, src: "/Images/about.mp4",  poster: "/Images/r7.webp", label: "Sloane Backpack", price: "₹ 3,499" },
-  // { id: 7, src: "/videos/5.webm", poster: "/Images/r6.webp", label: "Jeff Crossbody", price: "₹ 2,099" },
-];
+import { base_url, img_url } from "./Store/utils";
 
-const StyleVideo = ({ videoSrc, poster, label, price }) => {
+const StyleVideo = ({ item }) => {
   const videoRef = useRef(null);
 
   const handlePlay = () => {
-    // play() returns a promise; we catch errors to prevent console noise 
-    // if the user moves the mouse away too quickly.
-    videoRef.current?.play().catch(() => {});
+    const video = videoRef.current;
+
+    if (!video) return;
+
+    video.play().catch(() => {});
   };
 
   const handlePause = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0; // Returns to the poster state
-    }
+    const video = videoRef.current;
+
+    if (!video) return;
+
+    video.pause();
+    video.currentTime = 0;
   };
 
+  if (!item?.product?.slug) return null;
+
   return (
-    <div className="group cursor-pointer">
-      <div 
-        className="relative w-full aspect-[9/16] overflow-hidden bg-stone-100 rounded-md"
-        onMouseEnter={handlePlay}
-        onMouseLeave={handlePause}
-        onClick={() => {
-          if (videoRef.current.paused) handlePlay();
-          else handlePause();
-        }}
-      >
+    <Link
+      href={`/product/${item.product.slug}`}
+      aria-label={`View ${item.product.name}`}
+      className="group block"
+      onMouseEnter={handlePlay}
+      onMouseLeave={handlePause}
+      onFocus={handlePlay}
+      onBlur={handlePause}
+    >
+      <article className="relative aspect-[9/16] overflow-hidden rounded-2xl bg-stone-100 shadow-sm">
         <video
           ref={videoRef}
-          src={videoSrc}
-          poster={poster}
+          src={`${img_url}${item.video}`}
+          poster={`${img_url}${item.product.thumbnail}`}
           muted
           playsInline
-          preload="none" 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loop
+          preload="metadata"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-      </div>
-    </div>
+
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent" />
+
+        {/* Play icon */}
+        <div className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/25 text-white backdrop-blur-sm transition duration-300 group-hover:scale-90 group-hover:opacity-0">
+          <span className="ml-1 text-lg">▶</span>
+        </div>
+
+        {/* Product details */}
+        <div className="absolute inset-x-0 bottom-0 z-10 p-4">
+          <p className="line-clamp-2 text-sm font-semibold leading-5 text-white sm:text-base">
+            {item.product.name}
+          </p>
+
+          <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-white/80 transition group-hover:text-white">
+            View Product
+            <span className="transition-transform group-hover:translate-x-1">
+              →
+            </span>
+          </span>
+        </div>
+      </article>
+    </Link>
   );
 };
 
 export default function StyleEdit() {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchVideos = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.get(
+        `${base_url}/cache/videos/random`
+      );
+
+      if (response.data?.success) {
+        setVideos(
+          Array.isArray(response.data.videos)
+            ? response.data.videos
+            : []
+        );
+      }
+    } catch (error) {
+      console.error("Failed to fetch videos:", error);
+      setVideos([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  if (!loading && videos.length === 0) {
+    return null;
+  }
+
   return (
-    <section className="py-12 md:py-16 px-4 md:px-12 xl:px-72  bg-white">
-      <div className="max-w-[2000px] mx-auto">
-        <div className="max-w-4xl mx-auto text-center mb-10 md:mb-12">
-     <h2 className="text-2xl md:text-4xl font-serif text-[#292927] mb-3 tracking-tight">
-  Explore DAF in Action
-</h2>
+    <section className="bg-[#fffdf8] px-4 py-12 md:px-12 md:py-16 xl:px-24">
+      <div className="mx-auto max-w-[1600px]">
+        <div className="mx-auto mb-10 max-w-3xl text-center md:mb-12">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-[#a45a27]">
+            Watch & Shop
+          </p>
 
-<p className="text-stone-600 text-sm md:text-[18px] max-w-xl mx-auto font-light leading-relaxed">
-  Watch our latest videos, product highlights, and behind-the-scenes moments.
-</p>
+          <h2 className="font-serif text-2xl text-[#244d38] md:text-4xl">
+            Experience Our Products
+          </h2>
 
-          <div className="">
-                          {/* <a href="https://www.instagram.com/saajriwaaj/" className="flex items-center gap-2 mt-3 justify-center text-purple-800 underline"><Instagram size={18} strokeWidth={1.2} />
-                          
-                                     SaajRiwaaj
-                          </a> */}
-            
-            </div>
-          
-                 </div>
+          <p className="mx-auto mt-3 max-w-xl text-sm font-light leading-relaxed text-stone-600 md:text-lg">
+            Watch our products in action and discover your next
+            favourite.
+          </p>
+        </div>
 
-        <Swiper
-          spaceBetween={16}
-          slidesPerView={1.2}
-          breakpoints={{
-            640: { slidesPerView: 2.5 },
-            1024: { slidesPerView: 5 },
-          }}
-          className="overflow-hidden"
-        >
-          {VIDEO_DATA.map((item) => (
-            <SwiperSlide key={item.id}>
-              <StyleVideo 
-                videoSrc={item.src} 
-                poster={item.poster}
-                label={item.label} 
-                price={item.price} 
+        {loading ? (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div
+                key={index}
+                className="aspect-[9/16] animate-pulse rounded-2xl bg-stone-200"
               />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            ))}
+          </div>
+        ) : (
+          <Swiper
+            modules={[Autoplay]}
+            spaceBetween={14}
+            slidesPerView={1.5}
+            grabCursor
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: true
+            }}
+            breakpoints={{
+              480: {
+                slidesPerView: 2.2,
+                spaceBetween: 14
+              },
+              640: {
+                slidesPerView: 2.8,
+                spaceBetween: 16
+              },
+              768: {
+                slidesPerView: 3.5,
+                spaceBetween: 18
+              },
+              1024: {
+                slidesPerView: 4.5,
+                spaceBetween: 20
+              },
+              1280: {
+                slidesPerView: 5,
+                spaceBetween: 20
+              }
+            }}
+          >
+            {videos.map((item) => (
+              <SwiperSlide key={item._id}>
+                <StyleVideo item={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );
 }
+// 7599

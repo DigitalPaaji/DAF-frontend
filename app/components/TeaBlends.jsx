@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import axios from "axios";
+import { base_url } from "./Store/utils";
+import ProductCart1 from "./ProductCart1";
 
 const teaData = [
   {
@@ -84,7 +87,7 @@ const teaData = [
 const TeaBlendsSection = () => {
   const [selectedSizes, setSelectedSizes] = useState({});
   const [wishlistItems, setWishlistItems] = useState([]);
-
+  const [allProducts,setAllProducts]= useState([])
   const handleSizeChange = (id, value) => {
     setSelectedSizes((prev) => ({
       ...prev,
@@ -99,6 +102,26 @@ const TeaBlendsSection = () => {
         : [...prev, id],
     );
   };
+
+const fetchRandomProduct =  async ()=>{
+  try {
+    const response = await axios.get(`${base_url}/cache/product/random/${process.env.NEXT_PUBLIC_TEA_CAT_ID}`)
+    const data = await response.data;
+    
+    if(data.success){
+setAllProducts(data.products)
+    }
+  } catch (error) {
+    
+  }
+}
+
+useEffect(()=>{
+  fetchRandomProduct();
+},[])
+
+
+
 
   return (
     <section className="relative px-4 md:px-12 xl:px-72 py-24 overflow-hidden">
@@ -123,117 +146,12 @@ const TeaBlendsSection = () => {
         </div>
 
         {/* Product Cards */}
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 xl:gap-12">
-          {teaData.map((tea) => {
-            const isWishlisted = wishlistItems.includes(tea.id);
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 xl:gap-12">
+          {allProducts.map((tea) => {
+            
 
             return (
-              <div
-                key={tea.id}
-                className="group w-[calc(50%-0.5rem)] sm:w-[calc(50%-0.75rem)] lg:w-[calc(25%-1.5rem)] max-w-[280px] cursor-pointer"
-              >
-                <div className="relative h-full shadow-sm rounded-xl overflow-hidden p-3 sm:p-4 transition-all duration-500 hover:shadow-xl bg-white">
-                  {/* Wishlist */}
-                  <button
-                    type="button"
-                    onClick={() => handleWishlistToggle(tea.id)}
-                    className={`absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur flex items-center justify-center transition-all duration-300 ${
-                      isWishlisted
-                        ? "text-red-600"
-                        : "text-[#3A2A21] hover:bg-[#3A2A21] hover:text-white"
-                    }`}
-                    aria-label={
-                      isWishlisted
-                        ? `Remove ${tea.name} from wishlist`
-                        : `Add ${tea.name} to wishlist`
-                    }
-                  >
-                    {isWishlisted ? (
-                      <FaHeart size={16} />
-                    ) : (
-                      <FaRegHeart size={16} />
-                    )}
-                  </button>
-
-                  {/* Product Image Link */}
-                  <Link
-                    href={tea.href}
-                    aria-label={`View ${tea.name}`}
-                    className="relative block w-full aspect-square mb-4 sm:mb-5"
-                  >
-                    <Image
-                      src={tea.image}
-                      alt={`${tea.name} - ${tea.subtitle}`}
-                      fill
-                      sizes="(max-width: 480px) 50vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-contain transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </Link>
-
-                  {/* Details */}
-                  <div className="space-y-3 sm:space-y-4">
-                    <div className="flex flex-col gap-3">
-                      <div className="min-w-0">
-                        {/* Product Name Link */}
-                        <Link href={tea.href} className="block">
-                          <h3 className="text-[#3A2A21] text-base font-semibold leading-snug line-clamp-1 transition-colors hover:text-[#8B5A2B]">
-                            {tea.name}
-                          </h3>
-
-                          <p className="mt-1 min-h-[36px] text-xs leading-5 text-[#3A2A21]/60 line-clamp-2">
-                            {tea.subtitle}
-                          </p>
-                        </Link>
-
-                        <div className="flex items-center justify-between gap-2 py-2">
-                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
-                            <span className="text-[#3A2A21] text-base sm:text-lg font-semibold">
-                              {tea.price}
-                            </span>
-
-                            <span className="text-[#3A2A21]/60 text-base line-through">
-                              {tea.oldPrice}
-                            </span>
-                          </div>
-
-                          {/* Packet Size */}
-                          <div className="relative w-fit shrink-0">
-                            <select
-                              value={
-                                selectedSizes[tea.id] || tea.sizes[0]
-                              }
-                              onChange={(event) =>
-                                handleSizeChange(
-                                  tea.id,
-                                  event.target.value,
-                                )
-                              }
-                              aria-label={`Select pack size for ${tea.name}`}
-                              className="w-full appearance-none border border-[#3A2A21] text-[#3A2A21] text-xs sm:text-sm px-3 py-2 pr-8 rounded-md outline-none cursor-pointer bg-white"
-                            >
-                              {tea.sizes.map((size) => (
-                                <option key={size} value={size}>
-                                  {size}
-                                </option>
-                              ))}
-                            </select>
-
-                            <IoIosArrowDown className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#3A2A21] pointer-events-none text-sm" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Add To Cart */}
-                    <button
-                      type="button"
-                      className="w-full border border-[#3A2A21] text-[#3A2A21] text-sm sm:text-base py-2 sm:py-2.5 rounded-md hover:bg-[#3A2A21] transition-all hover:text-white duration-300"
-                    >
-                      + Add To Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
+             <ProductCart1  key={tea._id}  product={tea}  wishlistItems={wishlistItems}/>
             );
           })}
         </div>

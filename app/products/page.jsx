@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import ProductCompo from "./ProductCompo";
+import MyProduct from "./MyProduct";
 
 const ProductsPageSkeleton = () => {
   return (
@@ -105,7 +106,8 @@ const ProductsPageSkeleton = () => {
 const ProductsPage = () => {
   return (
     <Suspense fallback={<ProductsPageSkeleton />}>
-      <ProductCompo />
+      {/* <ProductCompo /> */}
+      <MyProduct />
     </Suspense>
   );
 };

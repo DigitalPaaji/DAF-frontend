@@ -158,7 +158,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#e8d9c0]/50 font-light tracking-wide">
-          <p>© {new Date().getFullYear()} Doctor Aulakh's Food. Designed and Developed by <a className="text-[#ddad60]" href="digitalpaaji.com">Digital Paaji</a> All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Doctor Aulakh's Food. Designed and Developed by <a className="text-[#ddad60]" target="_blank" href="https://digitalpaaji.com">Digital Paaji</a> All rights reserved.</p>
           <div className="flex gap-6">
             <a href="/policy" className="hover:text-[#c9a05e] transition-colors">
               Privacy Policy

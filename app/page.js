@@ -13,12 +13,12 @@ export default function Home() {
       <Hero />
       <CategoryCarousel />
       <CatSection />
-      <TeaBlendsSection/>
-      <AboutSection/>
+      <TeaBlendsSection />
+      <AboutSection />
       <ProductSection />
       {/* <TeaHeroSection /> */}
       <FaqSection />
-      <Reviews/>
+      <Reviews />
     </div>
   );
 }

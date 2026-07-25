@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const getWishlist=()=>{
+     if (typeof window === "undefined") return [];
     try {
     const data = localStorage.getItem("wishlist");
     return data ? JSON.parse(data) : [];
@@ -25,7 +26,7 @@ const wishlistSlice = createSlice({
     reducers:{
 
         toggleWishlist:(state,action)=>{
-const { productId } = action.payload;
+const productId  = action.payload;
 if(state.items.includes(productId)){
     state.items= state.items.filter((item)=>item !=productId)
 }

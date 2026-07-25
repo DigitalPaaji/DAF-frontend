@@ -16,7 +16,7 @@ const WishlistPage = () => {
   const dispatch = useDispatch()
 
   const fetchWishlist = async () => {
-    // Prevent fetching if wishlist is empty
+  
     if (!wishlist || wishlist.length === 0) {
       setProducts([])
       setLoading(false)
@@ -26,13 +26,13 @@ const WishlistPage = () => {
     try {
       setLoading(true)
       setError(null)
-      const response = await axios.post(`${base_url}/getwishlist_product`, { wishlist })
+      const response = await axios.patch(`${base_url}/products/wishlist`, { wishlist })
       
       // Safely access the response data
       const resData = response.data
       
       if (resData && resData.success) {
-        setProducts(resData.data || [])
+        setProducts(resData.product || [])
       } else {
         setError("Failed to fetch wishlist data.")
       }
@@ -47,7 +47,7 @@ const WishlistPage = () => {
   useEffect(() => {
     fetchWishlist()
     
-  }, [ wishlist])
+  }, [ wishlist ])
 
 
 
@@ -83,10 +83,6 @@ const WishlistPage = () => {
 :
    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 {products.map((product)=>{
-            const primaryVariant = product?.variants?.[0] || {}
-            const imagePath = product?.images?.[0] || ""
-            const imageUrl = imagePath ? `${img_url}${imagePath}` : 'https://via.placeholder.com/300?text=No+Image'
-
 return(
     <div key={product._id || Math.random()} 
                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200 overflow-hidden flex flex-col" >
@@ -94,14 +90,14 @@ return(
 
   <div className="relative h-64 w-full bg-gray-100 p-4">
                   <img
-                    src={imageUrl}
+                    src={`${img_url}${product.thumbnail}`}
                     alt={product?.name || "Product"}
                     className="w-full h-full object-cover rounded-md"
                     onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=No+Image' }} 
                   />
                 </div>
-   <div className="p-5 flex flex-col flex-grow">
-               <span className="text-xs font-medium tracking-wider text-gray-500 uppercase mb-1">
+        <div className="p-5 flex flex-col flex-grow">
+                 <span className="text-xs font-medium tracking-wider text-gray-500 uppercase mb-1">
                     {product?.category?.name || "Category"}
                   </span>
                   
@@ -110,15 +106,20 @@ return(
                   </h3>
 
                   <div className="mt-auto flex items-end gap-2 mb-4">
-                    <span className="text-xl font-bold text-gray-900">
+
+
+
+
+                    {/* <span className="text-xl font-bold text-gray-900">
                       ₹{primaryVariant?.mrp || 0}
                     </span>
                     {primaryVariant?.basePrice > primaryVariant?.mrp && (
                       <span className="text-sm line-through text-gray-400 mb-0.5">
                         ₹{primaryVariant.basePrice}
                       </span>
-                    )}
+                    )} */}
                   </div>
+
                 <div className="flex items-center gap-3 mt-2">
                     <Link 
                     href={`/product/${product?.slug}`}
@@ -128,14 +129,13 @@ return(
                    View Product
                     </Link>
                     <button 
-                    onClick={()=>dispatch(toggleWishlist({productId:product._id}))}
+                    onClick={()=>dispatch(toggleWishlist(product._id))}
                       className="p-2.5 text-red-500 bg-red-50 hover:bg-red-100 hover:text-red-600 rounded-lg transition-colors border border-red-100"
                       title="Remove from wishlist"
                     >
                       <FiTrash2 size={20} />
                     </button>
-                  </div>
-
+                  </div> 
 
 
 </div>

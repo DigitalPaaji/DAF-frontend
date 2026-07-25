@@ -1,69 +1,56 @@
-"use client";
-
-import React, { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+"use client"
+import React, { useEffect, useRef, useState } from 'react'
+import { base_url } from '../components/Store/utils';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import Link from 'next/link';
+import Image from 'next/image';
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  FaHeart,
-  FaRegHeart,
-  FaSlidersH,
-  FaTimes,
-  FaThLarge,
-  FaList,
-} from "react-icons/fa";
-import {
-  IoIosArrowDown,
-  IoIosArrowForward,
-  IoIosArrowBack,
-} from "react-icons/io";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { base_url, img_url } from "../components/Store/utils";
-import ProductCart1 from "../components/ProductCart1";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { FaList, FaSlidersH, FaThLarge, FaTimes } from 'react-icons/fa';
+import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward } from 'react-icons/io';
+import ProductCart1 from '../components/ProductCart1';
+
+
+
+
 
 const sortOptions = [
   { label: "Newest First", value: "newest" },
   { label: "Oldest First", value: "oldest" },
-  { label: "Price: Low to High", value: "price-low" },
-  { label: "Price: High to Low", value: "price-high" },
+  // { label: "Price: Low to High", value: "price-low" },
+  // { label: "Price: High to Low", value: "price-high" },
   { label: "Name: A to Z", value: "name-asc" },
   { label: "Name: Z to A", value: "name-desc" },
 ];
 
-const ProductCompo = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
 
-  const limit = 8;
-  const currentPage = Number(searchParams.get("page") || 1);
-  const selectedCategory = searchParams.get("category") || "";
-  const selectedSort = searchParams.get("sort") || "newest";
-  const minimumPrice = searchParams.get("minPrice") || "";
-  const maximumPrice = searchParams.get("maxPrice") || "";
 
-  const [products, setProducts] = useState([]);
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-  const [isFetching, setIsFetching] = useState(true);
 
-  const [selectedSizes, setSelectedSizes] = useState({});
-  const [wishlistItems, setWishlistItems] = useState([]);
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [viewType, setViewType] = useState("grid");
+const MyProduct = () => {
 
-  const {
-    categories = [],
-    error,
-    loading,
-  } = useSelector((state) => state.categories);
+  const router = useRouter()
 
-  const categoryTitle = useMemo(() => {
-    const selected = categories.find((cat) => cat.slug === selectedCategory);
-    return selected?.name || "Shop Products";}, [selectedCategory, categories]);
+ const searchParams = useSearchParams();
+const [isFetching,setIsFetching]=useState(true)
+const {categories = [],error,loading} = useSelector((state) => state.categories);
+const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+const [products,setProducts] = useState([ ])
+const [totalProducts, setTotalProducts] = useState(0);
+const [viewType, setViewType] = useState("grid");
+const debounceTimer = useRef(null);
+const [totalPages, setTotalPages] = useState(1);
 
-  const updateSearchParams = (key, value) => {
+ const selectedCategory = searchParams.get("category") || "";
+ const currentPage = Number(searchParams.get("page") || 1);
+ const selectedSort = searchParams.get("sort") || "newest";
+ const min = searchParams.get("min") || 0;
+ const max = searchParams.get("max") || 50000;
+
+
+
+const updateSearchParams =  (key, value) => {
+  const updateParams = () => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (value) {
@@ -81,58 +68,67 @@ const ProductCompo = () => {
     });
   };
 
-  const fetchProducts = async () => {
-    setIsFetching(true);
-    try {
-      const params = new URLSearchParams({
-        page: currentPage,
-        limit: limit,
-        sort: selectedSort,
-      });
 
-      if (selectedCategory) {
-        params.append("category", selectedCategory);
-      }
-      if (minimumPrice) {
-        params.append("minPrice", minimumPrice);
-      }
-      if (maximumPrice) {
-        params.append("maxPrice", maximumPrice);
-      }
+      if (key === "min" || key === "max") {
+    clearTimeout(debounceTimer.current);
 
-      const response = await axios.get(
-        `${base_url}/cache/product/get?${params.toString()}`
-      );
-      const data = response.data;
+    debounceTimer.current = setTimeout(() => {
+      updateParams();
+    }, 500);
+     return;
+  }
+   updateParams();
 
-      if (data.success) {
-        setProducts(data.products || []);
-        setTotalPages(data.totalPages || 1);
-        setTotalProducts(data.totalProducts || 0);
-      } else {
+}
+
+
+
+   const fetchProducts = async () => {
+      setIsFetching(true);
+      try {
+        const params = new URLSearchParams({
+          page: currentPage,
+          sort: selectedSort,
+        });
+  
+        if (selectedCategory) {
+          params.append("category", selectedCategory);
+        }
+        if (min) {
+          params.append("min", min);
+        }
+        if (max) {
+          params.append("max", max);
+        }
+
+        const response = await axios.get(
+          `${base_url}/cache/product/get?${params.toString()}`
+        );
+        const data = response.data;
+
+        if (data.success) {
+          setProducts(data.products || []);
+          setTotalPages(data?.pagination.totalPages || 1)
+          setTotalProducts(data?.pagination?.totalProducts || 0);
+        } else {
+          setProducts([]);
+          setTotalPages(1);
+          setTotalProducts(0);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
         setProducts([]);
-        setTotalPages(1);
-        setTotalProducts(0);
+      } finally {
+        setIsFetching(false);
       }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      setProducts([]);
-    } finally {
-      setIsFetching(false);
-    }
+    };
+
+ const clearFilters = () => {
+    router.push("/products");
+    setMobileFiltersOpen(false);
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, [
-    currentPage,
-    selectedCategory,
-    selectedSort,
-    minimumPrice,
-    maximumPrice,
-  ]);
-
-  const handlePageChange = (newPage) => {
+ const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return;
 
     updateSearchParams("page", String(newPage));
@@ -143,33 +139,19 @@ const ProductCompo = () => {
     });
   };
 
-  const clearFilters = () => {
-    router.push("/products");
-    setMobileFiltersOpen(false);
-  };
 
-  const handleWishlistToggle = (productId) => {
-    setWishlistItems((previous) =>
-      previous.includes(productId)
-        ? previous.filter((id) => id !== productId)
-        : [...previous, productId]
-    );
-  };
+useEffect(()=>{
+  fetchProducts()
+},[selectedCategory,selectedSort,min,max])
 
-  const handleSizeChange = (productId, value) => {
-    setSelectedSizes((previous) => ({
-      ...previous,
-      [productId]: value,
-    }));
-  };
 
   return (
-    <main className="min-h-screen bg-[#FDFBF7] text-[#312A26]">
+    <div className='min-h-screen'>
       <section className="relative flex min-h-[300px] items-center justify-center overflow-hidden px-4 py-20 md:min-h-[400px]">
         <div className="absolute inset-0">
           <Image
             src="/Images/banner.webp"
-            alt={categoryTitle}
+            alt={"banner"}
             fill
             priority
             className="object-cover"
@@ -182,7 +164,7 @@ const ProductCompo = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-4 font-serif text-3xl text-[#3A2A21] md:text-5xl"
           >
-            {categoryTitle}
+            {/* {categoryTitle} */}
           </motion.h1>
 
           <div className="flex items-center justify-center gap-2 text-xs uppercase tracking-[0.18em] text-[#3A2A21]/65">
@@ -195,8 +177,10 @@ const ProductCompo = () => {
         </div>
       </section>
 
-      <section className="px-4 py-12 md:px-12 md:py-16 xl:px-72">
-        <div className="mb-9 overflow-hidden border-b border-[#DDD4C8]">
+
+<section className="px-4 py-12 md:px-12 md:py-16 xl:px-72">
+
+       <div className="mb-9 overflow-hidden border-b border-[#DDD4C8]">
           <div className="flex justify-center md:justify-start w-full items-center flex-wrap gap-4 lg:gap-7">
             <button
               type="button"
@@ -240,7 +224,10 @@ const ProductCompo = () => {
           </div>
         </div>
 
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-5 border-b border-[#DDD4C8] pb-6">
+
+
+
+   <div className="mb-8 flex flex-wrap items-center justify-between gap-5 border-b border-[#DDD4C8] pb-6">
           <div className="flex items-center gap-4">
             <button
               type="button"
@@ -305,22 +292,26 @@ const ProductCompo = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[220px_1fr] xl:grid-cols-[250px_1fr]">
-          <aside className="hidden lg:block">
-            <div className="sticky top-28">
-              <FilterContent
-                allCategory={categories}
-                selectedCategory={selectedCategory}
-                minimumPrice={minimumPrice}
-                maximumPrice={maximumPrice}
-                updateSearchParams={updateSearchParams}
-                clearFilters={clearFilters}
-              />
-            </div>
-          </aside>
 
-          {/* Product Area */}
-          <div>
+
+
+
+<div className="grid grid-cols-1 gap-10 lg:grid-cols-[220px_1fr] xl:grid-cols-[250px_1fr]">
+<aside className="hidden lg:block">
+<div className="sticky top-28">
+
+<FilterContent  allCategory={categories} updateSearchParams={updateSearchParams}
+ selectedCategory={selectedCategory} clearFilters={clearFilters}  min={min} max={max} />
+
+
+
+
+</div>
+</aside>
+
+
+
+<div>
             {isFetching ? (
               <div className="py-20 text-center text-[#312A26]/55">
                 Loading products...
@@ -351,7 +342,7 @@ const ProductCompo = () => {
                   {products.map((product, index) => {
                
                     return (
-                     <ProductCart1 key={index} product={product} wishlistItems={[ ]} />
+                     <ProductCart1  key={index} product={product} wishlistItems={[ ]} />
                     );
                   })}
                 </div>
@@ -397,10 +388,19 @@ const ProductCompo = () => {
               </div>
             )}
           </div>
-        </div>
-      </section>
 
-      <AnimatePresence>
+
+</div>
+
+
+
+
+
+  </section>
+
+
+
+<AnimatePresence>
         {mobileFiltersOpen && (
           <>
             <motion.button
@@ -432,12 +432,8 @@ const ProductCompo = () => {
               </div>
 
               <FilterContent
-                allCategory={categories}
-                selectedCategory={selectedCategory}
-                minimumPrice={minimumPrice}
-                maximumPrice={maximumPrice}
-                updateSearchParams={updateSearchParams}
-                clearFilters={clearFilters}
+                allCategory={categories} updateSearchParams={updateSearchParams}
+ selectedCategory={selectedCategory} clearFilters={clearFilters}  min={min} max={max}
               />
 
               <button
@@ -451,170 +447,24 @@ const ProductCompo = () => {
           </>
         )}
       </AnimatePresence>
-    </main>
-  );
-};
 
-const ProductCard = ({
-  product,
-  index,
-  viewType,
-  isWishlisted,
-  selectedSizes,
-  handleWishlistToggle,
-  handleSizeChange,
-}) => {
-  const variants = Array.isArray(product.variants) ? product.variants : [];
-  const selectedSizeValue =
-    selectedSizes[product._id] || variants[0]?.attributes?.value || "";
+    </div>
+  )
+}
 
-  const selectedVariant =
-    variants.find((v) => v.attributes?.value === selectedSizeValue) ||
-    variants[0] ||
-    {};
+export default MyProduct
 
-  const mrp = selectedVariant.mrp || 0;
-  const basePrice = selectedVariant.basePrice || 0;
-  const imageSource = product.images?.[0]
-    ? `${img_url}${product.images[0]}`
-    : product.thumbnail
-    ? `${img_url}${product.thumbnail}`
-    : "/Images/product-placeholder.webp";
+const FilterContent = ({allCategory,updateSearchParams,selectedCategory,clearFilters,min,max})=>{
 
-  return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      transition={{ delay: index * 0.03 }}
-      className={`group overflow-hidden bg-white transition-all duration-500 hover:shadow-[0_18px_50px_rgba(58,42,33,0.10)] ${
-        viewType === "list"
-          ? "grid grid-cols-[130px_1fr] gap-4 rounded-xl p-3 sm:grid-cols-[220px_1fr] sm:p-5"
-          : "flex h-full flex-col rounded-xl p-2.5 sm:p-4"
-      }`}
-    >
-      <div
-        className={`relative overflow-hidden bg-[#F5F3F0] ${
-          viewType === "list"
-            ? "aspect-square rounded-lg"
-            : "mb-4 aspect-square rounded-lg"
-        }`}
-      >
-        <Link href={`/product/${product.slug}`}>
-          <img
-            src={imageSource}
-            alt={product.name}
-            className="h-full w-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
-          />
-        </Link>
 
-        <button
-          type="button"
-          onClick={() => handleWishlistToggle(product._id)}
-          aria-label={
-            isWishlisted ? "Remove from wishlist" : "Add to wishlist"
-          }
-          className={`absolute right-2 top-2 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur transition-colors sm:right-3 sm:top-3 sm:h-9 sm:w-9 ${
-            isWishlisted
-              ? "text-red-600"
-              : "text-[#3A2A21] hover:bg-[#3A2A21] hover:text-white"
-          }`}
-        >
-          {isWishlisted ? <FaHeart size={14} /> : <FaRegHeart size={14} />}
-        </button>
-      </div>
-
-      <div className="flex flex-1 flex-col">
-        <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#8B5A2B]">
-          {product.category?.name || product.category}
-        </p>
-
-        <Link href={`/product/${product.slug}`}>
-          <h3 className="mb-2 line-clamp-2 text-sm font-semibold leading-5 text-[#3A2A21] transition-colors group-hover:text-[#8B5A2B] sm:text-base">
-            {product.name}
-          </h3>
-        </Link>
-
-        {viewType === "list" && (
-          <p className="mb-4 hidden line-clamp-2 text-sm leading-6 text-[#312A26]/55 sm:block">
-            {product.shortDescription || product.description}
-          </p>
-        )}
-
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="text-base font-semibold text-[#3A2A21] sm:text-lg">
-              ₹{mrp}
-            </span>
-
-            {basePrice > mrp && (
-              <span className="text-xs text-[#3A2A21]/45 line-through sm:text-sm">
-                ₹{basePrice}
-              </span>
-            )}
-          </div>
-
-          {variants.length > 0 && (
-            <div className="relative">
-              <select
-                value={selectedSizeValue}
-                onChange={(event) =>
-                  handleSizeChange(product._id, event.target.value)
-                }
-                className="appearance-none rounded-md border border-[#3A2A21]/35 bg-white py-1.5 pl-2.5 pr-7 text-[10px] text-[#3A2A21] outline-none sm:text-xs cursor-pointer"
-              >
-                {variants.map((v, i) => (
-                  <option key={i} value={v.attributes?.value}>
-                    {v.attributes?.value}
-                  </option>
-                ))}
-              </select>
-              <IoIosArrowDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[11px]" />
-            </div>
-          )}
-        </div>
-
-        <button
-          type="button"
-          className="mt-auto w-full border border-[#3A2A21] py-2.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#3A2A21] transition-colors hover:bg-[#3A2A21] hover:text-white sm:text-xs"
-        >
-          + Add To Cart
-        </button>
-      </div>
-    </motion.article>
-  );
-};
-
-const FilterContent = ({
-  allCategory,
-  selectedCategory,
-  minimumPrice,
-  maximumPrice,
-  updateSearchParams,
-  clearFilters,
-}) => {
-  const [localMinPrice, setLocalMinPrice] = useState(minimumPrice);
-  const [localMaxPrice, setLocalMaxPrice] = useState(maximumPrice);
-
-  useEffect(() => {
-    setLocalMinPrice(minimumPrice);
-    setLocalMaxPrice(maximumPrice);
-  }, [minimumPrice, maximumPrice]);
-
-  const applyPriceFilter = () => {
-    updateSearchParams("minPrice", localMinPrice);
-    updateSearchParams("maxPrice", localMaxPrice);
-  };
-
-  return (
-    <div>
-      <div className="mb-8 border-b border-[#DDD4C8] pb-8">
-        <h3 className="mb-5 text-xs font-bold uppercase tracking-[0.18em]">
+  return(
+<div>
+ <div className="mb-8 border-b border-[#DDD4C8] pb-8">
+  <h3 className="mb-5 text-xs font-bold uppercase tracking-[0.18em]">
           Categories
         </h3>
 
-        <div className="space-y-3">
+         <div className="space-y-3">
           <label className="flex cursor-pointer items-center justify-between gap-3 text-sm text-[#312A26]/65 transition-colors hover:text-[#8B5A2B]">
             <span className="flex items-center gap-3">
               <input
@@ -649,49 +499,141 @@ const FilterContent = ({
               </label>
             ))}
         </div>
-      </div>
 
-      <div className="mb-8 border-b border-[#DDD4C8] pb-8">
-        <h3 className="mb-5 text-xs font-bold uppercase tracking-[0.18em]">
+ </div>
+
+
+
+ <div className="mb-8 border-b border-[#DDD4C8] pb-8">
+<h3 className="mb-5 text-xs font-bold uppercase tracking-[0.18em]">
           Price Range
         </h3>
 
-        <div className="grid grid-cols-2 gap-3">
-          <input
-            type="number"
-            value={localMinPrice}
-            onChange={(event) => setLocalMinPrice(event.target.value)}
-            placeholder="Min ₹"
-            className="w-full border border-[#DDD4C8] bg-transparent px-3 py-2.5 text-xs outline-none focus:border-[#8B5A2B]"
-          />
+<PriceRange updateSearchParams={updateSearchParams} min={min}  max={max}  />
 
-          <input
-            type="number"
-            value={localMaxPrice}
-            onChange={(event) => setLocalMaxPrice(event.target.value)}
-            placeholder="Max ₹"
-            className="w-full border border-[#DDD4C8] bg-transparent px-3 py-2.5 text-xs outline-none focus:border-[#8B5A2B]"
-          />
-        </div>
+ </div>
 
-        <button
-          type="button"
-          onClick={applyPriceFilter}
-          className="mt-3 w-full bg-[#3A2A21] px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-white"
-        >
-          Apply Price
-        </button>
-      </div>
 
-      <button
+
+ <button
         type="button"
         onClick={clearFilters}
         className="text-xs font-semibold uppercase tracking-[0.16em] text-[#8B5A2B] underline underline-offset-4"
       >
         Clear All Filters
       </button>
-    </div>
-  );
-};
+</div>
+  )
+}
 
-export default ProductCompo;
+const MIN_LIMIT = 0;
+const MAX_LIMIT = 50000;
+const STEP = 500;
+
+const PriceRange =({min,max,updateSearchParams})=>{
+ const minPercentage = (min / 50000) * 100;
+  const maxPercentage = (max / 50000) * 100;
+ const handleMinChange = (event)=>{
+  const value = Math.min(Number(event.target.value), max - STEP);
+      updateSearchParams("min", String(value));
+ }
+
+ const handleMaxChange = (event) => {
+    const value = Math.max(Number(event.target.value), min + STEP);
+    updateSearchParams("max", String(value));
+  };
+
+  return(
+    <div className="w-full">
+ <div className="mb-5 flex items-center justify-between">
+
+       <div>
+          <p className="text-xs text-neutral-500">Minimum</p>
+          <p className="font-semibold text-neutral-900">
+            ₹{min.toLocaleString("en-IN")}
+          </p>
+        </div>
+       <span className="h-px w-8 bg-neutral-300" />
+        <div className="text-right">
+          <p className="text-xs text-neutral-500">Maximum</p>
+          <p className="font-semibold text-neutral-900">
+            ₹{max.toLocaleString("en-IN")}
+          </p>
+        </div>
+ </div>
+
+<div className="relative h-6">
+ <div className="absolute left-0 top-1/2 h-1.5 w-full -translate-y-1/2 rounded-full bg-neutral-200" />
+ <div
+          className="absolute top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-yellow-700"
+          style={{
+            left: `${minPercentage}%`,
+            right: `${100 - maxPercentage}%`,
+          }}
+        />
+  <input
+          type="range"
+          min={MIN_LIMIT}
+          max={MAX_LIMIT}
+          step={STEP}
+          value={min}
+          onChange={handleMinChange}
+          aria-label="Minimum price"
+          className="price-slider pointer-events-none absolute inset-0 h-6 w-full appearance-none bg-transparent"
+        />
+         <input
+          type="range"
+          min={MIN_LIMIT}
+          max={MAX_LIMIT}
+          step={STEP}
+          value={max}
+          onChange={handleMaxChange}
+          aria-label="Maximum price"
+          className="price-slider pointer-events-none absolute inset-0 h-6 w-full appearance-none bg-transparent"
+        />
+</div>
+
+ <div className="mt-1 flex justify-between text-xs text-neutral-400">
+        <span>₹0</span>
+        <span>₹50,000</span>
+      </div>
+
+
+ <style jsx>{`
+        .price-slider::-webkit-slider-thumb {
+          width: 18px;
+          height: 18px;
+          appearance: none;
+          pointer-events: auto;
+          cursor: pointer;
+          border: 3px solid white;
+          border-radius: 50%;
+          background: #171717;
+          box-shadow: 0 0 0 1px #171717;
+        }
+
+        .price-slider::-moz-range-thumb {
+          width: 14px;
+          height: 14px;
+          pointer-events: auto;
+          cursor: pointer;
+          border: 3px solid white;
+          border-radius: 50%;
+          background: #171717;
+          box-shadow: 0 0 0 1px #171717;
+        }
+
+        .price-slider::-webkit-slider-runnable-track {
+          height: 6px;
+          background: transparent;
+        }
+
+        .price-slider::-moz-range-track {
+          height: 6px;
+          background: transparent;
+        }
+      `}</style>
+
+    </div>
+  )
+}

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const loadCartFromLocalStorage = () => {
+  if (typeof window === "undefined") return [];
   try {
     const data = localStorage.getItem("cart");
     return data ? JSON.parse(data) : [];

@@ -3,66 +3,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { img_url } from "./Store/utils";
 
-const categories = [
-  {
-    id: 1,
-    name: "Tea Masala / Spice Blends",
-    image:
-      "https://images.unsplash.com/photo-1563911892437-1feda0179e1b?w=600&auto=format&fit=crop&q=80",
-    slug: "tea-masala",
-    count: "3 Products",
-  },
-  {
-    id: 2,
-    name: "Kitchen Masalas",
-    image:
-      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600&auto=format&fit=crop&q=80",
-    slug: "kitchen-masalas",
-    count: "18 Products",
-  },
-  {
-    id: 3,
-    name: "Pickle Masala",
-    image:
-      "https://img.freepik.com/premium-psd/psd-tea-pouch-bag-mockup_950992-1293.jpg",
-    slug: "pickle-masala",
-    count: "10 Products",
-  },
-  {
-    id: 4,
-    name: "Flours",
-    image:
-      "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=600&auto=format&fit=crop&q=80",
-    slug: "flours",
-    count: "12 Products",
-  },
-  {
-    id: 5,
-    name: "Pure Spices",
-    image:
-      "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=600&auto=format&fit=crop&q=80",
-    slug: "pure-spices",
-    count: "40+ Products",
-  },
-  {
-    id: 6,
-    name: "Pickles",
-    image:
-      "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=600&auto=format&fit=crop&q=80",
-    slug: "pickles",
-    count: "9 Products",
-  },
-  {
-    id: 7,
-    name: "Ready To Use Tadka Gravy",
-    image:
-      "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop&q=80",
-    slug: "tadka-gravy",
-    count: "8 Products",
-  },
-];
-
+const INITIAL_COUNT = 4;
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
@@ -82,6 +26,11 @@ const itemVariants = {
 };
 
 const CategoryCarousel = () => {
+const {categories = [],error,loading} = useSelector((state) => state.categories);
+
+
+
+
   return (
     <section className="relative py-20 bg-[#F5F2EB] font-sans overflow-hidden">
       <div className="px-4 md:px-12 lg:px-24 xl:px-40 mx-auto">
@@ -102,7 +51,41 @@ const CategoryCarousel = () => {
           </p>
         </div>
 
-        {/* Category Grid */}
+           {loading && (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: INITIAL_COUNT }).map((_, index) => (
+            <div key={index} className="animate-pulse">
+              <div className="aspect-square bg-[#f1e9e5]" />
+
+              <div className="flex justify-center py-5">
+                <div className="h-5 w-28 rounded-full bg-[#f1e9e5]" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Error Message */}
+      {!loading && error && (
+        <div className="rounded-2xl border border-red-100 bg-red-50 px-6 py-10 text-center">
+          <p className="font-p text-base font-medium text-red-600">
+            {typeof error === "string"
+              ? error
+              : "Failed to load collections."}
+          </p>
+        </div>
+      )}
+
+        {!loading && !error && categories.length === 0 && (
+        <div className="rounded-2xl bg-[#f8f4f1] px-6 py-14 text-center">
+          <p className="font-p text-lg font-medium text-p">
+            No collections are available.
+          </p>
+        </div>
+      )}
+
+
+        {!loading && !error && categories.length > 0 && (
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -110,9 +93,9 @@ const CategoryCarousel = () => {
           viewport={{ once: true, margin: "-50px" }}
           className="flex flex-wrap justify-center gap-x-6 gap-y-12"
         >
-          {categories.map((item) => (
+          {categories?.map((item) => (
             <motion.div
-              key={item.id}
+              key={item._id}
               variants={itemVariants}
               className="w-[145px] sm:w-[170px] md:w-[190px]"
             >
@@ -125,7 +108,7 @@ const CategoryCarousel = () => {
                     <div className="absolute inset-0 rounded-full shadow-inner z-10 pointer-events-none" />
 
                     <img
-                      src={item.image}
+                      src={`${img_url}${item.image}`}
                       alt={item.name}
                       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                     />
@@ -142,12 +125,13 @@ const CategoryCarousel = () => {
                 </h3>
 
                 <p className="text-xs text-gray-500 mt-2 tracking-wide uppercase">
-                  {item.count}
+                  {item?.product?.length}
                 </p>
               </Link>
             </motion.div>
           ))}
         </motion.div>
+)}
       </div>
     </section>
   );

@@ -1,103 +1,119 @@
-"use client";
-
-import React, { useMemo, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+"use client"
+import { base_url, img_url } from '@/app/components/Store/utils'
+import axios from 'axios'
+import Link from 'next/link'
+import { useParams } from 'next/navigation'
+import React, { useEffect, useMemo, useState } from 'react'
+import { FaArrowLeft, FaArrowRight, FaCheck, FaChevronLeft, FaChevronRight, FaExpand, FaHeart, FaLeaf, FaMinus, FaPlus, FaRegHeart, FaShieldAlt, FaStar, FaTimes, FaTruck } from 'react-icons/fa'
+import { IoIosArrowForward } from 'react-icons/io'
 import { AnimatePresence, motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs } from "swiper/modules";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
+import Image from 'next/image'
+import RelatedProduct from './RelatedProduct'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleWishlist } from '@/app/components/Store/slices/wishlistSlice'
+import { toast } from 'react-toastify'
+axios.defaults.withCredentials = true;
 
-import {
-  FaArrowLeft,
-  FaArrowRight,
-  FaCheck,
-  FaChevronLeft,
-  FaChevronRight,
-  FaExpand,
-  FaHeart,
-  FaLeaf,
-  FaMinus,
-  FaPlus,
-  FaRegHeart,
-  FaShieldAlt,
-  FaStar,
-  FaTimes,
-  FaTruck,
-} from "react-icons/fa";
+const page = () => {
 
-import { IoIosArrowForward } from "react-icons/io";
 
-import { staticProducts } from "../../data/products";
+const {slug} = useParams()
+const [product,setProduct]=useState(null)
+const [thumbsSwiper, setThumbsSwiper] = useState(null);
+const [activeImage, setActiveImage] = useState(0);
+const [selectedSize, setSelectedSize] = useState();
+const [quantity, setQuantity] = useState(1);
+const [addedToCart, setAddedToCart] = useState(false);
+const [activeAccordion, setActiveAccordion] = useState(0);
+const [previewOpen, setPreviewOpen] = useState(false);
+const [loading, setLoading] = useState(true);
+const {items:wishlisted} = useSelector(state=>state.wishlist)
+const  dispatch = useDispatch()
 
-const accordionItems = [
-  { id: "description", title: "Product Description" },
-  { id: "ingredients", title: "Ingredients" },
-  { id: "usage", title: "How to Use" },
-  { id: "nutrition", title: "Nutrition Information" },
-  { id: "storage", title: "Storage & Shelf Life" },
-  { id: "shipping", title: "Shipping & Returns" },
-];
 
-const ProductDetailPage = () => {
-  const params = useParams();
-  const slug = params?.slug;
 
-  const product = useMemo(
-    () => staticProducts.find((item) => item.slug === slug),
-    [slug],
-  );
 
-  const productImages = useMemo(() => {
-    if (!product) return [];
 
-    if (Array.isArray(product.images) && product.images.length > 0) {
-      return product.images;
+  const cartParam = useMemo(() => {
+    return encodeURIComponent(JSON.stringify([{productid:product?._id,variantid:selectedSize?._id,quantity,price:selectedSize?.mrp}]));
+  }, [ product,selectedSize,quantity]);
+
+
+   const fetchProduct= async()=>{
+    try {
+      setLoading(true)
+        const response = await axios.get(`${base_url}/cache/product/single/${slug}`);
+        const data = await response.data;
+        if(data.success){
+setProduct(data.product)
+setSelectedSize(data.product.variants[0])
+        }else{
+            setProduct(null)
+        }
+    } catch (error) {
+         setProduct(null)
+    }finally{
+      setLoading(false)
     }
+      }
+useEffect(()=>{
+    fetchProduct()
+},[slug])
 
-    return product.image ? [product.image] : [];
-  }, [product]);
 
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const [activeImage, setActiveImage] = useState(0);
-  const [previewOpen, setPreviewOpen] = useState(false);
 
-  const [selectedSize, setSelectedSize] = useState(
-    product?.sizes?.[0] || "100g",
-  );
 
-  const [quantity, setQuantity] = useState(1);
-  const [wishlisted, setWishlisted] = useState(false);
-  const [addedToCart, setAddedToCart] = useState(false);
-  const [activeAccordion, setActiveAccordion] =
-    useState("description");
 
-  const [pincode, setPincode] = useState("");
-  const [deliveryMessage, setDeliveryMessage] = useState("");
 
-  const relatedProducts = useMemo(() => {
-    if (!product) return [];
 
-    const sameCategory = staticProducts.filter(
-      (item) =>
-        item.category === product.category &&
-        item.slug !== product.slug,
+  const handleAddToCart = async (e) => {
+    try {
+  
+  const FullData={
+    productid:product._id,variantid:selectedSize._id ,quantity
+  }
+
+const response = await axios.post(`${base_url}/cart/add`,FullData);
+const data = await response.data;
+if(data.success){
+ toast.success(data.message) 
+ setAddedToCart(true);
+}
+
+  console.log(FullData)
+} catch (error) {
+  
+}finally{
+
+}
+
+
+
+
+
+    // setTimeout(() => {
+    //   setAddedToCart(false);
+    // }, 2500);
+  };
+
+
+if(loading){
+ return (
+      <main className="flex min-h-screen items-center justify-center bg-[#FDFBF7] px-4">
+        <div className="max-w-md text-center">
+       Loading........
+
+        </div>
+      </main>
     );
+}
 
-    const otherProducts = staticProducts.filter(
-      (item) =>
-        item.category !== product.category &&
-        item.slug !== product.slug,
-    );
-
-    return [...sameCategory, ...otherProducts].slice(0, 4);
-  }, [product]);
-
-  if (!product) {
+ if (!product) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#FDFBF7] px-4">
         <div className="max-w-md text-center">
@@ -121,82 +137,9 @@ const ProductDetailPage = () => {
     );
   }
 
-  const originalPrice = Number(
-    String(product.oldPrice || product.price).replace(/[^0-9.]/g, ""),
-  );
-
-  const sellingPrice = Number(
-    String(product.price).replace(/[^0-9.]/g, ""),
-  );
-
-  const savingAmount = Math.max(originalPrice - sellingPrice, 0);
-
-  const discountPercentage =
-    originalPrice > sellingPrice
-      ? Math.round(
-          ((originalPrice - sellingPrice) / originalPrice) * 100,
-        )
-      : 0;
-
-  const handleAddToCart = () => {
-    setAddedToCart(true);
-
-    setTimeout(() => {
-      setAddedToCart(false);
-    }, 2500);
-  };
-
-  const handleDeliveryCheck = () => {
-    if (!/^[1-9][0-9]{5}$/.test(pincode)) {
-      setDeliveryMessage("Please enter a valid 6-digit pincode.");
-      return;
-    }
-
-    setDeliveryMessage(
-      "Delivery is available. Estimated arrival within 3–5 business days.",
-    );
-  };
-
-  const getAccordionContent = (itemId) => {
-    switch (itemId) {
-      case "description":
-        return product.description;
-
-      case "ingredients":
-        return (
-          product.ingredients ||
-          "Carefully selected spices and natural ingredients blended for authentic flavour."
-        );
-
-      case "usage":
-        return (
-          product.usage ||
-          "Use according to taste while preparing tea, curries, gravies or everyday Indian dishes."
-        );
-
-      case "nutrition":
-        return (
-          product.nutritionalInfo ||
-          "Nutritional values may vary depending on the selected pack size and serving quantity."
-        );
-
-      case "storage":
-        return `${
-          product.storage ||
-          "Store in a cool and dry place. Keep the pack tightly sealed after opening."
-        } Shelf life: ${product.shelfLife || "12 months"}.`;
-
-      case "shipping":
-        return "Orders are usually dispatched within 1–2 business days. Returns are accepted according to our return and refund policy.";
-
-      default:
-        return "";
-    }
-  };
-
   return (
-    <main className="min-h-screen bg-[#FDFBF7] text-[#312A26]">
-      {/* Breadcrumb */}
+     <main className="min-h-screen bg-[#FDFBF7] text-[#312A26]">
+    
       <section className="border-b border-[#DDD4C8] px-4 pb-5 pt-28 md:px-12 lg:pt-32 xl:px-72">
         <div className="flex flex-wrap items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#312A26]/45">
           <Link href="/" className="hover:text-[#8B5A2B]">
@@ -215,10 +158,10 @@ const ProductDetailPage = () => {
         </div>
       </section>
 
-      {/* Product Detail */}
-      <section className="px-4 py-8 md:px-12 md:py-14 xl:px-72">
+ 
+       <section className="px-4 py-8 md:px-12 md:py-14 xl:px-72">
         <div className="grid grid-cols-1 gap-10 xl:grid-cols-[1.05fr_0.95fr] xl:gap-16">
-          {/* Image Gallery */}
+      
           <motion.div
             initial={{ opacity: 0, x: -25 }}
             animate={{ opacity: 1, x: 0 }}
@@ -226,26 +169,22 @@ const ProductDetailPage = () => {
             className="min-w-0"
           >
             <div className="relative overflow-hidden">
-              {/* {product.badge && (
-                <span className="absolute left-5 top-5 z-20 rounded-full bg-[#8B5A2B] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.18em] text-white">
-                  {product.badge}
-                </span>
-              )} */}
+            
 
               <button
                 type="button"
-                onClick={() => setWishlisted((prev) => !prev)}
+             onClick={() => dispatch(toggleWishlist(product._id))}
                 className={`absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full border bg-white/90 shadow-sm backdrop-blur transition-colors ${
-                  wishlisted
+                  wishlisted.includes(product._id)
                     ? "border-red-400 text-red-500"
                     : "border-white text-[#3A2A21] hover:bg-[#3A2A21] hover:text-white"
                 }`}
                 aria-label="Toggle wishlist"
               >
-                {wishlisted ? (
+                {wishlisted.includes(product._id) ? (
                   <FaHeart size={16} />
                 ) : (
-                  <FaRegHeart size={16} />
+                  <FaRegHeart size={16} /> 
                 )}
               </button>
 
@@ -268,7 +207,7 @@ const ProductDetailPage = () => {
                 slidesPerView={1}
                 className="product-main-swiper"
               >
-                {productImages.map((image, index) => (
+                {product.images.map((image, index) => (
                   <SwiperSlide key={`${image}-${index}`}>
                     <button
                       type="button"
@@ -279,7 +218,7 @@ const ProductDetailPage = () => {
                       className="relative block aspect-square w-full cursor-zoom-in sm:aspect-[6/5]"
                     >
                       <Image
-                        src={image}
+                        src={`${img_url}${image}`}
                         alt={`${product.name} image ${index + 1}`}
                         fill
                         priority={index === 0}
@@ -296,7 +235,7 @@ const ProductDetailPage = () => {
                 ))}
               </Swiper>
 
-              {productImages.length > 1 && (
+              {product.images.length > 1 && (
                 <>
                   <button
                     type="button"
@@ -317,12 +256,12 @@ const ProductDetailPage = () => {
               )}
 
               <span className="absolute bottom-5 left-5 z-20 rounded-full bg-[#3A2A21] px-3 py-1.5 text-[10px] font-semibold tracking-wider text-white">
-                {activeImage + 1} / {productImages.length}
+                {activeImage + 1} / {product.images.length}
               </span>
             </div>
 
-            {/* Thumbnails */}
-            {productImages.length > 1 && (
+           
+            {product.images.length > 1 && (
               <Swiper
                 modules={[Thumbs]}
                 onSwiper={setThumbsSwiper}
@@ -335,7 +274,7 @@ const ProductDetailPage = () => {
                 }}
                 className="mt-4"
               >
-                {productImages.map((image, index) => (
+                {product.images.map((image, index) => (
                   <SwiperSlide key={`thumb-${image}-${index}`}>
                     <button
                       type="button"
@@ -346,7 +285,7 @@ const ProductDetailPage = () => {
                       }`}
                     >
                       <Image
-                        src={image}
+                        src={`${img_url}${image}`}
                         alt={`${product.name} thumbnail ${index + 1}`}
                         fill
                         unoptimized
@@ -360,7 +299,7 @@ const ProductDetailPage = () => {
             )}
           </motion.div>
 
-          {/* Product Information */}
+        
           <motion.div
             initial={{ opacity: 0, x: 25 }}
             animate={{ opacity: 1, x: 0 }}
@@ -368,7 +307,7 @@ const ProductDetailPage = () => {
             className="xl:sticky xl:top-28 xl:self-start"
           >
             <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.24em] text-[#8B5A2B]">
-              {product.category}
+              {product.category.name}
             </p>
 
             <h1 className="mb-4 font-serif text-4xl leading-tight text-[#2F2118] md:text-5xl">
@@ -386,7 +325,7 @@ const ProductDetailPage = () => {
                 type="button"
                 className="text-xs text-[#312A26]/55 underline underline-offset-4"
               >
-                {product.rating} ({product.reviews} reviews)
+                {product?.rating || 4} ({product?.reviews || 21} reviews)
               </button>
 
               <span className="text-[#312A26]/20">|</span>
@@ -397,53 +336,40 @@ const ProductDetailPage = () => {
               </span>
             </div>
 
-            <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-[#DDD4C8] pb-6">
+             <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-[#DDD4C8] pb-6">
               <span className="text-3xl font-semibold text-[#3A2A21]">
-                {product.price}
+                {selectedSize.mrp}
               </span>
 
-              {product.oldPrice && (
+              {selectedSize.basePrice && (
                 <span className="text-lg text-[#3A2A21]/35 line-through">
-                  {product.oldPrice}
+                  {selectedSize.basePrice}
                 </span>
               )}
 
-              {discountPercentage > 0 && (
+              {selectedSize.mrp  < selectedSize.basePrice   && (
                 <span className="rounded-full bg-[#7A8B2E]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[#667521]">
-                  {discountPercentage}% Off
+                  {  ((( selectedSize.basePrice -  selectedSize.mrp) /  selectedSize.basePrice) * 100).toFixed(2)}% Off
                 </span>
               )}
 
-              {savingAmount > 0 && (
+             
+
+              {selectedSize.mrp  < selectedSize.basePrice && (
                 <p className="w-full text-xs text-[#667521]">
-                  You save ${savingAmount.toFixed(2)}
+                  You save ₹{(selectedSize.basePrice -  selectedSize.mrp).toFixed(2)}
                 </p>
               )}
-            </div>
+            </div> 
 
             <p className="mb-7 text-sm leading-7 text-[#312A26]/65 md:text-base">
-              {product.description}
+              {product.shortDescription}
             </p>
 
-            {/* Highlights */}
-            <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {(product.highlights || product.benefits || []).map(
-                (item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-3 text-sm text-[#312A26]/70"
-                  >
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#7A8B2E]/10 text-[#7A8B2E]">
-                      <FaCheck size={8} />
-                    </span>
+          
+           
 
-                    {item}
-                  </div>
-                ),
-              )}
-            </div>
-
-            {/* Size */}
+        
             <div className="mb-7">
               <div className="mb-3 flex items-center justify-between">
                 <p className="text-[10px] font-bold uppercase tracking-[0.18em]">
@@ -451,29 +377,29 @@ const ProductDetailPage = () => {
                 </p>
 
                 <span className="text-xs font-semibold text-[#8B5A2B]">
-                  {selectedSize}
+                  {selectedSize.attributes.value}
                 </span>
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {product.sizes.map((size) => (
+                {product.variants.map((size,ind) => (
                   <button
-                    key={size}
+                    key={ind}
                     type="button"
                     onClick={() => setSelectedSize(size)}
                     className={`min-w-[68px] rounded-lg border px-4 py-3 text-xs font-semibold transition ${
-                      selectedSize === size
+                      selectedSize.attributes.value === size.attributes.value
                         ? "border-[#3A2A21] bg-[#3A2A21] text-white"
                         : "border-[#CFC4BA] bg-white hover:border-[#3A2A21]"
                     }`}
                   >
-                    {size}
+                    {size.attributes.value}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Quantity and Cart */}
+           
             <div className="mb-4 flex gap-3">
               <div className="flex h-13 items-center overflow-hidden rounded-lg border border-[#3A2A21] bg-white">
                 <button
@@ -518,15 +444,16 @@ const ProductDetailPage = () => {
                 )}
               </button>
             </div>
-
-            <button
+<div>
+            <Link
               type="button"
-              className="mb-6 w-full rounded-lg border border-[#3A2A21] py-4 text-xs font-bold uppercase tracking-[0.18em] text-[#3A2A21] transition hover:bg-[#3A2A21] hover:text-white"
+             href={`/checkout?cart=${cartParam}&type=buy`}
+              className="mb-6 block text-center rounded-lg border border-[#3A2A21] py-4 text-xs font-bold uppercase tracking-[0.18em] text-[#3A2A21] transition hover:bg-[#3A2A21] hover:text-white"
             >
               Buy It Now
-            </button>
+            </Link>
 
-            {/* Offers */}
+      </div>
             <div className="mb-7 rounded-2xl border border-[#DDD4C8] bg-[#F4F1ED] p-5">
               <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-[#8B5A2B]">
                 Available Offers
@@ -545,7 +472,7 @@ const ProductDetailPage = () => {
               </div>
             </div>
 
-            {/* Delivery */}
+          
             <div className="mb-8 border-y border-[#DDD4C8] py-6">
               <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.18em]">
                 Check Delivery
@@ -555,54 +482,43 @@ const ProductDetailPage = () => {
                 <input
                   type="text"
                   maxLength={6}
-                  value={pincode}
-                  onChange={(event) =>
-                    setPincode(
-                      event.target.value.replace(/\D/g, ""),
-                    )
-                  }
+                  // value={pincode}
+                  // onChange={(event) =>
+                  //   setPincode(
+                  //     event.target.value.replace(/\D/g, ""),
+                  //   )
+                  // }
                   placeholder="Enter pincode"
                   className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm outline-none"
                 />
 
                 <button
                   type="button"
-                  onClick={handleDeliveryCheck}
+                  // onClick={handleDeliveryCheck}
                   className="px-5 text-xs font-bold uppercase tracking-wider text-[#8B5A2B]"
                 >
                   Check
                 </button>
               </div>
 
-              {deliveryMessage && (
+              {/* {deliveryMessage && (
                 <p className="mt-3 text-xs leading-5 text-[#667521]">
                   {deliveryMessage}
                 </p>
-              )}
+              )} */}
             </div>
 
-            {/* Product Metadata */}
-            <dl className="grid grid-cols-[100px_1fr] gap-x-5 gap-y-3 text-xs">
-              <dt className="text-[#312A26]/45">SKU</dt>
-              <dd className="font-medium">
-                {product.sku || `TAP-${product.id}`}
-              </dd>
+<div className="flex flex-wrap text-xs gap-4 ">
+{product.tags.map((tag)=><p className="text-[#312A26]/45" key={tag}>#{tag}</p>)}
 
-              <dt className="text-[#312A26]/45">Category</dt>
-              <dd>{product.category}</dd>
-
-              <dt className="text-[#312A26]/45">Origin</dt>
-              <dd>{product.origin || "India"}</dd>
-
-              <dt className="text-[#312A26]/45">Shelf Life</dt>
-              <dd>{product.shelfLife || "12 months"}</dd>
-            </dl>
+</div>
+           
           </motion.div>
         </div>
-      </section>
+      </section> 
 
-      {/* Product Information */}
-      <section className="px-4 pb-16 md:px-12 md:pb-24 xl:px-72">
+ 
+     <section className="px-4 pb-16 md:px-12 md:pb-24 xl:px-72">
         <div className="grid grid-cols-1 gap-10 border-t border-[#DDD4C8] pt-12 lg:grid-cols-[0.75fr_1.25fr]">
           <div>
             <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#8B5A2B]">
@@ -612,21 +528,26 @@ const ProductDetailPage = () => {
             <h2 className="font-serif text-3xl leading-tight text-[#2F2118] md:text-4xl">
               Everything you need to know.
             </h2>
+
+
+ <p className='py-4 text-gray-600/80' dangerouslySetInnerHTML={{__html:product.description}}></p>
+
+
           </div>
 
-          <div className="border-t border-[#DDD4C8]">
-            {accordionItems.map((item) => {
-              const active = activeAccordion === item.id;
+           <div className="border-t border-[#DDD4C8]">
+            {Object.entries(product.details).map(([key, value], index) => {
+              const active = activeAccordion === index;
 
               return (
                 <div
-                  key={item.id}
+                  key={index}
                   className="border-b border-[#DDD4C8]"
                 >
                   <button
                     type="button"
                     onClick={() =>
-                      setActiveAccordion(active ? "" : item.id)
+                      setActiveAccordion(active ? "" : index)
                     }
                     className="flex w-full items-center justify-between py-5 text-left"
                   >
@@ -637,7 +558,7 @@ const ProductDetailPage = () => {
                           : "text-[#312A26]/55"
                       }`}
                     >
-                      {item.title}
+                      {key}
                     </span>
 
                     <span className="text-xl font-light">
@@ -657,7 +578,7 @@ const ProductDetailPage = () => {
                         className="overflow-hidden"
                       >
                         <p className="max-w-3xl pb-6 text-sm leading-7 text-[#312A26]/65">
-                          {getAccordionContent(item.id)}
+                          {value}
                         </p>
                       </motion.div>
                     )}
@@ -665,12 +586,12 @@ const ProductDetailPage = () => {
                 </div>
               );
             })}
-          </div>
+          </div> 
         </div>
-      </section>
+      </section> 
 
-      {/* Trust Features */}
-      <section className="px-4 pb-20 md:px-12 xl:px-72">
+
+       <section className="px-4 pb-20 md:px-12 xl:px-72">
         <div className="grid grid-cols-1 overflow-hidden rounded-[24px] border border-[#DDD4C8] bg-white md:grid-cols-3">
           <TrustItem
             icon={FaLeaf}
@@ -691,79 +612,15 @@ const ProductDetailPage = () => {
             description="Your transactions and personal information remain protected."
           />
         </div>
-      </section>
+      </section> 
 
-      {/* Reviews */}
-      <ReviewsSection product={product} />
+ 
+      {/* <ReviewsSection product={product} /> */}
 
-      {/* Related Products */}
-      <section className="bg-[#E8E3DF]/55 px-4 py-16 md:px-12 md:py-24 xl:px-72">
-        <div className="mb-12 flex items-end justify-between gap-6">
-          <div>
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#8B5A2B]">
-              You May Also Like
-            </p>
-
-            <h2 className="font-serif text-3xl text-[#2F2118] md:text-4xl">
-              Related products.
-            </h2>
-          </div>
-
-          <Link
-            href="/products"
-            className="hidden items-center gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#8B5A2B] sm:inline-flex"
-          >
-            View All
-            <FaArrowRight size={10} />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-          {relatedProducts.map((item) => (
-            <article
-              key={item._id}
-              className="group flex flex-col rounded-xl bg-white p-3 transition-all hover:-translate-y-1 hover:shadow-lg sm:p-4"
-            >
-              <Link
-                href={`/product/${item.slug}`}
-                className="relative mb-4 aspect-square overflow-hidden rounded-lg bg-[#F5F3F0]"
-              >
-                <Image
-                  src={item.images?.[0] || item.image}
-                  alt={item.name}
-                  fill
-                  unoptimized
-                  sizes="(max-width: 640px) 50vw, 25vw"
-                  className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
-                />
-              </Link>
-
-              <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-[#8B5A2B]">
-                {item.category}
-              </p>
-
-              <Link href={`/product/${item.slug}`}>
-                <h3 className="mb-3 line-clamp-2 text-sm font-semibold leading-5 text-[#3A2A21] sm:text-base">
-                  {item.name}
-                </h3>
-              </Link>
-
-              <div className="mt-auto flex items-center gap-2">
-                <span className="font-semibold">{item.price}</span>
-
-                {item.oldPrice && (
-                  <span className="text-xs text-[#3A2A21]/40 line-through">
-                    {item.oldPrice}
-                  </span>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* Fullscreen Image Preview */}
-      <AnimatePresence>
+  <RelatedProduct catid ={product.category._id}   />
+   
+   
+       <AnimatePresence>
         {previewOpen && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -801,7 +658,7 @@ const ProductDetailPage = () => {
               className="relative h-[82vh] w-[88vw] max-w-6xl"
             >
               <Image
-                src={productImages[activeImage]}
+                src={`${img_url}${product.images[activeImage]}`}
                 alt={`${product.name} enlarged`}
                 fill
                 unoptimized
@@ -814,7 +671,7 @@ const ProductDetailPage = () => {
               type="button"
               onClick={() =>
                 setActiveImage((prev) =>
-                  prev === productImages.length - 1
+                  prev === product.images.length - 1
                     ? 0
                     : prev + 1,
                 )
@@ -825,17 +682,22 @@ const ProductDetailPage = () => {
             </button>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> 
     </main>
-  );
-};
+  )
+}
 
-const TrustItem = ({
-  icon: Icon,
-  title,
-  description,
-  border = false,
-}) => (
+export default page
+
+
+
+
+
+
+
+
+
+const TrustItem = ({icon: Icon,title,description,  border = false,}) => (
   <div
     className={`flex items-start gap-4 p-7 md:p-8 ${
       border
@@ -858,111 +720,3 @@ const TrustItem = ({
     </div>
   </div>
 );
-
-const ReviewsSection = ({ product }) => {
-  const rating = Number(product.rating || 4.8);
-
-  const ratingBars = [
-    { star: 5, value: 82 },
-    { star: 4, value: 13 },
-    { star: 3, value: 4 },
-    { star: 2, value: 1 },
-    { star: 1, value: 0 },
-  ];
-
-  return (
-    <section className="border-t border-[#DDD4C8] px-4 py-16 md:px-12 md:py-24 xl:px-72">
-      <div className="mb-10">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[#8B5A2B]">
-          Customer Feedback
-        </p>
-
-        <h2 className="font-serif text-3xl text-[#2F2118] md:text-4xl">
-          Ratings & Reviews
-        </h2>
-      </div>
-
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-          <div>
-            <div className="flex items-end gap-2">
-              <span className="font-serif text-7xl leading-none text-[#2F2118]">
-                {rating}
-              </span>
-
-              <span className="pb-2 text-xl text-[#312A26]/35">
-                /5
-              </span>
-            </div>
-
-            <div className="my-4 flex gap-1 text-[#B9832B]">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <FaStar key={index} size={14} />
-              ))}
-            </div>
-
-            <p className="text-sm text-[#312A26]/55">
-              Based on {product.reviews || 50} verified reviews
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {ratingBars.map((item) => (
-              <div
-                key={item.star}
-                className="grid grid-cols-[20px_1fr_34px] items-center gap-3"
-              >
-                <span className="text-xs font-semibold">
-                  {item.star}
-                </span>
-
-                <div className="h-2 overflow-hidden rounded-full bg-[#E8E3DF]">
-                  <div
-                    className="h-full rounded-full bg-[#3A2A21]"
-                    style={{ width: `${item.value}%` }}
-                  />
-                </div>
-
-                <span className="text-right text-[10px] text-[#312A26]/40">
-                  {item.value}%
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-[24px] bg-[#F4F1ED] p-7 md:p-10">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <p className="font-semibold text-[#3A2A21]">
-                Priya Sharma
-              </p>
-
-              <p className="text-xs text-[#312A26]/45">
-                Verified purchase
-              </p>
-            </div>
-
-            <div className="flex gap-1 text-[#B9832B]">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <FaStar key={index} size={12} />
-              ))}
-            </div>
-          </div>
-
-          <h3 className="mb-3 font-serif text-xl">
-            Excellent aroma and authentic flavour
-          </h3>
-
-          <p className="text-sm leading-7 text-[#312A26]/65">
-            The quality feels premium and the flavour is well balanced.
-            The packaging was secure, and the product was delivered on
-            time. It has become part of our everyday kitchen routine.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default ProductDetailPage;

@@ -6,9 +6,16 @@ import { FiMenu, FiX, FiChevronDown, FiChevronRight } from "react-icons/fi";
 import { FaRegHeart, FaRegUserCircle } from "react-icons/fa";
 import { LuSearch } from "react-icons/lu";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { staticProducts } from "../data/products";
+import { getCategory } from "./Store/slices/categorySlice";
+import AuthPopUp from "./LoginPopUp";
+import { toggle } from "./Store/slices/toggleUser";
+import { getUser } from "./Store/slices/userSlice";
+import { BiSolidCategoryAlt } from "react-icons/bi";
+import { base_url } from "./Store/utils";
+import axios from "axios";
 
 /* =======================
    TEMP CATEGORY DATA
@@ -292,14 +299,35 @@ const categoryData = [
 ======================= */
 
 const CategoryMegaDropdown = () => {
+  const {categories = [],error,loading} = useSelector((state) => state.categories);
+
+  const [catProduct,setCatProduct] =useState([ ])
+  const [load,setLoading]= useState(false)
   const [activeCategory, setActiveCategory] = useState(categoryData[0]);
   const [activeSubCategory, setActiveSubCategory] = useState(
     categoryData[0]?.children?.[0] || null,
   );
 
+const fetchProduct =async(cat)=>{
+try {
+  const response = await axios.get(`${base_url}/cache/product/random/${cat}`);
+  const data = await response.data;
+ if(data.success){
+  setCatProduct(data.products)
+ }else{
+  setCatProduct([])
+ }
+
+
+} catch (error) {
+  setCatProduct([])
+}
+}
+
   const handleCategoryHover = (category) => {
-    setActiveCategory(category);
-    setActiveSubCategory(category?.children?.[0] || null);
+    // setActiveCategory(category);
+    // setAct iveSubCategory(category?.children?.[0] || null);
+    fetchProduct(category)
   };
 
   const handleSubCategoryHover = (subcategory) => {
@@ -315,36 +343,65 @@ const CategoryMegaDropdown = () => {
 
       <div className="absolute left-1/2 -translate-x-1/2 pt-7 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
         <div className="w-[980px] bg-white border border-[#B9832B]/10 rounded-2xl shadow-2xl p-4">
-          <div className="grid grid-cols-[280px_320px_1fr] h-[430px] overflow-hidden">
-            {/* Main Categories */}
+          <div className="grid grid-cols-[280px_1fr] h-[430px] overflow-hidden">
+          
             <div className="border-r border-gray-100 pr-3 h-full overflow-hidden">
               <p className="text-[11px] uppercase tracking-[0.2em] text-[#B9832B] font-bold px-3 mb-3">
                 Categories
               </p>
 
              <div className="space-y-1 h-[385px] overflow-y-auto pr-1 custom-thin-scroll">
-  {categoryData.map((category) => (
+  {categories.map((category) => (
     <Link
       key={category.slug}
       href={`/products?category=${category.slug}`}
-      onMouseEnter={() => handleCategoryHover(category)}
+      onMouseEnter={() => handleCategoryHover(category.slug)}
       className={`flex items-center justify-between gap-3 min-h-[42px] px-3 py-2 rounded-lg text-sm normal-case tracking-normal transition-all duration-200 ${
-        activeCategory?.slug === category.slug
+        activeCategory === category.slug
           ? "bg-[#B9832B]/10 text-[#B9832B]"
           : "text-gray-700 hover:bg-gray-50 hover:text-[#B9832B]"
       }`}
     >
       <span className="line-clamp-1">{category.name}</span>
-      {category.children?.length > 0 && (
-        <FiChevronRight size={15} className="shrink-0" />
-      )}
+      {/* {category.children?.length > 0 && (
+      )} */}
+      <FiChevronRight size={15} className="shrink-0" />
     </Link>
   ))}
 </div>
             </div>
 
+
+<div className="w-full ">
+
+{catProduct?.length == 0 ? <div className="h-full w-full bg-gray-50 flex justify-center items-center"> 
+
+
+<div className="flex flex-col gap-4 items-center">
+
+<BiSolidCategoryAlt className="text-5xl " />
+
+<p>Hover Category For Products </p>
+
+  </div>
+
+
+</div> : <div> 
+
+
+
+
+
+
+</div> }
+
+
+
+</div>
+
+
             {/* Sub Categories */}
-            <div className="border-r border-gray-100 px-4 h-full overflow-hidden">
+            {/* <div className="border-r border-gray-100 px-4 h-full overflow-hidden">
               <div className="flex items-center justify-between mb-3">
                 <p className="text-[11px] uppercase tracking-[0.2em] text-[#B9832B] font-bold line-clamp-1">
                   {activeCategory?.name}
@@ -372,11 +429,11 @@ const CategoryMegaDropdown = () => {
     ))}
   </div>
 </div>
-            </div>
+            </div> */}
 
 
           {/* Third Level OR Featured Products */}
-          <div className="pl-4 h-full overflow-hidden">
+          {/* <div className="pl-4 h-full overflow-hidden">
             {activeSubCategory?.children?.length > 0 ? (
               <>
                 <p className="text-[11px] uppercase tracking-[0.18em] text-[#B9832B] font-bold mb-3 line-clamp-1">
@@ -427,7 +484,7 @@ const CategoryMegaDropdown = () => {
                 </div>
               </>
             )}
-          </div>
+          </div> */}
           </div>
         </div>
       </div>
@@ -739,12 +796,21 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const cart = useSelector((state) => state.cart.items);
+    const [cartCount,setCartCount]=useState(0)
   const wishlist = useSelector((state) => state.wishlist.items);
+const {showLogin} = useSelector(state=>state.toggleUser)
+ const {isUser,user} = useSelector(state=>state.user)
+ const dispatch = useDispatch()
+
 
   const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMenu = () => setIsMobileMenuOpen(false);
 
   useEffect(() => {
+
+dispatch(getCategory())
+dispatch(getUser())
+
     const handleScroll = () => {
       if (window.scrollY > 20) {
         setIsScrolled(true);
@@ -757,7 +823,19 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(()=>{
+if(isUser){
+ setCartCount(user?.cartCount) 
+}else{
+  setCartCount(cart.length)
+}
+
+  },[isUser,user?.cartCount])
   return (
+    <>
+{showLogin &&
+  <AuthPopUp />
+}
     <header
       className={`fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out text-gray-200 
         ${isScrolled ? "top-7 px-4 md:px-12  xl:px-32" : "top-0  px-4 md:px-12 lg:px-0 xl:px-0"}`}
@@ -865,13 +943,21 @@ const Header = () => {
                 </span>
               )}
             </Link>
-
+{isUser ? 
             <Link
               href="/profile"
               className="hover:text-[#B9832B] transition-colors duration-300"
             >
               <FaRegUserCircle size={20} />
-            </Link>
+            </Link> 
+            : <div
+           className="hover:text-[#B9832B] transition-colors duration-300"
+              onClick={()=>dispatch(toggle(true))}
+              
+              >
+                <FaRegUserCircle  size={20}/>
+              </div>
+              }
           </div>
         </nav>
 
@@ -886,12 +972,20 @@ const Header = () => {
   <LuSearch size={20} />
 </button>
         
-          <Link
+       {isUser  ?    <Link
             href="/profile"
             className="hover:text-[#B9832B] transition-colors duration-300"
           >
             <FaRegUserCircle size={20} />
-          </Link>
+          </Link> 
+          : <div
+           className="hover:text-[#B9832B] transition-colors duration-300"
+              onClick={()=>dispatch(toggle(true))}
+              
+              >
+                <FaRegUserCircle  size={20}/>
+              </div>
+              }
 
           <Link
             href="/wishlist"
@@ -968,10 +1062,18 @@ const Header = () => {
               <Link href="/wishlist" onClick={closeMenu}>
                 <FaRegHeart size={28} />
               </Link>
+{isUser ? 
 
               <Link href="/profile" onClick={closeMenu}>
                 <FaRegUserCircle size={28} />
-              </Link>
+              </Link> 
+: <div
+              onClick={()=>dispatch(toggle(true))}
+              
+              >
+                <FaRegUserCircle  size={28}/>
+              </div>
+              }
             </div>
           </div>
         </div>
@@ -982,6 +1084,7 @@ const Header = () => {
   onClose={() => setIsSearchOpen(false)}
 />
     </header>
+    </>
   );
 };
 

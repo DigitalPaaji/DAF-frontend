@@ -5,68 +5,45 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { staticProducts } from "../data/products";
 
-const tabs = [
-  "All",
-  "Tea Masala",
-  "Kitchen Masalas",
-  "Pickle Masala",
-  "Flours",
-  "Pure Spices",
-  "Pickles",
-  "Tadka Gravy",
-];
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { base_url } from "./Store/utils";
+import ProductCart2 from "./ProductCart2"
 
-const StarRating = ({ rating = 0, reviews = 0 }) => {
-  const numericRating = Number(rating) || 0;
-
-  return (
-    <div className="flex items-center justify-center gap-1 mb-2">
-      <div className="flex text-[#D4AF37]">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <svg
-            key={index}
-            className={`w-3 h-3 ${
-              index < Math.floor(numericRating)
-                ? "fill-current"
-                : "text-gray-300 fill-current"
-            }`}
-            viewBox="0 0 20 20"
-            aria-hidden="true"
-          >
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-        ))}
-      </div>
-
-      <span className="text-[10px] text-gray-500">
-        ({reviews || 0})
-      </span>
-    </div>
-  );
-};
 
 const ProductSection = () => {
   const [activeTab, setActiveTab] = useState("All");
-  const [visibleCount, setVisibleCount] = useState(4);
+const {categories = [],error,loading} = useSelector((state) => state.categories);
+const [allProduct,setAllProduct]=useState([])
+const fetchProduct =async(cat)=>{
+try {
+  const response = await axios.get(`${base_url}/cache/product/random/${cat}`);
+  const data = await response.data;
+ if(data.success){
+  setAllProduct(data.products)
+ }else{
+  setAllProduct([])
+ }
+
+
+} catch (error) {
+  setAllProduct([])
+}
+}
+
+
+
+
 
   useEffect(() => {
-    setVisibleCount(4);
+    // setVisibleCount(4);
+    fetchProduct(activeTab)
   }, [activeTab]);
 
-  const filteredProducts = useMemo(() => {
-    if (activeTab === "All") {
-      return staticProducts;
-    }
 
-    return staticProducts.filter(
-      (product) => product.category === activeTab,
-    );
-  }, [activeTab]);
 
-  const displayedProducts = filteredProducts.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredProducts.length;
+
 
   const handleAddToCart = (product) => {
     const cartItem = {
@@ -77,10 +54,7 @@ const ProductSection = () => {
 
     console.log("Add to cart:", cartItem);
 
-    // Connect your cart context or cart API here.
-    //
-    // Example:
-    // addToCart(cartItem);
+ 
   };
 
   return (
@@ -104,7 +78,7 @@ const ProductSection = () => {
       />
 
       <div className="px-4 md:px-12 xl:px-72 relative z-10">
-        {/* Heading */}
+     
         <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
@@ -129,19 +103,36 @@ const ProductSection = () => {
 
           {/* Category Tabs */}
           <div className="flex flex-wrap justify-center gap-4 md:gap-8">
-            {tabs.map((tab) => (
-              <button
-                key={tab}
+
+ <button
+             
+            
                 type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`text-sm md:text-base font-medium capitalize tracking-wider transition-all duration-300 pb-1 border-b-2 ${
-                  activeTab === tab
+                onClick={() => setActiveTab("All")}
+                className={`text-sm  cursor-pointer md:text-base font-medium capitalize tracking-wider transition-all duration-300 pb-1 border-b-2 ${
+                  activeTab === "All"
                     ? "border-[#9C6B44] text-[#9C6B44]"
                     : "border-transparent text-gray-500 hover:text-[#3A2A21]"
                 }`}
                 style={{ fontFamily: "'Oswald', sans-serif" }}
               >
-                {tab}
+         All
+              </button>
+
+
+            {categories?.map((category,ind) => (
+              <button
+                key={ind}
+                type="button"
+                onClick={() => setActiveTab(category._id)}
+                className={` cursor-pointer text-sm md:text-base font-medium capitalize tracking-wider transition-all duration-300 pb-1 border-b-2 ${
+                  activeTab === category._id
+                    ? "border-[#9C6B44] text-[#9C6B44]"
+                    : "border-transparent text-gray-500 hover:text-[#3A2A21]"
+                }`}
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
+                {category.name}
               </button>
             ))}
           </div>
@@ -153,106 +144,32 @@ const ProductSection = () => {
           className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-8 gap-y-10 sm:gap-y-16"
         >
           <AnimatePresence mode="popLayout">
-            {displayedProducts.map((product) => (
+
+{allProduct.length > 0  &&
+
+allProduct.map((product) => (
               <motion.article
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.4 }}
-                key={product._id || product.id}
+                key={product._id }
                 className="flex flex-col items-center group text-center bg-white/40 p-3 sm:p-4 rounded-xl hover:bg-white/80 transition-colors duration-500 shadow-sm hover:shadow-md"
               >
-                {/* Product Image */}
-                <Link
-                  href={product.href || `/product/${product.slug}`}
-                  className="w-full aspect-square mb-3 flex items-center justify-center relative cursor-pointer"
-                  aria-label={`View ${product.name}`}
-                >
-                  {product.badge && (
-                    <div className="absolute top-0 left-0 z-20 px-2 py-0.5 text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-white rounded-sm shadow-sm bg-[#9C6B44]">
-                      {product.badge}
-                    </div>
-                  )}
 
-                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2/3 h-3 bg-black/10 blur-md rounded-full" />
+<ProductCart2  product={product}/>
 
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    unoptimized
-                    sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                    className="object-contain p-3 sm:p-5 mix-blend-multiply group-hover:-translate-y-1.5 transition-transform duration-500 ease-out relative z-10"
-                  />
-                </Link>
-
-                {/* Rating */}
-                <div className="mb-1">
-                  <StarRating
-                    rating={product.rating}
-                    reviews={product.reviews}
-                  />
-                </div>
-
-                {/* Product Name */}
-                <Link
-                  href={product.href || `/product/${product.slug}`}
-                  className="block"
-                >
-                  <h3
-                    className="text-xs sm:text-sm xl:text-base font-bold uppercase tracking-wider text-[#3A2A21] mb-0.5 line-clamp-1 transition-colors hover:text-[#9C6B44]"
-                    style={{ fontFamily: "'Oswald', sans-serif" }}
-                  >
-                    {product.name}
-                  </h3>
-                </Link>
-
-                {/* Subtitle */}
-                {product.subtitle && (
-                  <p className="text-[10px] sm:text-xs text-gray-600 leading-5 mb-1 line-clamp-1">
-                    {product.subtitle}
-                  </p>
-                )}
-
-                {/* Category */}
-                <p className="text-[9px] sm:text-xs text-gray-500 uppercase tracking-wider mb-2">
-                  {product.category}
-                </p>
-
-                {/* Description */}
-                <p className="hidden sm:block min-h-[42px] text-xs leading-5 text-gray-600 mb-3 line-clamp-2">
-                  {product.description}
-                </p>
-
-                {/* Price */}
-                <div className="flex flex-wrap items-center justify-center gap-2 mb-3">
-                  <span className="text-[#9C6B44] text-sm font-bold">
-                    {product.price}
-                  </span>
-
-                  {product.oldPrice && (
-                    <span className="text-xs text-gray-400 line-through">
-                      {product.oldPrice}
-                    </span>
-                  )}
-                </div>
-
-                {/* Add To Cart */}
-                <button
-                  type="button"
-                  onClick={() => handleAddToCart(product)}
-                  className="mt-auto w-full border border-[#3A2A21] text-[#3A2A21] text-xs sm:text-base py-2 rounded-md hover:bg-[#3A2A21] transition-all hover:text-white duration-300"
-                >
-                  + Add to Cart
-                </button>
               </motion.article>
-            ))}
+            ))
+
+}
+
           </AnimatePresence>
         </motion.div>
 
         {/* Empty Category */}
-        {displayedProducts.length === 0 && (
+        {allProduct.length === 0 && (
           <div className="py-16 text-center">
             <p className="text-lg text-gray-600">
               No products are currently available in this category.
@@ -260,8 +177,8 @@ const ProductSection = () => {
           </div>
         )}
 
-        {/* View More */}
-        {hasMore && (
+     
+        {/* {hasMore && (
           <div className="mt-16 text-center">
             <button
               type="button"
@@ -273,7 +190,7 @@ const ProductSection = () => {
               View More
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </section>
   );
