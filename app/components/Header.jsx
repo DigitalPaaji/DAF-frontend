@@ -14,8 +14,9 @@ import AuthPopUp from "./LoginPopUp";
 import { toggle } from "./Store/slices/toggleUser";
 import { getUser } from "./Store/slices/userSlice";
 import { BiSolidCategoryAlt } from "react-icons/bi";
-import { base_url } from "./Store/utils";
+import { base_url, img_url } from "./Store/utils";
 import axios from "axios";
+import Image from "next/image";
 
 /* =======================
    TEMP CATEGORY DATA
@@ -355,7 +356,7 @@ try {
     <Link
       key={category.slug}
       href={`/products?category=${category.slug}`}
-      onMouseEnter={() => handleCategoryHover(category.slug)}
+      onMouseEnter={() => handleCategoryHover(category._id)}
       className={`flex items-center justify-between gap-3 min-h-[42px] px-3 py-2 rounded-lg text-sm normal-case tracking-normal transition-all duration-200 ${
         activeCategory === category.slug
           ? "bg-[#B9832B]/10 text-[#B9832B]"
@@ -386,14 +387,80 @@ try {
   </div>
 
 
-</div> : <div> 
+</div> : <div className=" overflow-y-auto divide-neutral-200 border-y border-neutral-200">
+  {catProduct.map((item) => {
+    const activeVariants = item.variants?.filter((variant) => variant.isActive) || [];
 
+    const startingPrice = activeVariants.length > 0 ? Math.min(...activeVariants.map((variant) => Number(variant.mrp))): 0;
 
+    const startingBasePrice = activeVariants.length > 0 ? Math.min( ...activeVariants.map((variant) => Number(variant.basePrice))): 0;
 
+    return (
+      <Link
+        href={`/product/${item.slug}`}
+        key={item._id}
+        className="group flex items-center gap-4 py-5 sm:gap-6 sm:py-7"
+      >
+        
+        <div className="relative h-24 w-20 shrink-0 overflow-hidden bg-neutral-100 sm:h-32 sm:w-28">
+          <Image
+            src={`${img_url}${item.thumbnail}`}
+            alt={item.name}
+            fill
+            sizes="(max-width: 640px) 80px, 112px"
+            className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
 
+     
+        <div className="min-w-0 flex-1">
+          <p className="mb-1 text-xs font-medium uppercase tracking-[0.15em] text-neutral-500">
+            {item.category?.name}
+          </p>
 
+          <h3 className="line-clamp-2 text-base font-semibold text-neutral-900 transition-colors group-hover:text-amber-700 sm:text-xl">
+            {item.name}
+          </h3>
 
-</div> }
+          
+          {activeVariants.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {activeVariants.map((variant) => (
+                <span
+                  key={variant._id}
+                  className="text-xs text-neutral-500"
+                >
+                  {variant.attributes?.value}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        
+        <div className="shrink-0 text-right">
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-base font-semibold text-neutral-900 sm:text-lg">
+              ₹{startingPrice.toLocaleString("en-IN")}
+            </span>
+
+            {startingBasePrice > startingPrice && (
+              <span className="hidden text-sm text-neutral-400 line-through sm:inline">
+                ₹{startingBasePrice.toLocaleString("en-IN")}
+              </span>
+            )}
+          </div>
+
+          <p className="mt-1 text-xs text-neutral-500">Starting price</p>
+
+          <span className="mt-3 inline-block text-lg text-neutral-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-neutral-900">
+            →
+          </span>
+        </div>
+      </Link>
+    );
+  })}
+</div>}
 
 
 

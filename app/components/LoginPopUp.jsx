@@ -94,7 +94,7 @@ location.reload()
           {/* Header */}
           <div className="mb-7 text-center">
             <div className="mx-auto mb-3 flex h-16 w-16 p-2 items-center justify-center rounded-full border border-[#d9bb78] bg-[#f4e4bc] text-2xl shadow-sm">
-            <img src="/images/logo.webp"  className="" />
+            <img src="/Images/logo.webp"  className="" />
             </div>
             {/* <p className="font-serif text-3xl font-semibold tracking-[0.12em] text-[#244d38]">
               MASALA LEAF
