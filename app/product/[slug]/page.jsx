@@ -17,6 +17,8 @@ import RelatedProduct from './RelatedProduct'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleWishlist } from '@/app/components/Store/slices/wishlistSlice'
 import { toast } from 'react-toastify'
+import { addinCart } from '@/app/components/Store/slices/userSlice'
+import { addToCart } from '@/app/components/Store/slices/cartSlice'
 axios.defaults.withCredentials = true;
 
 const page = () => {
@@ -34,9 +36,10 @@ const [previewOpen, setPreviewOpen] = useState(false);
 const [loading, setLoading] = useState(true);
 const {items:wishlisted} = useSelector(state=>state.wishlist)
 const  dispatch = useDispatch()
+  const {isUser} = useSelector(state=>state.user)
 
 
-
+console.log(isUser,"isUser")
 
 
   const cartParam = useMemo(() => {
@@ -67,11 +70,23 @@ useEffect(()=>{
 
 
 
+const handleAddToCart=()=>{
+if(isUser){
+  handleAddToCart2()
+}
+else{
+  const FullData={
+    productid:product._id,variantid:selectedSize._id ,quantity
+  }
+  dispatch(addToCart(FullData))
+  toast.success("Add to cart")
+   setAddedToCart(true);
+}
+}
 
 
 
-
-  const handleAddToCart = async (e) => {
+  const handleAddToCart2 = async (e) => {
     try {
   
   const FullData={
@@ -83,11 +98,12 @@ const data = await response.data;
 if(data.success){
  toast.success(data.message) 
  setAddedToCart(true);
+ dispatch(addinCart())
 }
 
   console.log(FullData)
 } catch (error) {
-  
+  toast.error(error?.response?.data?.message)
 }finally{
 
 }
@@ -338,12 +354,12 @@ if(loading){
 
              <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-[#DDD4C8] pb-6">
               <span className="text-3xl font-semibold text-[#3A2A21]">
-                {selectedSize.mrp}
+                ₹{selectedSize.mrp}
               </span>
 
               {selectedSize.basePrice && (
                 <span className="text-lg text-[#3A2A21]/35 line-through">
-                  {selectedSize.basePrice}
+                  ₹{selectedSize.basePrice}
                 </span>
               )}
 

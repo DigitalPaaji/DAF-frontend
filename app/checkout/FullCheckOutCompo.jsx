@@ -5,13 +5,11 @@ import CheckoutProduct from './CheckoutProduct';
 import AddressCompo from './AddressCompo';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { base_url } from "../components/Store/utils";
 
-// import { removeinCartall } from '@/components/store/userSlice';
 import { useDispatch } from 'react-redux';
+import { removeinCartall } from '../components/Store/slices/userSlice';
+import { base_url } from '../components/Store/utils';
 axios.defaults.withCredentials = true
-
-
 const FullCheckOutCompo = () => {
 const searchParams = useSearchParams();
   const cartParam = JSON.parse(searchParams.get("cart"));
@@ -21,12 +19,13 @@ const searchParams = useSearchParams();
 const [checkoutData,setCheckoutData] =useState({
   address:"",
   price:"",
-  discount:"",
+  discount:0,
   totalPrice:"",
-  items:[]
+  items:[],
+  couponCode:"",
 
 })
-
+console.log("Razorpay loaded:", checkoutData);
 
   
 const loadRazorpay = () => {
@@ -73,7 +72,7 @@ const handleSubmitPayment = async () => {
   
     const scriptLoaded = await loadRazorpay();
 
-    console.log("Razorpay loaded:", scriptLoaded);
+    console.log("Razorpay loaded:", checkoutData);
     console.log("window.Razorpay:", window.Razorpay);
 
     if (!scriptLoaded || !window.Razorpay) {
@@ -131,7 +130,7 @@ const handleSubmitPayment = async () => {
       key: data.key,
       amount: data.order.amount,
       currency: data.order.currency || "INR",
-      name: "DAF",
+      name: "D.A.F",
       description: "Order Payment",
       order_id: data.order.id,
 
@@ -166,8 +165,10 @@ const handleSubmitPayment = async () => {
 
           if (verifyResponse.data.success) {
             toast.success("Payment successful");
+if(ordertype=="cart"){
 
-            // dispatch(removeinCartall());
+  dispatch(removeinCartall());
+}
             router.push(`/profile`);
           } else {
             toast.error(
@@ -219,19 +220,18 @@ const handleSubmitPayment = async () => {
 
 
   return (
-    <div className='min-h-screen pt-10'>
-              {/* <div className="h-14 bg-gradient-to-r from-[#210102] via-[#62080d] to-[#210102] sm:h-16" /> */}
+    <div className='min-h-screen'>
+              {/* <div className=" bg-gradient-to-r from-[#210102] via-[#62080d] to-[#210102] h-[75px]" /> */}
+<div className='h-[70px]' />
 
-
-
-
+ 
 
 
         
-        <div className='px-4 md:px-12 lg:px-24 xl:px-40 py-24 grid lg:grid-cols-3 gap-5'>
+        <div className=' bg-[#f8f7f4] px-4 py-10 sm:px-6 lg:px-12 lg:py-16  grid lg:grid-cols-3 gap-5'>
 <div className='col-span-2'>
 
-<AddressCompo  selectedAddressId={checkoutData.address} setSelectedAddressId={(itm)=>setCheckoutData(prev=>({...prev,address:itm}))}   />
+<AddressCompo  selectedAddressId={checkoutData.address} setSelectedAddressId={(itm)=>setCheckoutData(prev=>({...prev,address:itm}))}    />
 
 
 
@@ -239,8 +239,8 @@ const handleSubmitPayment = async () => {
     </div>
 
 
-    <div className='col-span-1'>
-      <CheckoutProduct handelSubmitPayment={handleSubmitPayment} product={cartParam}  setCheckoutData={(item)=>setCheckoutData(prev=>({...prev,...item}))}/>
+    <div className='col-span-1 w-full'>
+      <CheckoutProduct handelSubmitPayment={handleSubmitPayment} product={cartParam} checkoutData={checkoutData}   setCheckoutData={(item)=>setCheckoutData(prev=>({...prev,...item}))}/>
     </div>
 
 

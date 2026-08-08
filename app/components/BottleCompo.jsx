@@ -2,23 +2,23 @@ import React from 'react';
 
 const BottleCompo = ({ bottleImg, lableImg, accentClass }) => {
   return (
-    <div className="relative w-40 h-56 banner">
+    <div className="relative w-40  banner">
 
       {/* Background Label Container */}
-      <div className={`absolute bottom-10 overflow-hidden  w-full ${accentClass}`}>
+      <div className={`absolute overflow-hidden top-[30%]   w-full ${accentClass}`}>
         <img 
           src={`/Banner/${lableImg}`} 
           alt="Product Label" 
-          // Kept your base left offset, but animation is now handled via transform
-          className="max-w-[70rem] max-h-[7rem] relative -left-[145%] labelimg pointer-events-none" 
+          
+          className="max-w-[70rem]  max-h-[8.5rem] relative -left-[100%] labelimg  pointer-events-none" 
         />
       </div>
 
-      {/* Bottle Foreground */}
+    
       <img
         src={`/Banner/${bottleImg}`}
         alt="Bottle"
-        className="relative w-40 -z-10 drop-shadow-2xl" /* Added drop shadow for depth */
+        className="relative w-44   -z-10 drop-shadow-2xl bannerImage " /* Added drop shadow for depth */
       />
 
     </div>

@@ -10,8 +10,8 @@ const slides = [
     title: "Masala Chai",
     subtitle: "Authentic Indian Blend",
     description: "Experience the warmth of traditional aromatic spices blended flawlessly with bold Assam tea leaves.",
-    labelImg: "pack1.jpeg",
-    jarImg: "apple-jar.png",
+    labelImg: "label1.webp",
+    jarImg: "blue-lavender-jar.webp",
     bgColor: "#E8E3DF", // Soft Sand
     accent: "bg-orange-800",
     textColor: "text-orange-950",
@@ -21,7 +21,7 @@ const slides = [
     title: "Ginger Turmeric",
     subtitle: "Golden Immunity Boost",
     description: "A restorative and earthy fusion of warming ginger and vibrant turmeric to soothe your senses.",
-    labelImg: "pack1.jpeg",
+    labelImg: "label2.webp",
     jarImg: "blue-lavender-jar.webp",
     bgColor: "#F4EBD0", // Soft Gold
     accent: "bg-yellow-700",
@@ -32,8 +32,8 @@ const slides = [
     title: "Cardamom Rose",
     subtitle: "Elegant Floral Fusion",
     description: "Indulge in a delicate, luxurious brew where sweet green cardamom meets gentle rose petals.",
-    labelImg: "pack1.jpeg",
-    jarImg: "jar1.webp",
+    labelImg: "label3.webp",
+    jarImg: "blue-lavender-jar.webp",
     bgColor: "#EADEE0", // Soft Rose
     accent: "bg-rose-800",
     textColor: "text-rose-950",
@@ -100,7 +100,7 @@ const HeroSlider = () => {
               <motion.div
                 key={current}
                 initial={{ opacity: 0, y: 100, rotate: -5 }}
-                animate={{ opacity: 1, y: 0, rotate: 0 }}
+                animate={{ opacity: 1, y: -20, rotate: 0 }}
                 exit={{ opacity: 0, y: -100, rotate: 5 }}
                 transition={{ duration: 0.8, type: "spring", damping: 15 }}
                 className="relative cursor-pointer"

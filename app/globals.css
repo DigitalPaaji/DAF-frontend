@@ -74,13 +74,34 @@ height: 0px;
 } */
 
 /* Slides the label inside the bottle */
+
+
+/* .bannerImage {
+  animation: bannerImg 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+@keyframes bannerImg {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  50% {
+    transform: rotateY(180deg);
+  }
+
+  100% {
+    transform: rotateY(360deg);
+  }
+} */
+
+
+
 .labelimg {
   animation: lab 6s ease-in-out infinite ;
   will-change: transform;
 }
-
-
-
 
 @keyframes lab {
   0%{

@@ -14,6 +14,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useDispatch } from "react-redux";
 import { base_url ,img_url} from "../components/Store/utils";
+import { removeinCart } from "../components/Store/slices/userSlice";
 
 axios.defaults.withCredentials = true;
 gsap.registerPlugin(useGSAP);
@@ -217,7 +218,7 @@ const GetCartItem = () => {
       await fetchCart({ showLoader: false });
     } catch (error) {
       console.error("Remove cart error:", error);
-      alert(error.response?.data?.message || "Failed to remove item");
+      // alert(error.response?.data?.message || "Failed to remove item");
     } finally {
       setActionLoadingId("");
     }

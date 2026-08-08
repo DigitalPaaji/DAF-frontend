@@ -2,19 +2,24 @@
 import React, { useState } from 'react'
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
-import { img_url } from './Store/utils';
+import { base_url, img_url } from './Store/utils';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleWishlist } from './Store/slices/wishlistSlice';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { addinCart } from './Store/slices/userSlice';
+import { addToCart } from './Store/slices/cartSlice';
 
 
-const ProductCart1 = ({product,}) => {
+const ProductCart1 = ({product}) => {
   const  dispatch = useDispatch()
   const {items:wishlisted} = useSelector(state=>state.wishlist)
     
     const [selectSize,setSelectSize]=useState(product.variants[0]);
-
+const [addedToCart, setAddedToCart] = useState(false);
+const {isUser} = useSelector(state=>state.user)
 
 
      const handleVariantChange = (event) => {
@@ -28,6 +33,59 @@ const ProductCart1 = ({product,}) => {
       setSelectSize(selectedVariant);
     }
   };
+
+
+
+
+
+const handleAddToCart=()=>{
+if(isUser){
+  handleAddToCart2()
+}
+else{
+  const FullData={
+    productid:product._id,variantid:selectSize._id ,quantity:1
+  }
+  dispatch(addToCart(FullData))
+  toast.success("Add to cart")
+   setAddedToCart(true);
+}
+}
+
+
+
+  const handleAddToCart2 = async (e) => {
+    try {
+  
+  const FullData={
+    productid:product._id,variantid:selectSize._id ,quantity:1
+  }
+
+const response = await axios.post(`${base_url}/cart/add`,FullData);
+const data = await response.data;
+if(data.success){
+ toast.success(data.message) 
+ setAddedToCart(true);
+ dispatch(addinCart())
+}
+
+  console.log(FullData)
+} catch (error) {
+  toast.error(error?.response?.data?.message)
+}finally{
+
+}
+
+
+
+
+
+    // setTimeout(() => {
+    //   setAddedToCart(false);
+    // }, 2500);
+  };
+
+
   return (
     <div
                   
@@ -89,11 +147,11 @@ const ProductCart1 = ({product,}) => {
                           <div className="flex items-center justify-between gap-2 py-2">
                              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
                                <span className="text-[#3A2A21] text-base sm:text-lg font-semibold">
-                                 {selectSize?.mrp}
+                                 ₹{selectSize?.mrp}
                                </span>
    
                                <span className="text-[#3A2A21]/60 text-base line-through">
-                                 {selectSize?.basePrice}
+                                 ₹{selectSize?.basePrice}
                                </span>
                              </div>
   
@@ -120,12 +178,23 @@ const ProductCart1 = ({product,}) => {
                        </div>
    
                   
-                       <button
-                         type="button"
-                         className="w-full border border-[#3A2A21] text-[#3A2A21] text-sm sm:text-base py-2 sm:py-2.5 rounded-md hover:bg-[#3A2A21] transition-all hover:text-white duration-300"
+                       
+
+{addedToCart ?<div className='w-full'> <Link href='/cart'
+           className=" w-full block text-center border border-[#3A2A21] text-[#3A2A21] text-base py-2 sm:py-2.5 rounded-md hover:bg-[#3A2A21] transition-all hover:text-white duration-300"
+
+> Go to Cart</Link>
+</div>:
+<button
+                        
+                          onClick={handleAddToCart}
+                         className="w-full border border-[#3A2A21] text-[#3A2A21] text-base py-2 sm:py-2.5 rounded-md hover:bg-[#3A2A21] transition-all hover:text-white duration-300"
                        >
                          + Add To Cart
                        </button>
+}
+
+                       
                      </div>
                    </div>
                  </div>

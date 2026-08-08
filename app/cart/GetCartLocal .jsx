@@ -12,14 +12,13 @@ import {
   FiShoppingBag,
   FiTrash2,
 } from "react-icons/fi";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+
 
 
 import { base_url ,img_url} from "../components/Store/utils";
 import { decreaseQuantity ,removeFromCart,increaseQuantity} from "../components/Store/slices/AddtoCartLocal";
 
-gsap.registerPlugin(useGSAP);
+
 
 const initialCartData = {
   cart: [],
@@ -122,39 +121,6 @@ const cartParam = encodeURIComponent(JSON.stringify(localCart));
     };
   }, [localCart]);
 
-  useGSAP(
-    () => {
-      if (!cartData.cart.length || isLoading) return;
-
-      gsap.from(".cart-heading", {
-        y: 25,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power3.out",
-      });
-
-      gsap.from(".cart-item", {
-        y: 35,
-        opacity: 0,
-        duration: 0.65,
-        stagger: 0.1,
-        ease: "power3.out",
-      });
-
-      gsap.from(".cart-summary", {
-        x: 45,
-        opacity: 0,
-        duration: 0.7,
-        delay: 0.15,
-        ease: "power3.out",
-      });
-    },
-    {
-      scope: pageRef,
-      dependencies: [cartData.cart.length, isLoading],
-      revertOnUpdate: true,
-    }
-  );
 
   const handleIncrease = (item) => {
     if (item.quantity >= item.variant.stock) return;

@@ -39,7 +39,7 @@ const initialState = {
 
 const userSlice = createSlice({
   name: "user",
-  initialState,
+  initialState, 
 reducers:{
   addinCart:(state)=>{
     ++state.user.cartCount

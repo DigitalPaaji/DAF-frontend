@@ -1,12 +1,65 @@
 import Link from 'next/link'
-import React from 'react'
-import { img_url } from './Store/utils'
+import React, { useState } from 'react'
+import { base_url, img_url } from './Store/utils'
 import Image from 'next/image'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useDispatch, useSelector } from 'react-redux'
+import { addinCart } from './Store/slices/userSlice'
+import { addToCart } from './Store/slices/cartSlice'
 
 const ProductCart2 = ({ product }) => {
-  // Safe fallback in case variants array is empty or undefined
+    const  dispatch = useDispatch()
   const mainVariant = product?.variants?.[0] || {};
+const [addedToCart, setAddedToCart] = useState(false);
+ const {isUser} = useSelector(state=>state.user)
 
+const handleAddToCart=()=>{
+if(isUser){
+  handleAddToCart2()
+}
+else{
+  const FullData={
+    productid:product._id,variantid:mainVariant._id ,quantity:1
+  }
+  dispatch(addToCart(FullData))
+  toast.success("Add to cart")
+   setAddedToCart(true);
+}
+}
+
+
+
+  const handleAddToCart2 = async (e) => {
+    try {
+  
+  const FullData={
+    productid:product._id,variantid:mainVariant._id ,quantity:1
+  }
+
+const response = await axios.post(`${base_url}/cart/add`,FullData);
+const data = await response.data;
+if(data.success){
+ toast.success(data.message) 
+ setAddedToCart(true);
+ dispatch(addinCart())
+}
+
+  console.log(FullData)
+} catch (error) {
+  toast.error(error?.response?.data?.message)
+}finally{
+
+}
+
+
+
+
+
+    // setTimeout(() => {
+    //   setAddedToCart(false);
+    // }, 2500);
+  };
   return (
     <div className="group flex flex-col w-full h-full bg-white rounded-xl  border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-300">
       
@@ -62,16 +115,19 @@ const ProductCart2 = ({ product }) => {
         </div>
 
         {/* Add to Cart Button */}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault(); // Prevents link navigation if misclicked
-            // handleAddToCart(product)
-          }}
-          className="w-full border border-[#3A2A21] text-[#3A2A21] text-xs sm:text-sm font-medium py-2.5 rounded-lg hover:bg-[#3A2A21] hover:text-white transition-colors duration-300 active:scale-95"
-        >
-          + Add to Cart
-        </button>
+        {addedToCart ?<div className='w-full'> <Link href='/cart'
+           className=" w-full block text-center border border-[#3A2A21] text-[#3A2A21] text-base py-2 sm:py-2.5 rounded-md hover:bg-[#3A2A21] transition-all hover:text-white duration-300"
+
+> Go to Cart</Link>
+</div>:
+<button
+                        
+                          onClick={handleAddToCart}
+                         className="w-full border border-[#3A2A21] text-[#3A2A21] text-base py-2 sm:py-2.5 rounded-md hover:bg-[#3A2A21] transition-all hover:text-white duration-300"
+                       >
+                         + Add To Cart
+                       </button>
+}
       </div>
       
     </div>
