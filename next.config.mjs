@@ -10,9 +10,8 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
        {
-        protocol: "http",
-        hostname: "72.62.199.21",
-        port: "8006",
+        protocol: "https",
+        hostname: "api.draulakhfoods.com",
         pathname: "/uploads/**",
       },
     ],
