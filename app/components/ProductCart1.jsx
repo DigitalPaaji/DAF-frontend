@@ -134,8 +134,9 @@ if(data.success){
                        <div className="flex flex-col gap-3">
                          <div className="min-w-0">
                            {/* Product Name Link */}
+                           {/* leading-snug line-clamp-1 */}
                            <Link  href={`/product/${product.slug}`} className="block">
-                             <h3 className="text-[#3A2A21] text-base font-semibold leading-snug line-clamp-1 transition-colors hover:text-[#8B5A2B]">
+                             <h3 className="text-[#3A2A21] text-base font-semibold  transition-colors hover:text-[#8B5A2B]">
                                {product.name}
                              </h3>
    

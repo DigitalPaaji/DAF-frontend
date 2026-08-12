@@ -86,8 +86,9 @@ if(data.success){
       <div className="flex flex-col flex-grow text-center">
         {/* Title & Category linked to product */}
         <Link href={`/product/${product.slug}`} className="block">
+        {/* line-clamp-1 */}
           <h3
-            className="text-sm sm:text-base font-bold uppercase tracking-wider text-[#3A2A21] mb-1 line-clamp-1 transition-colors group-hover:text-[#9C6B44]"
+            className="text-sm sm:text-base font-bold uppercase tracking-wider text-[#3A2A21] mb-1  transition-colors group-hover:text-[#9C6B44]"
             style={{ fontFamily: "'Oswald', sans-serif" }}
           >
             {product.name}
