@@ -104,7 +104,7 @@ const {categories = [],error,loading} = useSelector((state) => state.categories)
                 className="group flex flex-col items-center text-center cursor-pointer"
               >
                 <div className="p-1.5 rounded-full border-2 border-transparent group-hover:border-[#9C6B44] transition-colors duration-500 mb-4">
-                  <div className="relative w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 overflow-hidden rounded-full bg-white shadow-md">
+                  <div className="relative w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 overflow-hidden rounded-full  shadow-md">
                     <div className="absolute inset-0 rounded-full shadow-inner z-10 pointer-events-none" />
 
                     <img
