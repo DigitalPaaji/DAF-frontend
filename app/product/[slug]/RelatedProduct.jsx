@@ -11,7 +11,7 @@ const [relatedProduct,setRelatedProduct]=useState([ ])
 
 const fetchProduct= async()=>{
   try {
-    const response = await axios.get(`${base_url}/cache/product/category/${catid}`);
+    const response = await axios.get(`${base_url}/cache/product/random/${catid}`);
     const data = await response.data;
     
     if(data.success){

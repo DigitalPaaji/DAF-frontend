@@ -49,6 +49,7 @@ const [totalPages, setTotalPages] = useState(1);
 
 
 
+
 const updateSearchParams =  (key, value) => {
   const updateParams = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -142,7 +143,7 @@ const updateSearchParams =  (key, value) => {
 
 useEffect(()=>{
   fetchProducts()
-},[selectedCategory,selectedSort,min,max])
+},[selectedCategory,selectedSort,min,max,currentPage])
 
 
   return (
