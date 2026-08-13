@@ -27,12 +27,12 @@ const itemVariants = {
 
 const CategoryCarousel = () => {
 const {categories = [],error,loading} = useSelector((state) => state.categories);
-
+ 
 
 
 
   return (
-    <section className="relative py-20 bg-[#F5F2EB] font-sans overflow-hidden">
+    <section className="relative py-20 text-[#312A26] font-sans overflow-hidden">
       <div className="px-4 md:px-12 lg:px-24 xl:px-40 mx-auto">
         {/* Section Header */}
           <div className="text-center mb-12 md:mb-16">
@@ -67,7 +67,7 @@ const {categories = [],error,loading} = useSelector((state) => state.categories)
 
       {/* Error Message */}
       {!loading && error && (
-        <div className="rounded-2xl border border-red-100 bg-red-50 px-6 py-10 text-center">
+        <div className="rounded-2xl border border-red-100  px-6 py-10 text-center">
           <p className="font-p text-base font-medium text-red-600">
             {typeof error === "string"
               ? error

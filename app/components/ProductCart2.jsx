@@ -7,13 +7,16 @@ import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { addinCart } from './Store/slices/userSlice'
 import { addToCart } from './Store/slices/cartSlice'
+import { FaHeart, FaRegHeart } from 'react-icons/fa'
+import { toggleWishlist } from './Store/slices/wishlistSlice'
 
 const ProductCart2 = ({ product }) => {
     const  dispatch = useDispatch()
   const mainVariant = product?.variants?.[0] || {};
 const [addedToCart, setAddedToCart] = useState(false);
+ const {items:wishlisted} = useSelector(state=>state.wishlist)
  const {isUser} = useSelector(state=>state.user)
-
+ 
 const handleAddToCart=()=>{
 if(isUser){
   handleAddToCart2()
@@ -69,7 +72,26 @@ if(data.success){
         className="relative w-full aspect-square mb-4 flex items-center justify-center overflow-hidden rounded-lg bg-[#fbf9f8]"
         aria-label={`View ${product.name}`}
       >
-        {/* Subtle ground shadow effect */}
+      <button
+                             type="button"
+                             onClick={(e) =>{e.preventDefault(), dispatch(toggleWishlist(product._id))}}
+                             className={`absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur flex items-center justify-center transition-all duration-300 ${
+                               wishlisted.includes(product._id)
+                                 ? "text-red-600"
+                                 : "text-[#3A2A21] hover:bg-[#3A2A21] hover:text-white"
+                             }`}
+                             aria-label={
+                               wishlisted.includes(product._id)
+                                 ? `Remove ${product.name} from wishlist`
+                                 : `Add ${product.name} to wishlist`
+                             }
+                           >
+                             { wishlisted.includes(product._id) ? (
+                               <FaHeart size={16} />
+                             ) : (
+                               <FaRegHeart size={16} />
+                             )}
+                           </button>
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-2/3 h-4 bg-black/10 blur-xl rounded-full" />
 
         <Image

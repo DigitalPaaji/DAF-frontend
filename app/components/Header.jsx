@@ -931,8 +931,8 @@ if(isUser){
               className={`object-contain transition-all duration-500 p-2 rounded-full 
                 ${
                   isScrolled
-                    ? "h-18 md:h-14 xl:h-20 bg-gray-50/30 backdrop-blur-3xl"
-                    : "h-18 md:h-16 xl:h-24"
+                    ? "h-18 md:h-14 xl:h-20  "
+                    : "h-18 md:h-14 xl:h-20"
                 }`}
             />
           </Link>

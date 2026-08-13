@@ -8,6 +8,8 @@ import { FaEye } from 'react-icons/fa'
 import Link from 'next/link'
 import { toggleWishlist } from '../components/Store/slices/wishlistSlice'
 
+import ProductCart2 from '../components/ProductCart2'
+
 const WishlistPage = () => {
   const wishlist = useSelector((state) => state.wishlist?.items || [])
   const [products, setProducts] = useState([])
@@ -84,65 +86,7 @@ const WishlistPage = () => {
    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 {products.map((product)=>{
 return(
-    <div key={product._id || Math.random()} 
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200 overflow-hidden flex flex-col" >
-
-
-  <div className="relative h-64 w-full bg-gray-100 p-4">
-                  <img
-                    src={`${img_url}${product.thumbnail}`}
-                    alt={product?.name || "Product"}
-                    className="w-full h-full object-cover rounded-md"
-                    onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=No+Image' }} 
-                  />
-                </div>
-        <div className="p-5 flex flex-col flex-grow">
-                 <span className="text-xs font-medium tracking-wider text-gray-500 uppercase mb-1">
-                    {product?.category?.name || "Category"}
-                  </span>
-                  
-                  <h3 className="text-lg font-semibold text-gray-800 leading-snug line-clamp-2 mb-2">
-                    {product?.name || "Unknown Product"}
-                  </h3>
-
-                  <div className="mt-auto flex items-end gap-2 mb-4">
-
-
-
-
-                    {/* <span className="text-xl font-bold text-gray-900">
-                      ₹{primaryVariant?.mrp || 0}
-                    </span>
-                    {primaryVariant?.basePrice > primaryVariant?.mrp && (
-                      <span className="text-sm line-through text-gray-400 mb-0.5">
-                        ₹{primaryVariant.basePrice}
-                      </span>
-                    )} */}
-                  </div>
-
-                <div className="flex items-center gap-3 mt-2">
-                    <Link 
-                    href={`/product/${product?.slug}`}
-                      className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 font-medium transition-colors text-sm"
-                    >
-                      <FaEye  size={18} />
-                   View Product
-                    </Link>
-                    <button 
-                    onClick={()=>dispatch(toggleWishlist(product._id))}
-                      className="p-2.5 text-red-500 bg-red-50 hover:bg-red-100 hover:text-red-600 rounded-lg transition-colors border border-red-100"
-                      title="Remove from wishlist"
-                    >
-                      <FiTrash2 size={20} />
-                    </button>
-                  </div> 
-
-
-</div>
-
-
-
-                </div>
+    <ProductCart2 product={product} key={product._id} />
 )
 
 })}

@@ -21,7 +21,7 @@ const ProductCart1 = ({product}) => {
 const [addedToCart, setAddedToCart] = useState(false);
 const {isUser} = useSelector(state=>state.user)
 
-
+ 
      const handleVariantChange = (event) => {
     const selectedSize = event.target.value;
 
