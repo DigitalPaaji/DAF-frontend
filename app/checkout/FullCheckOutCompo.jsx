@@ -25,7 +25,7 @@ const [checkoutData,setCheckoutData] =useState({
   couponCode:"",
 
 })
-console.log("Razorpay loaded:", checkoutData);
+
 
   
 const loadRazorpay = () => {
@@ -68,13 +68,14 @@ const loadRazorpay = () => {
 
 const handleSubmitPayment = async () => {
   try {
-    console.log("Payment started");
-  
+ 
+  if(!checkoutData?.address){
+    toast.warn("Address required")
+ return
+  }
     const scriptLoaded = await loadRazorpay();
 
-    console.log("Razorpay loaded:", checkoutData);
-    console.log("window.Razorpay:", window.Razorpay);
-
+   
     if (!scriptLoaded || !window.Razorpay) {
       toast.error("Razorpay SDK failed to load");
       return;

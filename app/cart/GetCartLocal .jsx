@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import {
   FiAlertCircle,
+  FiArrowLeft,
   FiArrowRight,
   FiMinus,
   FiPlus,
@@ -17,6 +18,7 @@ import {
 
 import { base_url ,img_url} from "../components/Store/utils";
 import { decreaseQuantity ,removeFromCart,increaseQuantity} from "../components/Store/slices/AddtoCartLocal";
+import { useRouter } from "next/navigation";
 
 
 
@@ -411,8 +413,19 @@ const cartParam = encodeURIComponent(JSON.stringify(localCart));
 };
 
 const EmptyCart = () => {
+  const router = useRouter();
+
   return (
-    <div className="flex min-h-[75vh] items-center justify-center bg-[#f8f7f4] px-4">
+    <div className="relative flex min-h-[75vh] items-center justify-center bg-[#f8f7f4] px-4">
+      {/* Back Button */}
+      <button
+        onClick={() => router.back()}
+        className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium text-gray-800 shadow-sm transition hover:bg-gray-950 hover:text-white md:left-6 md:top-6"
+      >
+        <FiArrowLeft className="text-lg" />
+        Back
+      </button>
+
       <div className="max-w-md text-center">
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-sm">
           <FiShoppingBag className="text-3xl text-[#8b5e3c]" />
@@ -423,8 +436,8 @@ const EmptyCart = () => {
         </h2>
 
         <p className="mt-2 text-sm leading-6 text-gray-500">
-          Add some beautiful copper products to your cart and
-          they will appear here.
+          Add some beautiful copper products to your cart and they will appear
+          here.
         </p>
 
         <Link
