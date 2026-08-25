@@ -5,12 +5,12 @@ const BottleCompo = ({ bottleImg, lableImg, accentClass }) => {
     <div className="relative w-40  banner">
 
       {/* Background Label Container */}
-      <div className={`absolute overflow-hidden top-[30%]   w-full ${accentClass}`}>
+      <div className={`absolute overflow-hidden top-[32%]   w-full ${accentClass}`}>
         <img 
           src={`/Banner/${lableImg}`} 
           alt="Product Label" 
           
-          className="max-w-[70rem]  max-h-[8.5rem] relative -left-[100%] labelimg  pointer-events-none" 
+          className="max-w-[70rem]  h-[11rem] relative -left-[100%] labelimg  pointer-events-none" 
         />
       </div>
 
@@ -18,7 +18,7 @@ const BottleCompo = ({ bottleImg, lableImg, accentClass }) => {
       <img
         src={`/Banner/${bottleImg}`}
         alt="Bottle"
-        className="relative w-44   -z-10 drop-shadow-2xl bannerImage " /* Added drop shadow for depth */
+        className="relative w-44 h-[20rem]  -z-10 drop-shadow-2xl bannerImage " /* Added drop shadow for depth */
       />
 
     </div>

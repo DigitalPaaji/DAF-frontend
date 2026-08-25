@@ -32,7 +32,7 @@ const {categories = [],error,loading} = useSelector((state) => state.categories)
 
 
   return (
-    <section className="relative py-20 text-[#312A26] font-sans overflow-hidden">
+    <section className="relative py-20 text-[#312A26] font-sans overflow-hidden bg-[#EBEBEB] ">
       <div className="px-4 md:px-12 lg:px-24 xl:px-40 mx-auto">
         {/* Section Header */}
           <div className="text-center mb-12 md:mb-16">
@@ -103,22 +103,22 @@ const {categories = [],error,loading} = useSelector((state) => state.categories)
                 href={`/products?category=${item.slug}`}
                 className="group flex flex-col items-center text-center cursor-pointer"
               >
-                <div className="p-1.5 rounded-full border-2 border-transparent group-hover:border-[#9C6B44] transition-colors duration-500 mb-4">
+                <div className="p-1.5 rounded-full border-2 border-transparent  transition-colors duration-500 mb-4">
                   <div className="relative w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 overflow-hidden rounded-full  shadow-md">
                     <div className="absolute inset-0 rounded-full shadow-inner z-10 pointer-events-none" />
 
                     <img
                       src={`${img_url}${item.image}`}
                       alt={item.name}
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out "
                     />
 
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500 z-0" />
+                    <div className="absolute inset-0 bg-black/20 transition-colors duration-500 z-0" />
                   </div>
                 </div>
 
                 <h3
-                  className="text-sm md:text-base font-bold uppercase tracking-wider text-[#3A2A21] group-hover:text-[#9C6B44] transition-colors duration-300 px-2 leading-snug"
+                  className="text-sm md:text-base font-bold uppercase tracking-wider text-[#3A2A21]  transition-colors duration-300 px-2 leading-snug"
                   style={{ fontFamily: "'Oswald', sans-serif" }}
                 >
                   {item.name}

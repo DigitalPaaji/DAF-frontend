@@ -58,7 +58,7 @@ const cartParam = encodeURIComponent(JSON.stringify(localCart));
   const [cartData, setCartData] = useState(initialCartData);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-
+const router =useRouter()
   const fetchCartLocal = async (signal) => {
     try {
       setIsLoading(true);
@@ -199,8 +199,9 @@ const cartParam = encodeURIComponent(JSON.stringify(localCart));
               Your selection
             </p>
 
-            <h1 className="text-3xl font-semibold text-gray-950 sm:text-4xl">
-              Shopping Cart
+            <h1 className="text-3xl font-semibold text-gray-950 sm:text-4xl flex items-center gap-2">
+                                <FiArrowLeft className="text-lg cursor-pointer"  onClick={() => router.back()}/>  Shopping Cart
+              
             </h1>
           </div>
 

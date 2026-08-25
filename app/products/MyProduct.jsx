@@ -174,6 +174,10 @@ useEffect(()=>{
             </Link>
             <span>/</span>
             <span>Shop</span>
+           
+           {selectedCategory && <span>/ {selectedCategory.split("-").join(" ")}</span>}
+            
+
           </div>
         </div>
       </section>
@@ -181,7 +185,7 @@ useEffect(()=>{
 
 <section className="px-4 py-12 md:px-12 md:py-16 xl:px-72">
 
-       <div className="mb-9 overflow-hidden border-b border-[#DDD4C8]">
+       <div className=" hidden  md:block mb-9 overflow-hidden border-b border-[#DDD4C8]">
           <div className="flex justify-center md:justify-start w-full items-center flex-wrap gap-4 lg:gap-7">
             <button
               type="button"

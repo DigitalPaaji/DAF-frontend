@@ -11,7 +11,7 @@ const slides = [
     subtitle: "Authentic Indian Blend",
     description: "Experience the warmth of traditional aromatic spices blended flawlessly with bold Assam tea leaves.",
     labelImg: "label1.webp",
-    jarImg: "blue-lavender-jar.webp",
+    jarImg: "jar.webp",
     bgColor: "#E8E3DF", // Soft Sand
     accent: "bg-orange-800",
     textColor: "text-orange-950",
@@ -22,7 +22,7 @@ const slides = [
     subtitle: "Golden Immunity Boost",
     description: "A restorative and earthy fusion of warming ginger and vibrant turmeric to soothe your senses.",
     labelImg: "label2.webp",
-    jarImg: "blue-lavender-jar.webp",
+    jarImg: "jar.webp",
     bgColor: "#F4EBD0", // Soft Gold
     accent: "bg-yellow-700",
     textColor: "text-yellow-950",
@@ -33,7 +33,7 @@ const slides = [
     subtitle: "Elegant Floral Fusion",
     description: "Indulge in a delicate, luxurious brew where sweet green cardamom meets gentle rose petals.",
     labelImg: "label3.webp",
-    jarImg: "blue-lavender-jar.webp",
+    jarImg: "jar.webp",
     bgColor: "#EADEE0", // Soft Rose
     accent: "bg-rose-800",
     textColor: "text-rose-950",

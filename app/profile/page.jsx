@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Ordercompo from "./Ordercompo";
 import AddressCompo2 from "./AddressCompo2";
 import { toggle } from "../components/Store/slices/toggleUser";
+import { base_url } from "../components/Store/utils";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const { isUser, user, isLoading } = useSelector((state) => state.user);
@@ -21,6 +24,33 @@ const Page = () => {
       router.replace("/");
     }
   }, [isLoading, isUser, dispatch, router]);
+
+
+
+ const handelLogout = async()=>{
+  try{
+const response = await  axios.get(`${base_url}/auth/logout`,{
+  withCredentials:true
+})
+const data = await response.data;
+if(data.success){
+  toast.success(data.message)
+  
+  location.href="/"
+
+}
+else{
+toast.error(data.message)
+}
+
+
+  }
+  catch(error){
+toast.error(error?.response?.data?.message)
+
+  }
+ }
+
 
   if (isLoading) {
     return (
@@ -110,7 +140,11 @@ const Page = () => {
       <span className="text-[#62080d]">→</span>
     </Link>
 
-
+ <button onClick={()=>handelLogout()} className="flex w-full bg-[#530509] text-white items-center justify-between rounded-2xl border border-[#f0e4d9] px-4 py-3 text-sm font-medium  transition "
+    >
+      <span>Logout</span>
+      <span className="text-white">→</span>
+    </button>
           
             </div>
           </aside>
@@ -208,12 +242,7 @@ const ProfieCompo=({user,setShowingData})=>{
                   </p>
                 </div>
 
-                <Link
-                  href="/profile/edit"
-                  className="w-fit rounded-full bg-[#62080d] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#210102]"
-                >
-                  Edit Profile
-                </Link>
+               
               </div>
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">

@@ -44,7 +44,7 @@ const getImageUrl = (image) => {
 const GetCartItem = () => {
   const pageRef = useRef(null);
   const dispatch = useDispatch();
-
+const router =useRouter()
   const [cartData, setCartData] = useState(initialCartData);
   const [isLoading, setIsLoading] = useState(true);
   const [actionLoadingId, setActionLoadingId] = useState("");
@@ -274,8 +274,8 @@ const GetCartItem = () => {
               Your selection
             </p>
 
-            <h1 className="text-3xl font-semibold text-gray-950 sm:text-4xl">
-              Shopping Cart
+            <h1  className="text-3xl font-semibold text-gray-950 sm:text-4xl flex items-center gap-2">
+                  <FiArrowLeft className="text-lg cursor-pointer"  onClick={() => router.back()}/>  Shopping Cart
             </h1>
           </div>
 
