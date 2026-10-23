@@ -34,7 +34,7 @@ const TermsConditionsPage = () => {
           <Image
             width={1920}
             height={1080}
-            src="/banner.webp"
+            src="/Images/banner.webp"
             alt="Dr. Aulakh Foods Terms and Conditions"
             className="h-full w-full object-cover opacity-40"
             priority

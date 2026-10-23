@@ -34,7 +34,7 @@ const PrivacyPolicyPage = () => {
           <Image
             width={1920}
             height={1080}
-            src="/banner.webp"
+            src="/Images/banner.webp"
             alt="Dr. Aulakh Foods Privacy Policy"
             className="h-full w-full object-cover opacity-40"
             priority

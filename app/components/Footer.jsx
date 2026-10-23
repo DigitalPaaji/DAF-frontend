@@ -44,11 +44,13 @@ const Footer = () => {
         >
           {/* Brand & Socials (Takes up more space on desktop) */}
           <motion.div variants={itemVariants} className="lg:col-span-4 flex flex-col">
+            
             <img 
               src="/Images/logo1.webp" 
               alt="Doctor Aulakh's Food" 
               className="h-auto w-24 mb-6 object-contain" 
             />
+
             <p className="text-[#e8d9c0]/70 text-sm leading-relaxed mb-8 max-w-sm font-light">
               Sourced directly from the finest estates. We bring you premium,
               authentic teas and freshly ground spices to elevate your everyday rituals.
