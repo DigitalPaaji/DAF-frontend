@@ -8,10 +8,10 @@ import Link from "next/link"
 import { FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
   const socialLinks = [
-    { icon: FiFacebook, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Facebook' },
+    // { icon: FiFacebook, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Facebook' },
     { icon: FiInstagram, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Instagram' },
-    { icon: FiTwitter, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Twitter' },
-    { icon: FiYoutube, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'YouTube' }
+    // { icon: FiTwitter, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Twitter' },
+    // { icon: FiYoutube, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'YouTube' }
   ];
 
 const Footer = () => {
