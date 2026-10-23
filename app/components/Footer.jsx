@@ -45,7 +45,7 @@ const Footer = () => {
           {/* Brand & Socials (Takes up more space on desktop) */}
           <motion.div variants={itemVariants} className="lg:col-span-4 flex flex-col">
             <img 
-              src="/Images/logo.webp" 
+              src="/Images/logo1.webp" 
               alt="Doctor Aulakh's Food" 
               className="h-auto w-24 mb-6 object-contain" 
             />
