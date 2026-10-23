@@ -6,11 +6,16 @@ import Hero from "./components/HeroSection";
 import ProductSection from "./components/ProductGrid";
 import TeaBlendsSection from "./components/TeaBlends";
 import Reviews from "./components/Reviews";
+import Banner from "./components/Banner";
 
 export default function Home() {
   return (
     <div className="">
-      <Hero />
+      {/* <Hero /> */}
+{/* <VideoFrame /> */}
+ <Banner />
+
+
       <CategoryCarousel />
       <CatSection />
       <TeaBlendsSection />

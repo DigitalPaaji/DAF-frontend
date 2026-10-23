@@ -29,10 +29,10 @@ const CategoryCarousel = () => {
 const {categories = [],error,loading} = useSelector((state) => state.categories);
  
 
-
+ 
 
   return (
-    <section className="relative py-20 text-[#312A26] font-sans overflow-hidden bg-[#EBEBEB] ">
+    <section className="relative py-20 text-[#312A26] font-sans overflow-hidden bg-[#F5F2EB] ">
       <div className="px-4 md:px-12 lg:px-24 xl:px-40 mx-auto">
         {/* Section Header */}
           <div className="text-center mb-12 md:mb-16">

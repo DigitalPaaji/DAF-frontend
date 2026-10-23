@@ -121,24 +121,20 @@ const BowlIcon = ({ color }) => (
 const CatSection = () => {
   return (
     <section className="relative w-full  bg-[#F5F2EB]  overflow-hidden font-sans">
-      {/* Decorative Left Image */}
+
       <img
         src="/Images/flower.webp"
         alt="Natural whole spices"
-        className="absolute top-8 -left-24 lg:-left-20 w-52 h-52 lg:w-64 lg:h-64 object-cover rounded-full mix-blend-multiply opacity-40 lg:opacity-70 hidden md:block"
-        style={{
-          clipPath: "circle(50% at 20% 50%)",
-        }}
+        className="absolute top-8 -left-24 lg:-left-20 w-52 h-52 lg:w-64 lg:h-64 mix-blend-multiply opacity-40 lg:opacity-70 hidden md:block"
+      
       />
 
-      {/* Decorative Right Image */}
+
       <img
         src="/Images/tea-cup.webp"
         alt="Premium spice ingredients"
         className="absolute bottom-8 -right-20 lg:-right-10 w-52 h-52 lg:w-64 lg:h-64 object-cover mix-blend-multiply opacity-35 lg:opacity-60 hidden md:block"
-        style={{
-          clipPath: "polygon(100% 0, 100% 100%, 0 100%, 30% 0)",
-        }}
+
       />
 
       <div className="px-4 md:px-12 lg:px-24 xl:px-72 py-16 md:py-20 lg:py-24 relative z-10">

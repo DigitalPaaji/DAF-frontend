@@ -20,6 +20,12 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Bpmf+Zihi+Kai+Std&display=swap" 
           rel="stylesheet"
         />
+
+ <link
+          href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+
       </head>
       
       {/* NOTE: If you still see hydration errors related to extensions 

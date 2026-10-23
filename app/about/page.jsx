@@ -232,14 +232,14 @@ const AboutSection = () => {
             initial={{ opacity: 0, x: -25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 shadow-sm lg:aspect-square"
+            className="group relative aspect-auto overflow-hidden rounded-2xl bg-neutral-100 shadow-sm lg:aspect-square"
           >
             <Image
-              width={900}
-              height={900}
-              src="/Images/about.mp4"
+              width={1900}
+              height={1900}
+              src="/Images/login_banner.webp"
               alt="Premium spices used by Dr. Aulakh Foods"
-              className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              className="h-full w-full "
             />
 
             <div className="pointer-events-none absolute inset-0 bg-black/5" />
