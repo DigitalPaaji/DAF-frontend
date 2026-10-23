@@ -28,7 +28,7 @@ const PrivacyPolicyPage = () => {
       ref={containerRef}
       className="overflow-visible bg-white font-sans text-[#0B1A30]"
     >
-      {/* Hero Section */}
+      {/* */}
       <section className="animate-section relative overflow-hidden bg-[#E8E3DF] py-50">
         <div className="absolute inset-0 z-0">
           <Image
@@ -65,7 +65,7 @@ const PrivacyPolicyPage = () => {
         </div>
       </section>
 
-      {/* Intro Section */}
+      {/* Intr */}
       <section className="animate-section bg-gradient-to-b from-white to-gray-50 px-4 py-16 sm:px-6 lg:px-16 lg:py-24 xl:px-24 2xl:px-52">
         <div className="fade-up mx-auto max-w-4xl text-center">
           <span className="mb-4 inline-block px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#4D341E]">
