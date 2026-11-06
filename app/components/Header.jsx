@@ -135,8 +135,8 @@ const CategoryMegaDropdown = () => {
       {/* ================= MEGA MENU ================= */}
       <div
         className="
-          invisible absolute left-1/2 top-full z-[80]
-          w-[980px] -translate-x-1/2
+          invisible absolute left-1/2 top-full 
+          w-[980px] -translate-x-1/3 z-50
           translate-y-3 pt-5
           opacity-0
           transition-all duration-300 ease-out
@@ -161,7 +161,7 @@ const CategoryMegaDropdown = () => {
             {/* =====================================================
                 LEFT CATEGORY SIDEBAR
             ====================================================== */}
-            <aside className="relative flex min-h-0 flex-col border-r border-neutral-100 bg-[#faf9f6]">
+            <aside className=" relative flex min-h-0 flex-col border-r border-neutral-100 bg-[#faf9f6]">
               {/* Heading */}
               <div className="px-5 pb-3 pt-6">
                 <p className="text-[9px] font-bold uppercase tracking-[0.28em] text-[#B9832B]">

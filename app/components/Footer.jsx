@@ -1,17 +1,17 @@
 "use client";
 
 import React from "react";
-import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP } from "react-icons/fa";
-import { BsArrowRight } from "react-icons/bs";
-import { motion } from "framer-motion";
+ import { FaInstagram, FaFacebookF, FaTwitter, FaPinterestP } from "react-icons/fa";
+ import { BsArrowRight } from "react-icons/bs";
+  import { motion } from "framer-motion";
 import Link from "next/link"
 import { FiFacebook, FiTwitter, FiInstagram, FiYoutube, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
   const socialLinks = [
     { icon: FiFacebook, href: 'https://www.facebook.com/people/Dr-Aulakh-Food/61592095177494', label: 'Facebook' },
     { icon: FiInstagram, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Instagram' },
-    // { icon: FiTwitter, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Twitter' },
-    // { icon: FiYoutube, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'YouTube' }
+  //{ icon: FiTwitter, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'Twitter' },  
+  //{ icon: FiYoutube, href: 'https://www.instagram.com/draulakhfoods?utm_source=qr&igsh=MTdldXo2NXdwa2RseQ%3D%3D', label: 'YouTube' }
   ];
 
 const Footer = () => {
@@ -31,7 +31,15 @@ const Footer = () => {
 
   return (
     <footer className="relative bg-[#14110f] text-[#e8d9c0] pt-20 pb-6 font-sans border-t border-[#c9a05e]/20 overflow-hidden">
-      {/* Subtle Background Glow/Texture */}
+      
+<a   
+
+  href="https://wa.me/918360021419"
+  target="_blank"
+  rel="noopener noreferrer"className="fixed bottom-5 right-5 h-14  cursor-pointer  z-50 animate-bounce"><img src="/whatsapp.png" className="h-14 "   alt="" />
+  
+</a>
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-[#c9a05e]/5 to-transparent blur-3xl pointer-events-none" />
 
       <div className=" px-4 md:px-12 xl:px-72 relative z-10">

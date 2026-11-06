@@ -87,21 +87,25 @@ const ContactPage = () => {
     setLoading(true);
 
     try {
-      // Connect your backend API here.
-      //
-      // const response = await fetch("/api/contact", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-      //
-      // if (!response.ok) {
-      //   throw new Error("Unable to submit enquiry");
-      // }
+      const SendData= {
+        sendto:["jontypundir12@gmail.com"],
+        subject:"Website Query",
+        formdata:formData
+      }
+      
+      const response = await fetch("https://sendmail.digitalpaaji.com/sendmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(SendData),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Unable to submit enquiry");
+      }
 
-      await new Promise((resolve) => setTimeout(resolve, 900));
+      // await new Promise((resolve) => setTimeout(resolve, 900));
 
       setSubmitted(true);
 
